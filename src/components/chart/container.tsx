@@ -8,7 +8,7 @@ import {
 	CategoryScale,
 	Tooltip,
 } from 'chart.js';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const options = {
 	responsive: false,
@@ -22,7 +22,7 @@ export const options = {
 		},
 	},
 };
-export const MyLine = () => {
+export const CwvLine = () => {
 	const [isRegistered, setIsRegistered] = useState(false);
 
 	useEffect(() => {
