@@ -1,30 +1,16 @@
 {
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
-    "baseUrl": "/Users/xun.ding/github/astro-cwv/cwv-dash/src",
+    "baseUrl": ".",
     "strictNullChecks": true,
-    "types": [
-      "astro/client"
-    ],
+    "types": ["astro/client"],
     "paths": {
-      "@lib/*": [
-        "lib/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@components/*": [
-        "components/*"
-      ],
-      "@layouts/*": [
-        "layouts/*"
-      ],
-      "@assets/*": [
-        "assets/*"
-      ],
-      "@pages/*": [
-        "pages/*"
-      ]
+      "@lib/*": ["lib/*"],
+      "@utils/*": ["utils/*"],
+      "@components/*": ["components/*"],
+      "@layouts/*": ["layouts/*"],
+      "@assets/*": ["assets/*"],
+      "@pages/*": ["pages/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"
