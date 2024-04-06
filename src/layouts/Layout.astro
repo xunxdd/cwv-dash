@@ -52,10 +52,10 @@ const makeTitle = title
     <Navbar />
     <slot />
     <Footer />
-    <style is:global>
-      /* Improve Page speed */
-      /* https://css-tricks.com/almanac/properties/c/content-visibility/ */
-      img {
+    <style>
+     /* Improve Page speed */
+    /* https://css-tricks.com/almanac/properties/c/content-visibility/ */
+      :global(img) {
         content-visibility: auto;
       }
     </style>
