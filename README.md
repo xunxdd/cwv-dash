@@ -81,7 +81,7 @@ TailwindCSS is already configured in this repo, so you can start using it withou
 
 [Hero Illustration](https://www.figma.com/community/file/1108400791662599811) by [Streamline](https://www.streamlinehq.com/)
 
-[Hero Illustration](https://github.com/surjithctly/astroship) astroship free version
+[astroship](https://github.com/surjithctly/astroship) astroship free version
 
 ## 👀 Want to learn more?
 
