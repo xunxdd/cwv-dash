@@ -1,0 +1,13 @@
+---
+import {MyLine} from "@components/chart/container.tsx";
+import Container from "@components/container.astro";
+import Layout from "@layouts/Layout.astro";
+
+---
+
+<Layout title="Chart">
+  <Container>
+  
+    <MyLine client:only/>
+  </Container>  
+</Layout>
