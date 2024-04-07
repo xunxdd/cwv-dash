@@ -5,6 +5,7 @@ export function getDataCollectionByUrls({ dates, pageUrls, allData }) {
   const jsonData = allData;
 
   const dataCollection = {};
+  if (!pageUrls) return [];
   pageUrls.forEach((url) => {
     const cvwData = jsonData.filter((cvwData) => {
       return cvwData.URL === url;

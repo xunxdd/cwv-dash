@@ -27,7 +27,10 @@ function reducer(state, action) {
 
 function getPageUrls(data, urlType, selectedUrls = []) {
   if (!urlType) return allUrls.slice(0, 10);
-  if (urlType === "select-url" && selectedUrls?.length > 0) return selectedUrls;
+
+  if (urlType === "select-url") {
+    return selectedUrls.length ? selectedUrls : allUrls.slice(0, 10);
+  }
 
   const sortedData = sortCWVData(data);
   if (urlType === "best-url")
@@ -42,7 +45,7 @@ export const ChartContainer = ({ data }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   let selectedDates = listDates({ jsonData: data, dateType: state.dateType });
-  console.log(selectedDates);
+
   const pageUrls = getPageUrls(data, state.urlType, state.urls);
   if (state.dateType) {
     selectedDates = listDates({

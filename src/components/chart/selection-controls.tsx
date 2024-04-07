@@ -1,6 +1,16 @@
 import { urls as allUrls } from "./chart-utils/urls.js";
 import { urlQualityOptions, datesOptions } from "./chart-utils/constants.js";
 
+function Error({ text, show }) {
+  return (
+    <div
+      className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+      role="alert"
+      style={{ visibility: show ? "visible" : "hidden" }}>
+      <strong className="font-bold">Error: {text}</strong>
+    </div>
+  );
+}
 function DatesSelection({ state, dispatch }) {
   const onDateTypeSelect = (selected: string) => {
     dispatch({ type: "setDates", payload: selected });
@@ -26,7 +36,7 @@ function DatesSelection({ state, dispatch }) {
 }
 
 function UrlsSelection({ state, dispatch }) {
-  const onUrlTypeSelect = (value) => {
+  const onUrlTypeSelect = (value: string) => {
     dispatch({ type: "setUrlType", payload: value });
   };
 
@@ -37,10 +47,15 @@ function UrlsSelection({ state, dispatch }) {
     );
     dispatch({ type: "setUrls", payload: selectedOptions });
   };
+  const showError = state.urlType === "select-url" && state.urls?.length === 0;
 
   return (
     <div className="bg-slate-100 p-5 w-full">
       <div className="w-full flex flex-col space-x-2">
+        <Error
+          text="Please select urls from the selection box"
+          show={showError}
+        />
         <div className="flex w-full flex-row space-x-2 full-width">
           {urlQualityOptions.map((option) => (
             <label key={option.value} className="inline-flex items-center">
