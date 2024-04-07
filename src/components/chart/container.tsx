@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
 import { listDates } from "./chart-utils/dates-selection";
 import { urls as allUrls } from "./chart-utils/urls.js";
 import { ChartControls } from "./selection-controls";
+import { sortCWVData } from "./chart-utils/stats.js";
+import { urlQualityOptions } from "./chart-utils/constants.js";
 
 import React, { useReducer } from "react";
 
@@ -80,13 +82,25 @@ function CwvTrendLineChart({ dates, metricName, cwvData }) {
   );
 }
 
+function getPageUrls(data, urlType, selectedUrls = []) {
+  if (!urlType) return allUrls.slice(0, 10);
+  if (urlType === "select-url" && selectedUrls?.length > 0) return selectedUrls;
+  const sortedData = sortCWVData(data);
+
+  if (urlType === "best-url") return sortedData.slice(0, 5);
+
+  if (urlType === "worst-url") {
+    return sortedData;
+  }
+}
 export const CwvLine = ({ data }) => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   console.log(state.dateType, state.urlType, state.urls);
   let selectedDates = listDates({ startDate: "02/07", jsonData: data });
-  const pageUrls = allUrls.slice(0, 10);
+  const pageUrls = getPageUrls(data, state.urlType, state.urls);
+
   if (state.dateType) {
     selectedDates = listDates({
       startDate: state.dateType,
@@ -96,7 +110,7 @@ export const CwvLine = ({ data }) => {
   }
   const cwvData = getDataCollectionByUrls({
     dates: selectedDates,
-    pageUrls: allUrls.slice(0, 10),
+    pageUrls,
     allData: data,
   });
 
@@ -119,8 +133,7 @@ export const CwvLine = ({ data }) => {
     <>
       <ChartControls state={state} dispatch={dispatch} />
 
-      <div>test</div>
-      {/* <CwvTrendLineChart
+      <CwvTrendLineChart
         dates={selectedDates}
         metricName="CLS-score"
         cwvData={cwvData}
@@ -135,7 +148,6 @@ export const CwvLine = ({ data }) => {
         metricName="LCP-percentile"
         cwvData={cwvData}
       />
-    </> */}
     </>
   );
 };
