@@ -38,7 +38,6 @@ function UrlsSelection({ state, dispatch }) {
     dispatch({ type: "setUrls", payload: selectedOptions });
   };
 
-  // console.log({ useSelectedUrls });
   return (
     <div className="bg-slate-100 p-5 w-full">
       <div className="w-full flex flex-col space-x-2">

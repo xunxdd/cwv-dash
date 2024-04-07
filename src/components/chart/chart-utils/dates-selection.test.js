@@ -16,7 +16,7 @@ test("generates a list of dates between two given dates", () => {
   expect(dates[dates.length - 1]).toEqual("04/08/24");
 });
 
-test("generates a list of dates between two given dates", () => {
+test("generates a list of dates between two given dates last 28 days", () => {
   const startDate = "02/07/24";
 
   const dates = listDates({

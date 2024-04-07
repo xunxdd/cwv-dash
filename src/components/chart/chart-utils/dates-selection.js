@@ -51,13 +51,14 @@ export function listDates({
 
   let start_date = toUTCDate(startDate);
   const end_date = toUTCDate(selectedEndDate);
-  console.log({ start_date, end_date, dateType });
   if (dateType === "last-28-days") {
     start_date = getPastDateByDays(end_date, 28);
-  } else if (dateType.includes("last-") && dateType.includes("months")) {
-    const months = parseInt(dateType.split("-")[1]);
+  } else if (dateType.includes("last-") && dateType.includes("month")) {
+    const months = parseInt(dateType.split("-")[1]) || 1;
     start_date = getPastDateByMonth(end_date, months);
-    console.log({ start_date, end_date, months });
+    if (start_date < toUTCDate(earliest)) {
+      start_date = toUTCDate(earliest);
+    }
   }
 
   const dates = [];

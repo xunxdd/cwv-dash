@@ -7,7 +7,7 @@ export default function LoginForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission here
-    console.log(`Username: ${username}, Password: ${password}`);
+    // console.log(`Username: ${username}, Password: ${password}`);
   };
 
   return (

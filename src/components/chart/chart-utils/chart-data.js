@@ -12,13 +12,12 @@ export function getDataCollectionByUrls({ dates, pageUrls, allData }) {
     dataCollection[url] = cvwData;
   });
   const cwvDataByUrl = {};
-  console.log({ dates });
+
   Object.keys(dataCollection).forEach((url) => {
     const rows = dataCollection[url];
     const data = {};
     rows.forEach((row) => {
       let dateString = row.analysisUTCTimestamp;
-      console.log({ dateString });
       if (dateString) {
         if (dates.includes(dateString)) {
           data[dateString] = row;
@@ -39,7 +38,6 @@ export function getDataCollectionByUrls({ dates, pageUrls, allData }) {
  */
 export function chartData({ dates, metricName, cwvData = {} }) {
   const datasets = [];
-  console.log({ dates });
   Object.keys(cwvData).forEach((url, index) => {
     const data = cwvData[url];
     const dataPoints = [];

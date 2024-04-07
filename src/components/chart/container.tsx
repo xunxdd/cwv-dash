@@ -28,23 +28,22 @@ function reducer(state, action) {
 function getPageUrls(data, urlType, selectedUrls = []) {
   if (!urlType) return allUrls.slice(0, 10);
   if (urlType === "select-url" && selectedUrls?.length > 0) return selectedUrls;
-  const sortedData = sortCWVData(data);
 
-  if (urlType === "best-url") return sortedData.slice(0, 5);
+  const sortedData = sortCWVData(data);
+  if (urlType === "best-url")
+    return sortedData.slice(0, 5).map((d: any) => d.URL);
 
   if (urlType === "worst-url") {
-    return sortedData;
+    return sortedData.slice(-5).map((d: any) => d.URL);
   }
 }
 
 export const ChartContainer = ({ data }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  console.log(state.dateType, state.urlType, state.urls);
-  let selectedDates = listDates({ jsonData: data });
-
+  let selectedDates = listDates({ jsonData: data, dateType: state.dateType });
+  console.log(selectedDates);
   const pageUrls = getPageUrls(data, state.urlType, state.urls);
-
   if (state.dateType) {
     selectedDates = listDates({
       startDate: state.dateType,
@@ -60,7 +59,7 @@ export const ChartContainer = ({ data }) => {
   return (
     <>
       <ChartControls state={state} dispatch={dispatch} />
-      {<Charts cwvData={cwvData} selectedDates={selectedDates} />}
+      <Charts cwvData={cwvData} selectedDates={selectedDates} />
     </>
   );
 };

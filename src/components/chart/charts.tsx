@@ -43,14 +43,13 @@ function CwvTrendLineChart({ dates, metric, cwvData }) {
   const { key, label } = metric;
   const dataSet = chartData({ dates, metricName: key, cwvData });
   const title = label;
-  console.log({ dataSet, cwvData });
   return (
     <div className="m-5">
       <Line
         data={dataSet}
         options={getOptions(title)}
-        height={600}
-        width={1200}
+        height={500}
+        width={1000}
       />
     </div>
   );
