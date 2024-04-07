@@ -1,12 +1,25 @@
 ---
+import Sectionhead from "@components/sectionhead.astro";
 import {CwvLine} from "@components/chart/container.tsx";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
+import data from 'assets/pagespeed-results-mobile.json';
 
+for (let i = 0; i < data.length; i++) {
+  if (data[i].analysisUTCTimestamp?.length) {
+    data[i].analysisUTCTimestamp = data[i].analysisUTCTimestamp?.replace("-", "/") ?? null;
+  }
+}
 ---
 
-<Layout title="Chart">
+<Layout title="Dashboard">
   <Container>
-    <CwvLine client:only/>
+    <Sectionhead>
+      <Fragment slot="title">Dashboard</Fragment>
+      <Fragment slot="desc">Trend chart for selected urls</Fragment>
+    </Sectionhead>
+    <div class="flex flex-col max-w-4xl mt-8">
+      <CwvLine client:only data={data} />
+    </div>
   </Container>  
 </Layout>

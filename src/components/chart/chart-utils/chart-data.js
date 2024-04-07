@@ -1,34 +1,33 @@
-import colorLib from '@kurkle/color';
-import { colors } from './colors.js';
+import colorLib from "@kurkle/color";
+import { colors } from "./colors.js";
 
-export async function getDataCollectionByUrls({ dates, pageUrls, allData }) {
-	const jsonData = allData;
+export function getDataCollectionByUrls({ dates, pageUrls, allData }) {
+  const jsonData = allData;
 
-	const dataCollection = {};
-	pageUrls.forEach((url) => {
-		const cvwData = jsonData.filter((cvwData) => {
-			return cvwData.URL === url;
-		});
-		dataCollection[url] = cvwData;
-	});
-	const cwvDataByUrl = {};
+  const dataCollection = {};
+  pageUrls.forEach((url) => {
+    const cvwData = jsonData.filter((cvwData) => {
+      return cvwData.URL === url;
+    });
+    dataCollection[url] = cvwData;
+  });
+  const cwvDataByUrl = {};
 
-	Object.keys(dataCollection).forEach((url) => {
-		const rows = dataCollection[url];
-		const data = {};
-		rows.forEach((row) => {
-			let dateString = row.analysisUTCTimestamp;
-			if (dateString) {
-				dateString = dateString.slice(5, 7) + '/' + dateString.slice(8, 10);
-				if (dates.includes(dateString)) {
-					data[dateString] = row;
-				}
-			}
-		});
-		cwvDataByUrl[url] = data;
-	});
+  Object.keys(dataCollection).forEach((url) => {
+    const rows = dataCollection[url];
+    const data = {};
+    rows.forEach((row) => {
+      let dateString = row.analysisUTCTimestamp;
+      if (dateString) {
+        if (dates.includes(dateString)) {
+          data[dateString] = row;
+        }
+      }
+    });
+    cwvDataByUrl[url] = data;
+  });
 
-	return cwvDataByUrl;
+  return cwvDataByUrl;
 }
 
 /**
@@ -37,37 +36,38 @@ export async function getDataCollectionByUrls({ dates, pageUrls, allData }) {
  * @param {*} allData
  * @returns chart of a specific metric by name given by the data for specific urls
  */
-export function chartData({ dates, metricName, allData = {} }) {
-	const datasets = [];
-	Object.keys(allData).forEach((url, index) => {
-		const data = allData[url];
-		const dataPoints = [];
-		const color = colors[index];
-		dates.forEach((date) => {
-			const row = data[date];
-			if (row) {
-				dataPoints.push(
-					typeof row[metricName] === 'string'
-						? parseFloat(row[metricName])
-						: undefined,
-				);
-			} else {
-				dataPoints.push(undefined);
-			}
-		});
+export function chartData({ dates, metricName, cwvData = {} }) {
+  const datasets = [];
+  Object.keys(cwvData).forEach((url, index) => {
+    const data = cwvData[url];
+    const dataPoints = [];
+    const color = colors[index];
+    dates.forEach((date) => {
+      const row = data[date];
+      if (row) {
+        const metric = row[metricName];
+        if (typeof metric === "number") {
+          dataPoints.push(metric);
+        } else if (typeof metric === "string") {
+          dataPoints.push(parseFloat(metric));
+        }
+      } else {
+        dataPoints.push(undefined);
+      }
+    });
 
-		datasets.push({
-			label: `${url}`,
-			data: dataPoints,
-			lineTension: 0,
-			fill: false,
-			backgroundColor: colorLib(color).alpha(0.5).rgbString(),
-			borderColor: color,
-		});
-	});
+    datasets.push({
+      label: `${url}`,
+      data: dataPoints,
+      lineTension: 0,
+      fill: false,
+      backgroundColor: colorLib(color).alpha(0.5).rgbString(),
+      borderColor: color,
+    });
+  });
 
-	return {
-		labels: dates,
-		datasets,
-	};
+  return {
+    labels: dates,
+    datasets,
+  };
 }
