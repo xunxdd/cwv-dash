@@ -68,7 +68,7 @@ export function listDates({
   ) {
     const dateString = d.toISOString().split("T")[0];
     const [year, month, day] = dateString.split("-");
-    const formattedDate = `${month}/${day}`;
+    const formattedDate = `${month}/${day}/${year.slice(-2)}`;
 
     dates.push(formattedDate);
   }

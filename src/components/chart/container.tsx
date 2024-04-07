@@ -1,26 +1,10 @@
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  LineElement,
-  PointElement,
-  LinearScale,
-  Title,
-  CategoryScale,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import {
-  getDataCollectionByUrls,
-  chartData,
-} from "./chart-utils/chart-data.js";
-import { useEffect, useState } from "react";
+import { getDataCollectionByUrls } from "./chart-utils/chart-data.js";
 import { listDates } from "./chart-utils/dates-selection";
 import { urls as allUrls } from "./chart-utils/urls.js";
 import { ChartControls } from "./selection-controls";
 import { sortCWVData } from "./chart-utils/stats.js";
-import { urlQualityOptions } from "./chart-utils/constants.js";
-
-import React, { useReducer } from "react";
+import Charts from "./charts";
+import { useReducer } from "react";
 
 const initialState = {
   dateType: "",
@@ -41,47 +25,6 @@ function reducer(state, action) {
   }
 }
 
-function getOptions(title: string): any {
-  return {
-    responsive: false,
-    plugins: {
-      legend: {
-        position: "bottom" as const,
-        align: "start" as const,
-        padding: 2,
-        labels: {
-          textAlign: "left" as const,
-          font: {
-            size: 10,
-            lineHeight: 1,
-          },
-        },
-      },
-
-      title: {
-        display: true,
-        text: title,
-        font: { weight: "bolder", size: 14 },
-      },
-    },
-  };
-}
-
-function CwvTrendLineChart({ dates, metricName, cwvData }) {
-  const dataSet = chartData({ dates, metricName, cwvData });
-  const title = metricName;
-  return (
-    <div className="m-5">
-      <Line
-        data={dataSet}
-        options={getOptions(title)}
-        height={600}
-        width={1200}
-      />
-    </div>
-  );
-}
-
 function getPageUrls(data, urlType, selectedUrls = []) {
   if (!urlType) return allUrls.slice(0, 10);
   if (urlType === "select-url" && selectedUrls?.length > 0) return selectedUrls;
@@ -93,12 +36,13 @@ function getPageUrls(data, urlType, selectedUrls = []) {
     return sortedData;
   }
 }
-export const CwvLine = ({ data }) => {
-  const [isRegistered, setIsRegistered] = useState(false);
+
+export const ChartContainer = ({ data }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   console.log(state.dateType, state.urlType, state.urls);
-  let selectedDates = listDates({ startDate: "02/07", jsonData: data });
+  let selectedDates = listDates({ jsonData: data });
+
   const pageUrls = getPageUrls(data, state.urlType, state.urls);
 
   if (state.dateType) {
@@ -113,41 +57,10 @@ export const CwvLine = ({ data }) => {
     pageUrls,
     allData: data,
   });
-
-  useEffect(() => {
-    ChartJS.register(
-      LineElement,
-      PointElement,
-      LinearScale,
-      Title,
-      CategoryScale,
-      Tooltip,
-      Legend
-    );
-    setIsRegistered(true);
-  }, []);
-
-  if (!isRegistered) return <></>;
-
   return (
     <>
       <ChartControls state={state} dispatch={dispatch} />
-
-      <CwvTrendLineChart
-        dates={selectedDates}
-        metricName="CLS-score"
-        cwvData={cwvData}
-      />
-      <CwvTrendLineChart
-        dates={selectedDates}
-        metricName="INP-percentile"
-        cwvData={cwvData}
-      />
-      <CwvTrendLineChart
-        dates={selectedDates}
-        metricName="LCP-percentile"
-        cwvData={cwvData}
-      />
+      {<Charts cwvData={cwvData} selectedDates={selectedDates} />}
     </>
   );
 };

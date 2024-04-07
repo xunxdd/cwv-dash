@@ -11,4 +11,9 @@ const datesOptions = [
   { value: "last-3-month", label: "Last 3 Months" },
 ];
 
-export { urlQualityOptions, datesOptions };
+const metrics = {
+  INP: { label: "Interaction To Next Paint", unit: "ms", key: "INP" },
+  LCP: { label: "Largest Content Paint", unit: "s", key: "LCP" },
+  CLS: { label: "Cumulative Layout Shift", key: "CLS" },
+};
+export { urlQualityOptions, datesOptions, metrics };
