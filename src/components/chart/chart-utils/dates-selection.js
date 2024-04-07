@@ -14,7 +14,10 @@ export function listDates({
   }
 
   const start = selectedStartDate.split("/").map(Number);
-  const end = selectedEndDate.split("/").map(Number);
+  let end;
+  if (selectedEndDate) {
+    end = selectedEndDate.split("/").map(Number);
+  }
 
   const start_date = new Date(2024, start[0] - 1, start[1]); // assuming year 2022
   const end_date = new Date(2024, end[0] - 1, end[1]); // assuming year 2022
