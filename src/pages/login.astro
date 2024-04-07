@@ -1,0 +1,18 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+import LoginForm from '@components/login';
+
+---
+
+<Layout title="About">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">Sign in</Fragment>
+      <Fragment slot="desc"></Fragment>
+    </Sectionhead>
+
+    <LoginForm />
+  </Container>
+</Layout>
