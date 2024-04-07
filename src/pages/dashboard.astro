@@ -5,11 +5,6 @@ import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
 import data from 'assets/pagespeed-results-mobile.json';
 
-for (let i = 0; i < data.length; i++) {
-  if (data[i].analysisUTCTimestamp?.length) {
-    data[i].analysisUTCTimestamp = data[i].analysisUTCTimestamp?.replace("-", "/") ?? null;
-  }
-}
 ---
 
 <Layout title="Dashboard">

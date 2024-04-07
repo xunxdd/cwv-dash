@@ -1,153 +1,17 @@
-const flagsCAD = [
-	'self-hosted.affiliate.enabled',
-	'fre.commerce.use-affiliate_url',
-	'content-editor.toggles.hide-affiliate-disclaimer',
-	'seo.syndicated-content.no-noindex',
-	'display-search',
-	'fre.location-choice.display-generic-title',
-	'fre.do-not-sell-link',
-	'enable-sso',
-	'fre.enable-jam-journey',
-	'fre.jam-journey.enable-top-slim-banner',
-	'show-updated-timestamp',
-	'fre.seogra.breadcrumbs',
-	'fre.enable-author-flyout',
-	'video.enable-glimmer',
-	'content-editor.gallery.multi-retailer.enabled',
-	'content-editor.1x1-lead-image-crop',
-	'fre.autos.insurance-marketplace',
-	'fre.autos.lotlinx-module',
-	'fre.autos.new-vehicle-ranks',
-	'fre.autos.model-page-sticky-nav',
-	'fre.autos.model-page-hero-updates',
-	'fre.jam-journey.enable-email-captures',
-	'video.sticky-player-mobile',
-	'video.sticky-player',
-	'new-nav',
-	'fre.jam-journey.enable-modals',
-	'mobile-adhesion-unit',
-];
+export function sortCWVData(data, metricName = "INP") {
+  // Get the last day's data
+  const lastDay = data[data.length - 1].analysisUTCTimestamp;
 
-const flagsSeventeen = [
-	'content-editor.enable-repositioned-disclaimer',
-	'self-hosted.affiliate.enabled',
-	'fre.commerce.use-affiliate_url',
-	'commerce.magento.affiliate.enabled',
-	'content-editor.key-features-product-specs',
-	'content-editor.toggles.hide-affiliate-disclaimer',
-	'seo.syndicated-content.no-noindex',
-	'display-search',
-	'fre.location-choice.display-generic-title',
-	'fre.do-not-sell-link',
-	'enable-sso',
-	'fre.enable-jam-journey',
-	'fre.jam-journey.enable-top-slim-banner',
-	'show-updated-timestamp',
-	'fre.seogra.breadcrumbs',
-	'video.sticky-player-lead',
-	'content-editor.1x1-lead-image-crop',
-	'fre.seogra.breadcrumbs-with-collections',
-	'fre.enable-author-flyout',
-	'video.enable-glimmer',
-	'commerce.reordering.enable',
-	'product.content-product.smart-swap.out-of-stock',
-	'content-editor.gallery.multi-retailer.enabled',
-	'fre.jam-journey.enable-email-captures',
-	'video.watch-next-in-body',
-	'video.sticky-player-mobile',
-	'video.sticky-player',
-	'new-nav',
-	'fre.jam-journey.enable-modals',
-	'mobile-adhesion-unit',
-	'enable-google-one-tap',
-	'enable-microsoft-quick-auth',
-];
+  // Filter the data for the last day
+  const lastDayData = data.filter(
+    (item) => item.analysisUTCTimestamp === lastDay
+  );
+  // Sort the data by the INP value
+  lastDayData.sort((a, b) => {
+    const aINP = Number(a[metricName].replace(" ms", "").replace(" s", ""));
+    const bINP = Number(b[metricName].replace(" ms", "").replace(" s", ""));
+    return aINP - bINP;
+  });
 
-const flagsGhk = [
-	'content-editor.enable-repositioned-disclaimer',
-	'content-editor.enable-custom-header',
-	'self-hosted.affiliate.enabled',
-	'fre.commerce.use-affiliate_url',
-	'content-editor.toggles.hide-affiliate-disclaimer',
-	'enable-top-touts',
-	'seo.syndicated-content.no-noindex',
-	'display-search',
-	'location-choice',
-	'fre.location-choice.display-generic-title',
-	'fre.do-not-sell-link',
-	'search.fre.display-top-navigation',
-	'fre.enable-my-stuff',
-	'enable-sso',
-	'fre.enable-jam-journey',
-	'fre.jam-journey.enable-top-slim-banner',
-	'show-updated-timestamp',
-	'fre.seogra.breadcrumbs',
-	'seo.display-publish-date-timezone',
-	'fre.seogra.breadcrumbs-with-collections',
-	'fre.enable-author-flyout',
-	'fre.enable-my-stuff-tooltip',
-	'paywall.schema',
-	'video.enable-glimmer',
-	'content-editor.gallery.multi-retailer.enabled',
-	'video.sticky-player-lead',
-	'video.watch-next-in-body',
-	'fre.jam-journey.enable-email-captures',
-	'new-nav',
-	'fre.cds.enable-paywall',
-	'fre.jam-journey.enable-modals',
-	'fre.jam-journey.enable-meters',
-	'mobile-adhesion-unit',
-	'enable-google-one-tap',
-	'enable-microsoft-quick-auth',
-];
-
-const elleFlags = [
-	'content-editor.enable-repositioned-disclaimer',
-	'content-editor.enable-custom-header',
-	'self-hosted.affiliate.enabled',
-	'fre.commerce.use-affiliate_url',
-	'content-editor.toggles.hide-affiliate-disclaimer',
-	'seo.syndicated-content.no-noindex',
-	'display-search',
-	'location-choice',
-	'fre.location-choice.display-generic-title',
-	'fre.do-not-sell-link',
-	'fre.enable-my-stuff',
-	'enable-sso',
-	'enable-avatar-menu',
-	'fre.enable-jam-journey',
-	'fre.jam-journey.enable-top-slim-banner',
-	'fre.seogra.breadcrumbs',
-	'seo.display-publish-date-timezone',
-	'fre.seogra.breadcrumbs-with-collections',
-	'fre.enable-author-flyout',
-	'fre.enable-my-stuff-tooltip',
-	'fre.enable-first-article-tooltip',
-	'paywall.schema',
-	'video.enable-glimmer',
-	'content-editor.gallery.multi-retailer.enabled',
-	'video.sticky-player-lead',
-	'fre.jam-journey.enable-email-captures',
-	'video.watch-next-in-body',
-	'new-nav',
-	'fre.cds.enable-paywall',
-	'fre.jam-journey.enable-modals',
-	'fre.jam-journey.enable-meters',
-	'mobile-adhesion-unit',
-	'enable-google-one-tap',
-	'enable-microsoft-quick-auth',
-];
-function getFlagCount(flagsA, flagsB) {
-	const flags = flagsA.filter((flag) => !flagsB.includes(flag));
-	console.log(flags);
-	return flags.length;
+  return lastDayData;
 }
-
-// console.log('coe');
-// console.log(getFlagCount(flagsCAD, flagsSeventeen));
-// console.log(getFlagCount(flagsSeventeen, flagsCAD));
-
-console.log(getFlagCount(flagsGhk, elleFlags));
-
-// console.log(getFlagCount(flagsGhk, elleFlags));
-console.log(getFlagCount(elleFlags, flagsGhk));

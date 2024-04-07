@@ -27,7 +27,7 @@ function DatesSelection({ state, dispatch }) {
             name="datesOptions"
             value={option.value}
             checked={state.dateType === option.value}
-            onClick={() => onDateTypeSelect(option.value)}
+            onChange={() => onDateTypeSelect(option.value)}
             className="form-radio text-indigo-600"
           />
           <span className="ml-2">{option.label}</span>
@@ -62,7 +62,7 @@ function UrlsSelection({ state, dispatch }) {
                 name="urlQuality"
                 value={option.value}
                 checked={state.urlType === option.value}
-                onClick={() => onUrlTypeSelect(option.value)}
+                onChange={() => onUrlTypeSelect(option.value)}
                 className="form-radio text-indigo-600"
               />
               <span className="ml-2">{option.label}</span>

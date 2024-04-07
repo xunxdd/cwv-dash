@@ -39,7 +39,7 @@ function reducer(state, action) {
   }
 }
 
-function getOptions(title: string) {
+function getOptions(title: string): any {
   return {
     responsive: false,
     plugins: {
@@ -85,27 +85,35 @@ export const CwvLine = ({ data }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   console.log(state.dateType, state.urlType, state.urls);
-  // const selectedDates = listDates({ startDate: "02/07", jsonData: data });
-  // const cwvData = getDataCollectionByUrls({
-  //   dates: selectedDates,
-  //   pageUrls: allUrls.slice(0, 10),
-  //   allData: data,
-  // });
+  let selectedDates = listDates({ startDate: "02/07", jsonData: data });
+  const pageUrls = allUrls.slice(0, 10);
+  if (state.dateType) {
+    selectedDates = listDates({
+      startDate: state.dateType,
+      jsonData: data,
+      dateType: state.dateType,
+    });
+  }
+  const cwvData = getDataCollectionByUrls({
+    dates: selectedDates,
+    pageUrls: allUrls.slice(0, 10),
+    allData: data,
+  });
 
-  // useEffect(() => {
-  //   ChartJS.register(
-  //     LineElement,
-  //     PointElement,
-  //     LinearScale,
-  //     Title,
-  //     CategoryScale,
-  //     Tooltip,
-  //     Legend
-  //   );
-  //   setIsRegistered(true);
-  // }, []);
+  useEffect(() => {
+    ChartJS.register(
+      LineElement,
+      PointElement,
+      LinearScale,
+      Title,
+      CategoryScale,
+      Tooltip,
+      Legend
+    );
+    setIsRegistered(true);
+  }, []);
 
-  // if (!isRegistered) return <></>;
+  if (!isRegistered) return <></>;
 
   return (
     <>
