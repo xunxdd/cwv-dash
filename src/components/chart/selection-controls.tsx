@@ -1,5 +1,8 @@
 import { urls as allUrls } from "./chart-utils/urls.js";
-import { urlQualityOptions, datesOptions } from "./chart-utils/constants.js";
+import {
+  urlQualityOptions,
+  datesOptions,
+} from "../cwv-data-utils/constants.js";
 
 function Error({ text, show }) {
   return (

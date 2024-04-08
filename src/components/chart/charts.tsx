@@ -11,7 +11,7 @@ import {
 } from "chart.js";
 import { chartData } from "./chart-utils/chart-data.js";
 import { useEffect, useState } from "react";
-import { metrics } from "./chart-utils/constants.js";
+import { metrics } from "../cwv-data-utils/constants.js";
 
 function getOptions(title: string): any {
   return {
