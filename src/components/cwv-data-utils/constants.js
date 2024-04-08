@@ -44,4 +44,10 @@ export const cruxMetricNames = [
   "largest_contentful_paint",
 ];
 
+export const cruxTabOptions = [
+  { key: "url", label: "Page Urls" },
+  { key: "origin", label: "Origin Data" },
+  { key: "sample-origins", label: "Sample Site Data" },
+];
+
 export { urlQualityOptions, datesOptions, metrics, cwvDatesOptions };

@@ -54,16 +54,8 @@ export default function Charts({ cwvData }) {
   return (
     <>
       <CwvTrendLineChart metric={metrics.INP} cwvData={cwvData} />
-      {/* <CwvTrendLineChart
-        dates={selectedDates}
-        metric={metrics.CLS}
-        cwvData={cwvData}
-      />
-      <CwvTrendLineChart
-        dates={selectedDates}
-        metric={metrics.LCP}
-        cwvData={cwvData}
-      /> */}
+      <CwvTrendLineChart metric={metrics.CLS} cwvData={cwvData} />
+      <CwvTrendLineChart metric={metrics.LCP} cwvData={cwvData} />
     </>
   );
 }

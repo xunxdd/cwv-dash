@@ -1,41 +1,24 @@
-///import { selectedTab, setSelectedTab } from "./store";
-import CruxHistory from "@components/summary-data/crux-history";
+import CruxHistory from "@components/summary-data/crux/crux-history";
 import { useState } from "react";
+import { Tabs } from "@components/tabs/index";
+import { cruxTabOptions } from "@components/cwv-data-utils/constants";
 
-export default function Summary({ pageData, siteData }) {
+export default function Summary({ pageData, siteData, otherSiteData }) {
   const [selectedTab, setSelectedTab] = useState("page");
 
   return (
     <>
-      <div>
-        <button
-          className={
-            selectedTab == "page"
-              ? "px-4 py-2 bg-blue-500 text-white"
-              : "px-4 py-2 bg-gray-100 text-black"
-          }
-          onClick={() => {
-            setSelectedTab("page");
-          }}>
-          View Page Data
-        </button>
-        <button
-          className={
-            selectedTab == "site"
-              ? "px-4 py-2 bg-blue-500 text-white"
-              : "px-4 py-2 bg-gray-100 text-black"
-          }
-          onClick={() => {
-            setSelectedTab("site");
-          }}>
-          View Site Data
-        </button>
-      </div>
+      <Tabs
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+        tabs={cruxTabOptions}
+      />
       <div>
         {selectedTab == "page" && (
           <CruxHistory data={pageData} cruxType="url" />
         )}
         {selectedTab === "site" && <CruxHistory data={siteData} />}
+        {selectedTab === "sample-sites" && <CruxHistory data={otherSiteData} />}
       </div>
     </>
   );
