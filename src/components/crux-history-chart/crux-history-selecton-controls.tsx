@@ -1,4 +1,3 @@
-import { urls as allUrls } from "../cwv-data-utils/chart-utils/urls.js";
 import {
   urlQualityOptions,
   cwvDatesOptions,
@@ -38,7 +37,7 @@ function DatesSelection({ state, dispatch }) {
   );
 }
 
-function UrlsSelection({ state, dispatch }) {
+function UrlsSelection({ urls, state, dispatch }) {
   const onUrlTypeSelect = (value: string) => {
     dispatch({ type: "setUrlType", payload: value });
   };
@@ -81,7 +80,7 @@ function UrlsSelection({ state, dispatch }) {
             disabled={state.urlType !== "select-url"}
             className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => onUrlSelectionChange(e)}>
-            {allUrls.map((url) => (
+            {urls.map((url) => (
               <option key={url}>{url}</option>
             ))}
           </select>
@@ -91,10 +90,10 @@ function UrlsSelection({ state, dispatch }) {
   );
 }
 
-export function ChartControls({ state, dispatch }) {
+export function ChartControls({ urls, state, dispatch }) {
   return (
     <>
-      <UrlsSelection state={state} dispatch={dispatch} />{" "}
+      <UrlsSelection urls={urls} state={state} dispatch={dispatch} />{" "}
       <DatesSelection state={state} dispatch={dispatch} />{" "}
     </>
   );

@@ -1,5 +1,3 @@
-import { isNumber } from "chart.js/helpers";
-
 const metricNames = [
   "cumulative_layout_shift",
   "interaction_to_next_paint",
@@ -77,4 +75,17 @@ export function sortCWVHistoryData({
     ); // Append items where the metric is 'na' to the end
 
   return sortedData;
+}
+
+export function getAvailableUrls({ data, cruxType }) {
+  return data.map((item) => {
+    const { key } = item.record;
+
+    return key[cruxType];
+  });
+}
+
+export function getDateString(date) {
+  const { year, month, day } = date;
+  return `${month}/${day}/${year}`;
 }

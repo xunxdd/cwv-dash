@@ -1,5 +1,8 @@
 import { metrics } from "@components/cwv-data-utils/constants";
-import { sortCWVHistoryData } from "@components/cwv-data-utils/stats";
+import {
+  sortCWVHistoryData,
+  getDateString,
+} from "@components/cwv-data-utils/stats";
 import { useState } from "react";
 
 const columns = [
@@ -59,10 +62,6 @@ function Body({ dataSorted }) {
       })}
     </tbody>
   );
-}
-function getDateString(date) {
-  const { year, month, day } = date;
-  return `${month}/${day}/${year}`;
 }
 
 export default function AllDataTable({ data, cruxType = "origin" }) {

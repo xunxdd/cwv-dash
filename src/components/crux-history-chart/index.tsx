@@ -1,10 +1,9 @@
 import { ChartControls } from "./crux-history-selecton-controls";
-// import { getDataCollectionByUrls } from "./chart-utils/chart-data.js";
-import { listDates } from "@components/cwv-data-utils/chart-utils/dates-selection";
-import { urls as allUrls } from "@components/cwv-data-utils/chart-utils/urls.js";
-import { sortCWVData } from "../cwv-data-utils/stats.js";
-
+import { sortCWVHistoryData } from "../cwv-data-utils/stats.js";
+import { cruxMetricNames } from "@components/cwv-data-utils/constants.js";
 import { useReducer } from "react";
+import { getAvailableUrls } from "../cwv-data-utils/stats.js";
+import HistoryCharts from "./crux-history-chart";
 
 const initialState = {
   dateType: "",
@@ -25,14 +24,14 @@ function reducer(state, action) {
   }
 }
 
-function getPageUrls(data, urlType, selectedUrls = []) {
+function getPageUrls({ data, urlType, selectedUrls = [], allUrls }) {
   if (!urlType) return allUrls.slice(0, 10);
 
   if (urlType === "select-url") {
     return selectedUrls.length ? selectedUrls : allUrls.slice(0, 10);
   }
+  const sortedData = sortCWVHistoryData(data);
 
-  const sortedData = sortCWVData(data);
   if (urlType === "best-url")
     return sortedData.slice(0, 5).map((d: any) => d.URL);
 
@@ -41,24 +40,55 @@ function getPageUrls(data, urlType, selectedUrls = []) {
   }
 }
 
-export const ChartContainer = ({ data }) => {
+function getCruxData({ pageUrls, data, dateType }) {
+  const cruxData: any = [];
+  console.log(pageUrls);
+  for (let i = 0; i < data.length; i++) {
+    const { key, collectionPeriods, metrics } = data[i].record;
+
+    const { url } = key;
+
+    if (pageUrls.includes(url)) {
+      const result = {};
+      for (const name of cruxMetricNames) {
+        const values = metrics[name].percentilesTimeseries.p75s;
+        result[name] = dateType ? values.slice(-dateType) : values;
+      }
+      cruxData.push({
+        URL: url,
+        collectionPeriods: dateType
+          ? collectionPeriods.slice(-dateType)
+          : collectionPeriods,
+        ...result,
+      });
+    }
+  }
+  return cruxData;
+}
+
+export const ChartContainer = ({ data, cruxType = "url" }) => {
+  const allUrls = getAvailableUrls({ data, cruxType });
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  let selectedDates = listDates({ jsonData: data, dateType: state.dateType });
+  const pageUrls = getPageUrls({
+    data,
+    urlType: state.urlType,
+    selectedUrls: state.urls,
+    allUrls,
+  });
 
-  const pageUrls = getPageUrls(data, state.urlType, state.urls);
-  console.log("pageUrls", pageUrls);
-  // if (state.dateType) {
-  //   selectedDates = listDates({
-  //     startDate: state.dateType,
-  //     jsonData: data,
-  //     dateType: state.dateType,
-  //   });
-  // }
+  const cwvData = getCruxData({
+    pageUrls,
+    data,
+    dateType: state.dateType,
+  });
+
+  console.log("cwvData", cwvData);
 
   return (
     <>
-      <ChartControls state={state} dispatch={dispatch} />
+      <ChartControls state={state} dispatch={dispatch} urls={allUrls} />
+      <HistoryCharts cwvData={cwvData} />
     </>
   );
 };
