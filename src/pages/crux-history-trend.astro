@@ -1,6 +1,6 @@
 ---
 import Sectionhead from "@components/sectionhead.astro";
-import HistoryChart from "@components/crux-history-chart/index";
+import HistoryChart from "@components/crux/crux-history-chart/index";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
 import pageData from '@assets/data/crux-history-urls.json';
@@ -24,4 +24,4 @@ const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
     </div>
   </Container>  
 </Layout>
-@components/crux-history-chart/chart
+@components/crux-history-chart/chart@components/crux/crux-history-chart/index

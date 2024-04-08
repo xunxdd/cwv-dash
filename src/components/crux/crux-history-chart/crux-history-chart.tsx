@@ -14,7 +14,7 @@ import {
   getOptions,
 } from "@components/cwv-data-utils/chart-utils/crux-chart-data.ts";
 import { useEffect, useState } from "react";
-import { metrics } from "../cwv-data-utils/constants.js";
+import { metrics } from "../../cwv-data-utils/constants.js";
 
 function CwvTrendLineChart({ metric, cwvData }) {
   const { label, cruxKey } = metric;

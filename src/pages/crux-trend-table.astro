@@ -5,7 +5,7 @@ import Layout from "@layouts/Layout.astro";
 import pageData from '@assets/data/crux-history-urls.json';
 import cruxHistorySitesData from '@assets/data/crux-history-sites.json';
 import cruxHistoryOtherSitesData from "@assets/sample-data/crux-history-othersites.json";
-import CruxSummaryData from "@components/summary-data/crux/index";
+import CruxSummaryData from "@components/crux/data-table/index";
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
 
 
@@ -26,4 +26,4 @@ const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
   </Container>  
 </Layout>
 
-../components/store
+../components/store@components/crux/data-table/index

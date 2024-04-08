@@ -1,4 +1,4 @@
-import CruxHistory from "@components/summary-data/crux/crux-history";
+import CruxHistory from "@components/crux/data-table/crux-history";
 import { useState } from "react";
 import { Tabs } from "@components/tabs/index";
 import { cruxTabOptions } from "@components/cwv-data-utils/constants";

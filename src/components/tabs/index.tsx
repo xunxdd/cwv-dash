@@ -1,16 +1,21 @@
-export function Tabs({ selectedTab, setSelectedTab, options }) {
-  const env = window.environment;
+import { useEffect, useState } from "react";
 
-  if (env === "production") {
-    setSelectedTab("sample-origins");
-    return null;
-    //options = options.filter((option) => option.key === "sample-origins");
-  }
+export function Tabs({ selectedTab, setSelectedTab, options }) {
+  const [tabOptions, setTabOptions] = useState(options);
+
+  useEffect(() => {
+    const env = window?.environment;
+
+    if (env === "production") {
+      setSelectedTab("sample-origins");
+      setTabOptions([]);
+    }
+  }, []);
 
   return (
     <>
       <div>
-        {options.map(({ label, key }) => {
+        {tabOptions.map(({ label, key }) => {
           return (
             <button
               key={key}

@@ -1,8 +1,8 @@
 import { ChartControls } from "./crux-history-selecton-controls.js";
-import { sortCWVHistoryData } from "../cwv-data-utils/stats.js";
+import { sortCWVHistoryData } from "../../cwv-data-utils/stats.js";
 import { cruxMetricNames } from "@components/cwv-data-utils/constants.js";
 import { useReducer } from "react";
-import { getAvailableUrls } from "../cwv-data-utils/stats.js";
+import { getAvailableUrls } from "../../cwv-data-utils/stats.js";
 import HistoryCharts from "./crux-history-chart.js";
 
 const initialState = {

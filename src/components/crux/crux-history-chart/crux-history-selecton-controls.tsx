@@ -1,7 +1,7 @@
 import {
   urlQualityOptions,
   cwvDatesOptions,
-} from "../cwv-data-utils/constants.js";
+} from "../../cwv-data-utils/constants.js";
 
 function Error({ text, show }) {
   return (

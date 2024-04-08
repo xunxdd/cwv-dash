@@ -1,0 +1,10 @@
+---
+// EnvProvider.astro
+---
+<script>
+  window.environment = document.getElementById('env-context').dataset.environment;
+ // console.log(window.environment);
+</script>
+<div id="env-context" data-environment={Astro.props.environment}>
+  <slot />
+</div>
