@@ -24,13 +24,19 @@ function reducer(state, action) {
   }
 }
 
-function getPageUrls({ data, urlType, selectedUrls = [], allUrls }) {
+function getPageUrls({
+  data,
+  urlType,
+  selectedUrls = [],
+  allUrls,
+  cruxType = "url",
+}) {
   if (!urlType) return allUrls.slice(0, 10);
 
   if (urlType === "select-url") {
     return selectedUrls.length ? selectedUrls : allUrls.slice(0, 10);
   }
-  const sortedData = sortCWVHistoryData(data);
+  const sortedData = sortCWVHistoryData({ data, cruxType, excludeNA: true });
 
   if (urlType === "best-url")
     return sortedData.slice(0, 5).map((d: any) => d.URL);
@@ -42,7 +48,7 @@ function getPageUrls({ data, urlType, selectedUrls = [], allUrls }) {
 
 function getCruxData({ pageUrls, data, dateType }) {
   const cruxData: any = [];
-  console.log(pageUrls);
+
   for (let i = 0; i < data.length; i++) {
     const { key, collectionPeriods, metrics } = data[i].record;
 
@@ -75,6 +81,7 @@ export const ChartContainer = ({ data, cruxType = "url" }) => {
     urlType: state.urlType,
     selectedUrls: state.urls,
     allUrls,
+    cruxType,
   });
 
   const cwvData = getCruxData({
@@ -82,8 +89,6 @@ export const ChartContainer = ({ data, cruxType = "url" }) => {
     data,
     dateType: state.dateType,
   });
-
-  console.log("cwvData", cwvData);
 
   return (
     <>

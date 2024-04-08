@@ -1,8 +1,8 @@
 const urlQualityOptions = [
   { value: "", label: "First 10 urls" },
   { value: "select-url", label: "Used Selected URLs" },
-  { value: "best-url", label: "Best 5 URLs" },
-  { value: "worst-url", label: "Worst 5 URLs" },
+  { value: "best-url", label: "Best 5 URLs (By INP)" },
+  { value: "worst-url", label: "Worst 5 URLs (By INP)" },
 ];
 
 const datesOptions = [

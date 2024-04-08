@@ -79,7 +79,6 @@ export default function AllDataTable({ data, cruxType = "origin" }) {
   const firstDateString = getDateString(firstDate);
   const lastDateString = getDateString(lastDate);
 
-  //  console.log(dataSorted);
   const handleSort = (column) => {
     if (sortColumn === column) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");

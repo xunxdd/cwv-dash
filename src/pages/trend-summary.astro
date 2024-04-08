@@ -6,10 +6,11 @@ import pageData from 'assets/crux-history-urls.json';
 import cruxHistorySitesData from 'assets/crux-history-sites.json';
 import CruxHistoryOtherSitesData from "assets/crux-history-othersites.json";
 import History from "@components/summary-data/history";
+import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
 
 const siteData =cruxHistorySitesData.concat(CruxHistoryOtherSitesData).filter((site)=>!site.error && site?.record?.metrics);
-const pageHistoryData = pageData.filter((page)=>page?.record?.metrics);
-// console.log(siteData[0])
+const pageHistoryData = getValidCruxData(pageData);
+
 ---
 
 <Layout title="Dashboard">

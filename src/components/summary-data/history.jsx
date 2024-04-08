@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function Summary({ pageData, siteData }) {
   const [selectedTab, setSelectedTab] = useState("page");
-  console.log({ pageData });
+
   return (
     <>
       <div>

@@ -17,12 +17,10 @@ import { useEffect, useState } from "react";
 import { metrics } from "../cwv-data-utils/constants.js";
 
 function CwvTrendLineChart({ metric, cwvData }) {
-  console.log(metric);
   const { label, cruxKey } = metric;
-  //  const dataSet = chartData({ dates, metricName: key, cwvData });
   const title = label;
   const dataSet = getChartDataSet({ metricName: cruxKey, cwvData });
-  console.log(dataSet);
+
   return (
     <div className="m-5">
       <Line

@@ -28,9 +28,10 @@ export function sortCWVData(data, metricName = "INP", sortDirection = "asc") {
 
 export function sortCWVHistoryData({
   data,
-  metricName = "INP",
+  metricName = "interaction_to_next_paint",
   sortDirection = "asc",
   cruxType = "origin",
+  excludeNA = false,
 }) {
   const lastCollectionPeriodData = data.map((item) => {
     const { metrics, collectionPeriods, key } = item.record;
@@ -58,22 +59,20 @@ export function sortCWVHistoryData({
         : b[metricName].localeCompare(a[metricName])
     );
   }
+
   const sortedData = lastCollectionPeriodData
     .filter((item) => item[metricName] !== "na") // Exclude items where the metric is 'na'
     .sort((a, b) => {
-      if (metricName === "URL")
-        return sortDirection === "asc"
-          ? a[metricName].localeCompare(b[metricName])
-          : b[metricName].localeCompare(a[metricName]);
-
       return sortDirection === "asc"
         ? a[metricName] - b[metricName]
         : b[metricName] - a[metricName];
-    })
-    .concat(
-      lastCollectionPeriodData.filter((item) => item[metricName] === "na")
-    ); // Append items where the metric is 'na' to the end
+    });
 
+  if (!excludeNA) {
+    return sortedData.concat(
+      lastCollectionPeriodData.filter((item) => item[metricName] === "na")
+    );
+  }
   return sortedData;
 }
 
