@@ -14,8 +14,28 @@ const datesOptions = [
 ];
 
 const metrics = {
-  INP: { label: "INP - Interaction To Next Paint", unit: "ms", key: "INP" },
-  LCP: { label: "LCP - Largest Content Paint", unit: "s", key: "LCP" },
-  CLS: { label: "CLS - Cumulative Layout Shift", key: "CLS" },
+  INP: {
+    label: "INP - Interaction To Next Paint",
+    unit: "ms",
+    key: "INP",
+    cruxKey: "interaction_to_next_paint",
+  },
+  LCP: {
+    label: "LCP - Largest Content Paint",
+    unit: "s",
+    key: "LCP",
+    cruxKey: "largest_contentful_paint",
+  },
+  CLS: {
+    label: "CLS - Cumulative Layout Shift",
+    key: "CLS",
+    cruxKey: "cumulative_layout_shift",
+  },
 };
+export const cruxMetricNames = [
+  "cumulative_layout_shift",
+  "interaction_to_next_paint",
+  "largest_contentful_paint",
+];
+
 export { urlQualityOptions, datesOptions, metrics };

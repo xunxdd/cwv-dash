@@ -1,4 +1,4 @@
-import { sortCWVData } from "./stats"; // adjust the path to your stats.js file
+import { sortCWVData } from "../../cwv-data-utils/stats"; // adjust the path to your stats.js file
 import testData from "./test-data.json";
 
 describe("sortCWVData", () => {

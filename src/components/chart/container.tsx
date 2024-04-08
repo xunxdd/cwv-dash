@@ -2,7 +2,7 @@ import { getDataCollectionByUrls } from "./chart-utils/chart-data.js";
 import { listDates } from "./chart-utils/dates-selection";
 import { urls as allUrls } from "./chart-utils/urls.js";
 import { ChartControls } from "./selection-controls";
-import { sortCWVData } from "./chart-utils/stats.js";
+import { sortCWVData } from "../cwv-data-utils/stats.js";
 import Charts from "./charts";
 import { useReducer } from "react";
 

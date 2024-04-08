@@ -2,10 +2,14 @@
 import Sectionhead from "@components/sectionhead.astro";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
-import pageData from 'assets/pagespeed-results-mobile.json';
-import siteData from 'assets/pagespeed-results-sites-mobile.json';
-import Summary from "@components/summary-data/index";
+import pageData from 'assets/crux-history-urls.json';
+import cruxHistorySitesData from 'assets/crux-history-sites.json';
+import CruxHistoryOtherSitesData from "assets/crux-history-othersites.json";
+import History from "@components/summary-data/history";
 
+const siteData =cruxHistorySitesData.concat(CruxHistoryOtherSitesData).filter((site)=>!site.error && site?.record?.metrics);
+const pageHistoryData = pageData.filter((page)=>page?.record?.metrics);
+// console.log(siteData[0])
 ---
 
 <Layout title="Dashboard">
@@ -15,8 +19,8 @@ import Summary from "@components/summary-data/index";
       <Fragment slot="desc">Some stats in tables</Fragment>
     </Sectionhead>
     <div class="flex flex-col p-4">
-      <Summary pageData={pageData} siteData={siteData} client:load />
-    </div>
+       <History pageData={pageHistoryData} siteData={cruxHistorySitesData} client:load /> 
+    </div>  
   </Container>  
 </Layout>
 
