@@ -1,4 +1,12 @@
 export function Tabs({ selectedTab, setSelectedTab, options }) {
+  const env = window.environment;
+
+  if (env === "production") {
+    setSelectedTab("sample-origins");
+    return null;
+    //options = options.filter((option) => option.key === "sample-origins");
+  }
+
   return (
     <>
       <div>
