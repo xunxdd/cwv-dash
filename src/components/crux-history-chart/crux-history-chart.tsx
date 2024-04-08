@@ -1,9 +1,9 @@
-import { getDataCollectionByUrls } from "@components/cwv-data-utils/chart-utils/chart-data.js";
-import { listDates } from "@components/cwv-data-utils/chart-utils/dates-selection";
-import { urls as allUrls } from "@components/cwv-data-utils/chart-utils/urls.js";
-import { ChartControls } from "./selection-controls";
-import { sortCWVData } from "@components/cwv-data-utils/stats.js";
-import Charts from "./charts";
+import { getDataCollectionByUrls } from "../cwv-data-utils/chart-utils/chart-data.js";
+import { listDates } from "../cwv-data-utils/chart-utils/dates-selection.js";
+import { urls as allUrls } from "../cwv-data-utils/chart-utils/urls.js";
+import { ChartControls } from "../chart/selection-controls.js";
+import { sortCWVHistoryData } from "../cwv-data-utils/stats.js";
+import Charts from "../chart/charts.js";
 import { useReducer } from "react";
 
 const initialState = {
@@ -32,7 +32,7 @@ function getPageUrls(data, urlType, selectedUrls = []) {
     return selectedUrls.length ? selectedUrls : allUrls.slice(0, 10);
   }
 
-  const sortedData = sortCWVData(data);
+  const sortedData = sortCWVHistoryData(data);
   if (urlType === "best-url")
     return sortedData.slice(0, 5).map((d: any) => d.URL);
 

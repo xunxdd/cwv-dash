@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { chartData } from "./chart-utils/chart-data.js";
+import { chartData } from "@components/cwv-data-utils/chart-utils/chart-data.js";
 import { useEffect, useState } from "react";
 import { metrics } from "../cwv-data-utils/constants.js";
 

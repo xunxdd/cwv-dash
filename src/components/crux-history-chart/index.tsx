@@ -1,9 +1,9 @@
-import { getDataCollectionByUrls } from "@components/cwv-data-utils/chart-utils/chart-data.js";
+import { ChartControls } from "./crux-history-selecton-controls";
+// import { getDataCollectionByUrls } from "./chart-utils/chart-data.js";
 import { listDates } from "@components/cwv-data-utils/chart-utils/dates-selection";
 import { urls as allUrls } from "@components/cwv-data-utils/chart-utils/urls.js";
-import { ChartControls } from "./selection-controls";
-import { sortCWVData } from "@components/cwv-data-utils/stats.js";
-import Charts from "./charts";
+import { sortCWVData } from "../cwv-data-utils/stats.js";
+
 import { useReducer } from "react";
 
 const initialState = {
@@ -47,22 +47,18 @@ export const ChartContainer = ({ data }) => {
   let selectedDates = listDates({ jsonData: data, dateType: state.dateType });
 
   const pageUrls = getPageUrls(data, state.urlType, state.urls);
-  if (state.dateType) {
-    selectedDates = listDates({
-      startDate: state.dateType,
-      jsonData: data,
-      dateType: state.dateType,
-    });
-  }
-  const cwvData = getDataCollectionByUrls({
-    dates: selectedDates,
-    pageUrls,
-    allData: data,
-  });
+  console.log("pageUrls", pageUrls);
+  // if (state.dateType) {
+  //   selectedDates = listDates({
+  //     startDate: state.dateType,
+  //     jsonData: data,
+  //     dateType: state.dateType,
+  //   });
+  // }
+
   return (
     <>
       <ChartControls state={state} dispatch={dispatch} />
-      <Charts cwvData={cwvData} selectedDates={selectedDates} />
     </>
   );
 };

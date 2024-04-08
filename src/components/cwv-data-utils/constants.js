@@ -13,6 +13,12 @@ const datesOptions = [
   { value: "last-3-month", label: "Last 3 Months" },
 ];
 
+const cwvDatesOptions = [
+  { value: "", label: "Last 6 months" },
+  { value: "8", label: "Last 8 collection periods" },
+  { value: "16", label: "Last 16 collection periods" },
+];
+
 const metrics = {
   INP: {
     label: "INP - Interaction To Next Paint",
@@ -38,4 +44,4 @@ export const cruxMetricNames = [
   "largest_contentful_paint",
 ];
 
-export { urlQualityOptions, datesOptions, metrics };
+export { urlQualityOptions, datesOptions, metrics, cwvDatesOptions };

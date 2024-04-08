@@ -1,7 +1,7 @@
 import { urls as allUrls } from "../cwv-data-utils/chart-utils/urls.js";
 import {
   urlQualityOptions,
-  datesOptions,
+  cwvDatesOptions,
 } from "../cwv-data-utils/constants.js";
 
 function Error({ text, show }) {
@@ -21,7 +21,7 @@ function DatesSelection({ state, dispatch }) {
 
   return (
     <div className="flex flex-row space-x-2">
-      {datesOptions.map((option) => (
+      {cwvDatesOptions.map((option) => (
         <label key={option.value} className="inline-flex items-center">
           <input
             type="radio"
