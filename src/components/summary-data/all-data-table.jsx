@@ -8,6 +8,12 @@ function Header({ onSort, currentSortColumn, currentSortDirection }) {
   return (
     <thead className="bg-gray-50">
       <tr>
+        <th
+          scope="col"
+          className="px-6 py-3 text-left text-xs font-medium
+          text-gray-500 uppercase tracking-wider cursor-pointer">
+          {" "}
+        </th>
         {columns.map((column) => (
           <th
             key={column}
@@ -30,6 +36,9 @@ function Body({ dataSorted }) {
       {dataSorted.map((item, index) => {
         return (
           <tr key={item.URL} className={index % 2 === 0 ? "bg-gray-100" : ""}>
+            <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-500">
+              {index + 1}
+            </td>
             {columns.map((column) => (
               <td
                 className="px-2 py-2 whitespace-nowrap text-sm text-gray-500"
@@ -46,6 +55,7 @@ function Body({ dataSorted }) {
 export default function AllDataTable({ data }) {
   const [sortColumn, setSortColumn] = useState("INP");
   const [sortDirection, setSortDirection] = useState("asc");
+
   const dataSorted = sortCWVData(
     data,
     sortColumn || metrics.INP.key,

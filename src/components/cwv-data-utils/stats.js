@@ -8,6 +8,10 @@ export function sortCWVData(data, metricName = "INP", sortDirection = "asc") {
   );
   // Sort the data by the INP value
   lastDayData.sort((a, b) => {
+    if (metricName === "URL")
+      return sortDirection === "asc"
+        ? a[metricName].localeCompare(b[metricName])
+        : b[metricName].localeCompare(a[metricName]);
     const aINP = Number(a[metricName].replace(" ms", "").replace(" s", ""));
     const bINP = Number(b[metricName].replace(" ms", "").replace(" s", ""));
     return sortDirection === "asc" ? aINP - bINP : bINP - aINP;
