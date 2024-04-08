@@ -1,6 +1,6 @@
 ---
 import Sectionhead from "@components/sectionhead.astro";
-import { ChartContainer } from "@components/crux-history-chart/index";
+import HistoryChart from "@components/crux-history-chart/index";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
 import pageData from 'assets/crux-history-urls.json';
@@ -8,10 +8,9 @@ import cruxHistorySitesData from 'assets/crux-history-sites.json';
 import cruxHistoryOtherSitesData from 'assets/crux-history-othersites.json';
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
 
-// const siteData =cruxHistorySitesData.concat(CruxHistoryOtherSitesData).filter((site)=>!site.error && site?.record?.metrics);
 const pageHistoryData = getValidCruxData(pageData);
-// const siteData=getValidCruxData(cruxHistorySitesData);
-// const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
+const siteData=getValidCruxData(cruxHistorySitesData);
+const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
 ---
 
 <Layout title="Crux History Trend">
@@ -21,7 +20,8 @@ const pageHistoryData = getValidCruxData(pageData);
       <Fragment slot="desc">Trend chart for selected urls</Fragment>
     </Sectionhead>
     <div class="flex flex-col max-w-4xl mt-8">
-      <ChartContainer client:only data={pageHistoryData}  />
+      <HistoryChart client:only data={pageHistoryData} siteData={siteData} otherSiteData={otherSiteData} />
     </div>
   </Container>  
 </Layout>
+@components/crux-history-chart/chart

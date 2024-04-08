@@ -17,8 +17,8 @@ const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
 <Layout title="Dashboard">
   <Container>
     <Sectionhead>
-      <Fragment slot="title">Summary</Fragment>
-      <Fragment slot="desc">Some stats in tables</Fragment>
+      <Fragment slot="title">Crux Data</Fragment>
+      <Fragment slot="desc">Core Web Vitasl as in <a class='text-blue-600' href="https://developer.chrome.com/docs/crux/history-api/">Crux History Api</a></Fragment>
     </Sectionhead>
     <div class="flex flex-col p-4">
        <CruxSummaryData pageData={pageHistoryData} siteData={siteData} otherSiteData={otherSiteData} client:load /> 
