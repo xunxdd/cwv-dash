@@ -4,7 +4,7 @@ import { urls as allUrls } from "@components/cwv-data-utils/chart-utils/urls.js"
 import { ChartControls } from "./selection-controls";
 import { sortCWVData } from "@components/cwv-data-utils/stats.js";
 import Charts from "./charts";
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 const initialState = {
   dateType: "",
@@ -43,6 +43,12 @@ function getPageUrls(data, urlType, selectedUrls = []) {
 
 export const ChartContainer = ({ data }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [showChart, setShowChart] = useState(true);
+
+  useEffect(() => {
+    const env = window?.environment;
+    setShowChart(env !== "production");
+  }, []);
 
   let selectedDates = listDates({ jsonData: data, dateType: state.dateType });
 
@@ -59,10 +65,12 @@ export const ChartContainer = ({ data }) => {
     pageUrls,
     allData: data,
   });
-  return (
+  return showChart ? (
     <>
       <ChartControls state={state} dispatch={dispatch} />
       <Charts cwvData={cwvData} selectedDates={selectedDates} />
     </>
+  ) : (
+    <div>Sorry, PSI Daily Trend Chart is for logged in users only</div>
   );
 };

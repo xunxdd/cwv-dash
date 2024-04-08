@@ -28,6 +28,32 @@ function getOptions(title: string): any {
   };
 }
 
+export function getMetricDistriutionData({ metricName, cwvData }) {
+  const data = cwvData.record.metrics[metricName].histogramTimeseries;
+  const labels = ["Good", "Needs Improvement", "Poor"];
+  const colors = ["#28a745", "#ffc107", "#e60049"];
+  const dates = cwvData.record.collectionPeriods.map(({ lastDate }) =>
+    getDateString(lastDate)
+  );
+
+  const datasets = data.map(({ densities }, i) => {
+    const color = colors[i];
+
+    return {
+      label: labels[i],
+      data: densities.map((x) => x * 100),
+      backgroundColor: colorLib(color).rgbString(),
+      borderColor: "black",
+      borderWidth: 2,
+    };
+  });
+
+  return {
+    labels: dates,
+    datasets,
+  };
+}
+
 function getChartDataSet({ metricName, cwvData }) {
   const datasets: any = [];
   const dates = cwvData[0].collectionPeriods.map(({ lastDate }) =>

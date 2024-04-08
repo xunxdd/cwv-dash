@@ -5,13 +5,13 @@ import Layout from "@layouts/Layout.astro";
 import pageData from '@assets/data/crux-history-urls.json';
 import cruxHistorySitesData from '@assets/data/crux-history-sites.json';
 import cruxHistoryOtherSitesData from "@assets/sample-data/crux-history-othersites.json";
-import CruxSummaryData from "@components/crux/data-table/index";
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
-
+import DrillDown from "@components/crux/drilldown/index";
 
 const pageHistoryData = getValidCruxData(pageData);
 const siteData=getValidCruxData(cruxHistorySitesData);
 const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
+
 ---
 
 <Layout title="Dashboard">
@@ -21,7 +21,7 @@ const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
       <Fragment slot="desc">Core Web Vitasl as in <a class='text-blue-600' href="https://developer.chrome.com/docs/crux/history-api/">Crux History Api</a></Fragment>
     </Sectionhead>
     <div class="flex flex-col p-4">
-       <CruxSummaryData pageData={pageHistoryData} siteData={siteData} otherSiteData={otherSiteData} client:load /> 
+       <DrillDown client:only siteData={siteData} pageHistoryData={pageHistoryData} otherSiteData={otherSiteData} /> 
     </div>  
   </Container>  
 </Layout>
