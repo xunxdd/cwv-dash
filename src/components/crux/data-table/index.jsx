@@ -4,7 +4,11 @@ import { cruxTabOptions } from "@components/cwv-data-utils/constants";
 import { Tabs } from "@components/tabs/index";
 
 export default function Summary({ pageData, siteData, otherSiteData }) {
-  const [selectedTab, setSelectedTab] = useState("url");
+  const [selectedTab, setSelectedTab] = useState(
+    typeof window === "undefined" || window.envs?.environment === "production"
+      ? "sample-origins"
+      : "url"
+  );
   return (
     <>
       <Tabs

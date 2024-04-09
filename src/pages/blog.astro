@@ -19,14 +19,15 @@ publishedBlogEntries.sort(function (a, b) {
 <Layout title="Blog">
   <Container>
     <Sectionhead>
-      <Fragment slot="title">Our Blog</Fragment>
+      <Fragment slot="title">Blog </Fragment>
       <Fragment slot="desc">
-        We write about building startups and thoughts going on our mind.
+        Yes. Yet another blog no one cares.
+        Still, there is so much about CWVs
       </Fragment>
     </Sectionhead>
     <main class="mt-16">
       <ul class="grid gap-16 max-w-4xl mx-auto">
-        {
+        <!-- {
           publishedBlogEntries.map((blogPostEntry, index) => (
             <li>
               <a href={`/blog/${blogPostEntry.slug}`}>
@@ -60,13 +61,13 @@ publishedBlogEntries.sort(function (a, b) {
                         datetime={blogPostEntry.data.publishDate.toISOString()}>
                         {blogPostEntry.data.publishDate.toDateString()}
                       </time>
-                    </div>
+                    </div> 
                   </div>
                 </div>
               </a>
             </li>
           ))
-        }
+        }-->
       </ul>
     </main>
   </Container>

@@ -2,16 +2,23 @@
 import Sectionhead from "@components/sectionhead.astro";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
-import pageData from '@assets/data/crux-history-urls.json';
-import cruxHistorySitesData from '@assets/data/crux-history-sites.json';
 import cruxHistoryOtherSitesData from "@assets/sample-data/crux-history-othersites.json";
 import CruxSummaryData from "@components/crux/data-table/index";
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
 
-
-const pageHistoryData = getValidCruxData(pageData);
-const siteData=getValidCruxData(cruxHistorySitesData);
 const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
+
+let pageHistoryData = null; 
+let siteData=null;
+
+export async function load() {
+  if (process.env.environment === 'development') {
+    const pageData = await import('@assets/data/crux-history-urls.json');
+    const cruxHistorySitesData = await import('@assets/data/crux-history-sites.json');
+    pageHistoryData = getValidCruxData(pageData);
+    siteData = getValidCruxData(cruxHistorySitesData);
+  } 
+}
 ---
 
 <Layout title="Dashboard">

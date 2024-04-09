@@ -4,8 +4,11 @@ import { Tabs } from "@components/tabs/index";
 import { ChartContainer } from "./chart";
 
 export default function CruxChart({ data, siteData, otherSiteData }) {
-  const [selectedTab, setSelectedTab] = useState("url");
-
+  const [selectedTab, setSelectedTab] = useState(
+    typeof window === "undefined" || window.envs?.environment === "production"
+      ? "sample-origins"
+      : "url"
+  );
   return (
     <>
       <Tabs

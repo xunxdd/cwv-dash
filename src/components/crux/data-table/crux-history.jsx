@@ -78,6 +78,7 @@ export default function AllDataTable({ data, cruxType = "origin" }) {
     sortDirection,
     cruxType,
   });
+  if (!dataSorted) return null;
   const lastCollectionPeriod = dataSorted[0].lastCollectionPeriod;
   const { firstDate, lastDate } = lastCollectionPeriod ?? {};
   const firstDateString = getDateString(firstDate);

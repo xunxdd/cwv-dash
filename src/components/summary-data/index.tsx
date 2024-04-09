@@ -1,4 +1,3 @@
-///import { selectedTab, setSelectedTab } from "./store";
 import AllDataTable from "@components/summary-data/all-data-table";
 import { useState } from "react";
 

@@ -33,6 +33,7 @@ export function sortCWVHistoryData({
   cruxType = "origin",
   excludeNA = false,
 }) {
+  if (!data) return [];
   const lastCollectionPeriodData = data.map((item) => {
     const { metrics, collectionPeriods, key } = item.record;
     const totalCollectionPeriods = collectionPeriods.length - 1;
