@@ -12,7 +12,9 @@ let pageHistoryData = null;
 let siteData=null;
 
 export async function load() {
-  if (process.env.environment === 'development') {
+  const env = process.env.VERCEL_ENV||process.env.environment;
+
+  if (env === 'development') {
     const pageData = await import('@assets/data/crux-history-urls.json');
     const cruxHistorySitesData = await import('@assets/data/crux-history-sites.json');
     pageHistoryData = getValidCruxData(pageData);

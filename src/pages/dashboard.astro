@@ -6,7 +6,8 @@ import Layout from "@layouts/Layout.astro";
 
 let data:any = null;
 export async function load() {
-  if (process.env.environment === 'development') {
+  const env = process.env.VERCEL_ENV||process.env.environment;
+  if (env === 'development') {
     data = await import('@assets/data/pagespeed-results-mobile.json');
   } 
 }
