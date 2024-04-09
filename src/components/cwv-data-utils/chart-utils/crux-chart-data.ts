@@ -36,6 +36,7 @@ export function getMetricDistriutionData({ metricName, cwvData }) {
     getDateString(lastDate)
   );
 
+  if (!dates || !data) return null;
   const datasets = data.map(({ densities }, i) => {
     const color = colors[i];
 

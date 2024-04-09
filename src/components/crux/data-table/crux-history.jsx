@@ -54,7 +54,11 @@ function Body({ dataSorted }) {
               <td
                 className="px-2 py-2 whitespace-nowrap text-sm text-gray-500"
                 key={`${item.URL}-${key}`}>
-                {item[key]}
+                {key === "URL" ? (
+                  <a href={`/crux-visualizer?url=${item[key]}`}>{item[key]}</a>
+                ) : (
+                  item[key]
+                )}
               </td>
             ))}
           </tr>
@@ -105,7 +109,7 @@ export default function AllDataTable({ data, cruxType = "origin" }) {
                 currentSortColumn={sortColumn}
                 currentSortDirection={sortDirection}
               />
-              <Body dataSorted={dataSorted} />
+              <Body dataSorted={dataSorted} cruxType={cruxType} />
             </table>
           </div>
         </div>

@@ -14,6 +14,7 @@ function Error({ text, show }) {
     </div>
   );
 }
+
 function DatesSelection({ state, dispatch }) {
   const onDateTypeSelect = (selected: string) => {
     dispatch({ type: "setDates", payload: selected });

@@ -4,7 +4,7 @@ export function Tabs({ selectedTab, setSelectedTab, options }) {
   const [tabOptions, setTabOptions] = useState(options);
 
   useEffect(() => {
-    const env = window?.environment;
+    const env = window.envs?.environment;
 
     if (env === "production") {
       setSelectedTab("sample-origins");

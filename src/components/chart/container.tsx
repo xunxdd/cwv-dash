@@ -46,7 +46,7 @@ export const ChartContainer = ({ data }) => {
   const [showChart, setShowChart] = useState(true);
 
   useEffect(() => {
-    const env = window?.environment;
+    const env = window.envs?.environment;
     setShowChart(env !== "production");
   }, []);
 

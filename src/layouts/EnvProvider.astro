@@ -2,9 +2,10 @@
 // EnvProvider.astro
 ---
 <script>
-  window.environment = document.getElementById('env-context').dataset.environment;
- // console.log(window.environment);
-</script>
-<div id="env-context" data-environment={Astro.props.environment}>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    window.envs = JSON.parse(document.getElementById('env-context').dataset.envs);
+  });
+ </script>
+<div id="env-context" data-envs={JSON.stringify(Astro.props.envs)}>
   <slot />
 </div>
