@@ -3,14 +3,8 @@ import Sectionhead from "@components/sectionhead.astro";
 import { ChartContainer } from "@components/chart/container.tsx";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
+import data from '@assets/data/pagespeed-results-mobile.json';
 
-let data:any = null;
-export async function load() {
-  const env = process.env.VERCEL_ENV||process.env.environment;
-  if (env === 'development') {
-    data = await import('@assets/data/pagespeed-results-mobile.json');
-  } 
-}
 ---
 
 <Layout title="Dashboard">

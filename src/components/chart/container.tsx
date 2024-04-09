@@ -47,6 +47,7 @@ export const ChartContainer = ({ data }) => {
 
   useEffect(() => {
     const env = window.envs?.environment;
+    console.log(env);
     setShowChart(env !== "production");
   }, []);
 
@@ -65,6 +66,7 @@ export const ChartContainer = ({ data }) => {
     pageUrls,
     allData: data,
   });
+
   return showChart ? (
     <>
       <ChartControls state={state} dispatch={dispatch} />

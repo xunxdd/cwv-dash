@@ -9,6 +9,6 @@ config();
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://astroship.web3templates.com",
+  site: "https://cwv-dash.vercel.app",
   integrations: [tailwind(), mdx(), sitemap(), react()],
 });
