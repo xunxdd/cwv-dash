@@ -4,22 +4,14 @@ import HistoryChart from "@components/crux/crux-history-chart/index";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
 import cruxHistoryOtherSitesData from '@assets/sample-data/crux-history-othersites.json';
+import pageData from '@assets/data/crux-history-urls.json'
+import cruxHistorySitesData from '@assets/data/crux-history-sites.json'
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
 
-let pageHistoryData = null; 
-let siteData=null;
+let pageHistoryData = getValidCruxData(pageData); 
+let siteData= getValidCruxData(cruxHistorySitesData);
 const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
 
-export async function load() {
-  const env = process.env.VERCEL_ENV||process.env.environment;
-
-  if (env === 'development') {
-    const pageData = await import('@assets/data/crux-history-urls.json');
-    const cruxHistorySitesData = await import('@assets/data/crux-history-sites.json');
-    pageHistoryData = getValidCruxData(pageData);
-    siteData = getValidCruxData(cruxHistorySitesData);
-  } 
-}
 ---
 
 <Layout title="Crux History Trend">

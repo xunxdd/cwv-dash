@@ -5,22 +5,14 @@ import Layout from "@layouts/Layout.astro";
 import cruxHistoryOtherSitesData from "@assets/sample-data/crux-history-othersites.json";
 import CruxSummaryData from "@components/crux/data-table/index";
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
+import pageData from '@assets/data/crux-history-urls.json'
+import cruxHistorySitesData from '@assets/data/crux-history-sites.json'
 
 const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
 
-let pageHistoryData = null; 
-let siteData=null;
+let pageHistoryData = getValidCruxData(pageData); 
+let siteData= getValidCruxData(cruxHistorySitesData);
 
-export async function load() {
-  const env = process.env.VERCEL_ENV||process.env.environment;
-
-  if (env === 'development') {
-    const pageData = await import('@assets/data/crux-history-urls.json');
-    const cruxHistorySitesData = await import('@assets/data/crux-history-sites.json');
-    pageHistoryData = getValidCruxData(pageData);
-    siteData = getValidCruxData(cruxHistorySitesData);
-  } 
-}
 ---
 
 <Layout title="Dashboard">
