@@ -12,29 +12,17 @@ CWV related charts, resources, maybe blogs for occasional weekend toils
 
 ## Features
 
-### 1. DataTable of Core Web Vitals for some of the popular websites in fashion, lifestyles, etc
-
-### 2. Core Web Vitals Trend Chart for some selected websites
-
-### 3. Distribution of good, ok, poor core web vitals for any given web site
+1. DataTable of Core Web Vitals for some of the popular websites in fashion, lifestyles, etc
+2. Core Web Vitals Trend Chart for some selected websites
+3. Distribution of good, ok, poor core web vitals for any given web site
 
 ## Data Sources
 
-[CrUX History Api] (https://developer.chrome.com/docs/crux/guides/history-api#querying_the_crux_history_api)
+[CrUX History Api](https://developer.chrome.com/docs/crux/guides/history-api#querying_the_crux_history_api)
 
 ## Installation
 
-If you are reading this on github, you can click on the "Use this template" button above to create a new repository from astroship to your account. Then you can do a `git clone` to clone it to your local system.
-
-Alternatively, you can clone the project directly from this repo to your local system.
-
 ### 1. Clone the repo
-
-```bash
-git clone https://github.com/surjithctly/astroship.git myProjectName
-# or
-git clone https://github.com/surjithctly/astroship.git .
-```
 
 The `.` will clone it to the current directory so make sure you are inside your project folder first.
 

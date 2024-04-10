@@ -12,7 +12,7 @@ export interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
 const resolvedImageWithDomain = new URL(
-  "/opengraph.jpg",
+  "/cwv-dash-home.png",
   Astro.site
 ).toString();
 
@@ -42,11 +42,11 @@ const envs = {key: process.env.API_KEY, environment: process.env.environment};
         basic: {
           url: canonicalURL,
           type: "website",
-          title: `Astroship - Starter Template for Astro`,
+          title: `Core Web Vitals Dashboard - Home Edition`,
           image: resolvedImageWithDomain,
         },
         image: {
-          alt: "Astroship Homepage Screenshot",
+          alt: "CWV Dashboard Homepage Screenshot",
         },
       }}
     />
