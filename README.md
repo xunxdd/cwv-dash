@@ -4,15 +4,23 @@ CWV related charts, resources, maybe blogs for occasional weekend toils
 
 ## Live Demo
 
-TBD
-
-## Deploy this template
-
-You can instantly clone this to your GitHub and deploy the site by clicking the below buttons to deploy to your chosen providers!
+[CWV Dashboard Home Edition is live](https://cwv-dash.vercel.app/)
 
 ## Preview
 
-TBD
+<a href="https://cwv-dash.vercel.app/"><img src="https://cwv-dash.vercel.app/cwv-dash-home.png" style="max-width:500px" /></a>
+
+## Features
+
+### 1. DataTable of Core Web Vitals for some of the popular websites in fashion, lifestyles, etc
+
+### 2. Core Web Vitals Trend Chart for some selected websites
+
+### 3. Distribution of good, ok, poor core web vitals for any given web site
+
+## Data Sources
+
+[CrUX History Api] (https://developer.chrome.com/docs/crux/guides/history-api#querying_the_crux_history_api)
 
 ## Installation
 

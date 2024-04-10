@@ -50,17 +50,23 @@ function Body({ dataSorted }) {
             <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-500">
               {index + 1}
             </td>
-            {columns.map(({ key }) => (
-              <td
-                className="px-2 py-2 whitespace-nowrap text-sm text-gray-500"
-                key={`${item.URL}-${key}`}>
-                {key === "URL" ? (
-                  <a href={`/crux-visualizer?url=${item[key]}`}>{item[key]}</a>
-                ) : (
-                  item[key]
-                )}
-              </td>
-            ))}
+            {columns.map(({ key }) => {
+              return (
+                <td
+                  className="px-6 py-2 whitespace-nowrap text-sm text-gray-500"
+                  key={`${item.URL}-${key}`}>
+                  {key === "URL" ? (
+                    <a
+                      href={`/crux-visualizer?url=${item[key]}`}
+                      className="relative flex flex-wrap font-medium hover:text-gray-900 text-gray-500 dark:text-gray-400 dark:hover:text-white">
+                      {item[key]} <span className="mr-2">🔗</span>
+                    </a>
+                  ) : (
+                    item[key]
+                  )}
+                </td>
+              );
+            })}
           </tr>
         );
       })}
