@@ -45,7 +45,8 @@ export const cruxMetricNames = [
 ];
 
 export const cruxTabOptions = [
-  { key: "url", label: "Page Urls" },
+  { key: "url", label: "All Page Urls" },
+  { key: "cad", label: "CAD Urls" },
   { key: "origin", label: "Origin Data" },
   { key: "sample-origins", label: "Sample Site Data" },
 ];

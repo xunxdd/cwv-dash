@@ -16,6 +16,16 @@ import {
 import { useEffect, useState } from "react";
 import { metrics } from "../../cwv-data-utils/constants.js";
 
+ChartJS.register(
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  CategoryScale,
+  Tooltip,
+  Legend
+);
+
 function CwvTrendLineChart({ metric, cwvData }) {
   const { label, cruxKey } = metric;
   const title = label;
@@ -34,23 +44,6 @@ function CwvTrendLineChart({ metric, cwvData }) {
 }
 
 export default function Charts({ cwvData }) {
-  const [isRegistered, setIsRegistered] = useState(false);
-
-  useEffect(() => {
-    ChartJS.register(
-      LineElement,
-      PointElement,
-      LinearScale,
-      Title,
-      CategoryScale,
-      Tooltip,
-      Legend
-    );
-    setIsRegistered(true);
-  }, []);
-
-  if (!isRegistered) return <></>;
-
   return (
     <>
       <CwvTrendLineChart metric={metrics.INP} cwvData={cwvData} />

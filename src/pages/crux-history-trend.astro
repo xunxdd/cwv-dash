@@ -5,12 +5,14 @@ import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
 import cruxHistoryOtherSitesData from '@assets/sample-data/other-sites.json';
 import pageData from '@assets/data/all-page-urls.json'
+import cadData from '@assets/data/car-and-driver-urls.json'
 import cruxHistorySitesData from '@assets/data/sites.json'
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
 
-let pageHistoryData = getValidCruxData(pageData); 
-let siteData= getValidCruxData(cruxHistorySitesData);
+const pageHistoryData = getValidCruxData(pageData); 
+const siteData= getValidCruxData(cruxHistorySitesData);
 const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
+const cadHistoryData = getValidCruxData(cadData);
 
 ---
 
@@ -21,7 +23,7 @@ const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
       <Fragment slot="desc">Trend chart for selected urls</Fragment>
     </Sectionhead>
     <div class="flex flex-col max-w-4xl mt-8">
-      <HistoryChart client:only data={pageHistoryData} siteData={siteData} otherSiteData={otherSiteData} />
+      <HistoryChart client:only data={pageHistoryData} siteData={siteData} otherSiteData={otherSiteData} cadHistoryData={cadHistoryData} />
     </div>
   </Container>  
 </Layout>

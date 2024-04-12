@@ -2,23 +2,8 @@
 import Sectionhead from "@components/sectionhead.astro";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
-import cruxHistoryOtherSitesData from "@assets/sample-data/other-sites.json";
-import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
 import DrillDown from "@components/crux/drilldown/index";
 
-const otherSiteData= getValidCruxData(cruxHistoryOtherSitesData);
-
-let pageHistoryData = null; 
-let siteData=null;
-
-export async function load() {
-  if (process.env.environment === 'development') {
-    const pageData = await import('@assets/data/all-page-urls.json');
-    const cruxHistorySitesData = await import('@assets/data/sites.json');
-    pageHistoryData = getValidCruxData(pageData);
-    siteData = getValidCruxData(cruxHistorySitesData);
-  } 
-}
 ---
 
 <Layout title="Dashboard">
@@ -28,7 +13,7 @@ export async function load() {
       <Fragment slot="desc">Core Web Vitasl as in <a class='text-blue-600' href="https://developer.chrome.com/docs/crux/history-api/">Crux History Api</a></Fragment>
     </Sectionhead>
     <div class="flex flex-col p-4">
-       <DrillDown client:only siteData={siteData} pageHistoryData={pageHistoryData} otherSiteData={otherSiteData} /> 
+       <DrillDown client:only  /> 
     </div>  
   </Container>  
 </Layout>

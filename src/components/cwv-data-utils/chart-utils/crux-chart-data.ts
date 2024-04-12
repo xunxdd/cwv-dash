@@ -1,6 +1,7 @@
 import colorLib from "@kurkle/color";
 import { colors } from "./colors.js";
 import { getDateString } from "../stats.js";
+import { cruxMetricNames } from "@components/cwv-data-utils/constants.js";
 
 function getOptions(title: string): any {
   return {
@@ -79,6 +80,49 @@ function getChartDataSet({ metricName, cwvData }) {
     labels: dates,
     datasets,
   };
+}
+
+function compareUrls(url1: string, url2: string): boolean {
+  const processedUrl1 = url1
+    .replace(/https?:\/\//, "")
+    .replace(/\/$/, "")
+    .toLowerCase();
+  const processedUrl2 = url2
+    .replace(/https?:\/\//, "")
+    .replace(/\/$/, "")
+    .toLowerCase();
+  return processedUrl1 === processedUrl2;
+}
+
+export function getCruxTrendData({
+  pageUrls,
+  data,
+  dateType,
+  cruxType = "url",
+}) {
+  const cruxData: any = [];
+
+  for (let i = 0; i < data.length; i++) {
+    const { key, collectionPeriods, metrics } = data[i].record;
+
+    const url = key[cruxType].replace(/https?:\/\//, "");
+
+    if (pageUrls.some((pageUrl) => compareUrls(pageUrl, url))) {
+      const result = {};
+      for (const name of cruxMetricNames) {
+        const values = metrics[name].percentilesTimeseries.p75s;
+        result[name] = dateType ? values.slice(-dateType) : values;
+      }
+      cruxData.push({
+        URL: url,
+        collectionPeriods: dateType
+          ? collectionPeriods.slice(-dateType)
+          : collectionPeriods,
+        ...result,
+      });
+    }
+  }
+  return cruxData;
 }
 
 export { getChartDataSet, getOptions };

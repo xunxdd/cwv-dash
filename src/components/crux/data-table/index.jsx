@@ -3,7 +3,12 @@ import { useState } from "react";
 import { cruxTabOptions } from "@components/cwv-data-utils/constants";
 import { Tabs } from "@components/tabs/index";
 
-export default function Summary({ pageData, siteData, otherSiteData }) {
+export default function Summary({
+  pageData,
+  siteData,
+  otherSiteData,
+  cadHistoryData,
+}) {
   const [selectedTab, setSelectedTab] = useState(
     typeof window === "undefined" || window.envs?.environment === "production"
       ? "sample-origins"
@@ -18,6 +23,9 @@ export default function Summary({ pageData, siteData, otherSiteData }) {
       />
       <div>
         {selectedTab == "url" && <CruxHistory data={pageData} cruxType="url" />}
+        {selectedTab == "cad" && (
+          <CruxHistory data={cadHistoryData} cruxType="url" />
+        )}
         {selectedTab === "origin" && (
           <CruxHistory data={siteData} cruxType="origin" />
         )}

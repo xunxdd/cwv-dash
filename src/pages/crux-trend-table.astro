@@ -7,11 +7,13 @@ import CruxSummaryData from "@components/crux/data-table/index";
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
 import pageData from '@assets/data/all-page-urls.json'
 import cruxHistorySitesData from '@assets/data/sites.json'
+import cadData from '@assets/data/car-and-driver-urls.json'
 
 const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
 
 let pageHistoryData = getValidCruxData(pageData); 
 let siteData= getValidCruxData(cruxHistorySitesData);
+const cadHistoryData = getValidCruxData(cadData);
 
 ---
 
@@ -22,7 +24,7 @@ let siteData= getValidCruxData(cruxHistorySitesData);
       <Fragment slot="desc">Core Web Vitasl as in <a class='text-blue-600' href="https://developer.chrome.com/docs/crux/history-api/">Crux History Api</a></Fragment>
     </Sectionhead>
     <div class="flex flex-col p-4">
-       <CruxSummaryData pageData={pageHistoryData} siteData={siteData} otherSiteData={otherSiteData} client:load /> 
+       <CruxSummaryData pageData={pageHistoryData} siteData={siteData} otherSiteData={otherSiteData} cadHistoryData={cadHistoryData} client:load /> 
     </div>  
   </Container>  
 </Layout>

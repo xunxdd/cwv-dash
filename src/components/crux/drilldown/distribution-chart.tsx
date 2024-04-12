@@ -1,10 +1,8 @@
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
-  LineElement,
   BarController,
   BarElement,
-  PointElement,
   LinearScale,
   Title,
   CategoryScale,
@@ -70,7 +68,6 @@ function getOptions(title: string): any {
 function StackedBar({ metric, cwvData }) {
   const { label, cruxKey } = metric;
   const title = label;
-  console.log({ label, cruxKey });
   const chartData = getMetricDistriutionData({ metricName: cruxKey, cwvData });
   if (!chartData) return <div>Loading...</div>;
   return (
@@ -83,32 +80,15 @@ function StackedBar({ metric, cwvData }) {
   );
 }
 
-export default function DistributionDensities({}) {
-  const [cwvData, setcwvData] = useState(null);
-  const searchParams = new URLSearchParams(window?.location?.search);
-  const key = document.getElementById("env-context").dataset.key;
-  const url = searchParams.get("url");
-
-  if (!url) return <Error text="No URL" />;
-
-  useEffect(() => {
-    async function fetchData() {
-      const data = await fetchCruxData(url);
-      setcwvData(data);
-    }
-    fetchData();
-  }, []);
-
+export default function DistributionDensities({ cwvData }) {
   return cwvData ? (
     <div className="m-5 p-5">
       <h5 className="mb-2 p-5 mt-0 text-xl font-medium leading-tight text-primary">
-        Core Web Vitals Histogram Timeseries for <a href={url}>{url}</a>
+        Core Web Vitals Histogram Timeseries
       </h5>
       <StackedBar metric={metrics.INP} cwvData={cwvData} />
       <StackedBar metric={metrics.CLS} cwvData={cwvData} />
       <StackedBar metric={metrics.LCP} cwvData={cwvData} />
     </div>
-  ) : (
-    <div>Loading...</div>
-  );
+  ) : null;
 }
