@@ -2,7 +2,7 @@
 import Sectionhead from "@components/sectionhead.astro";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
-import cruxHistoryOtherSitesData from "@assets/sample-data/crux-history-othersites.json";
+import cruxHistoryOtherSitesData from "@assets/sample-data/other-sites.json";
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
 import DrillDown from "@components/crux/drilldown/index";
 
@@ -13,8 +13,8 @@ let siteData=null;
 
 export async function load() {
   if (process.env.environment === 'development') {
-    const pageData = await import('@assets/data/crux-history-urls.json');
-    const cruxHistorySitesData = await import('@assets/data/crux-history-sites.json');
+    const pageData = await import('@assets/data/all-page-urls.json');
+    const cruxHistorySitesData = await import('@assets/data/sites.json');
     pageHistoryData = getValidCruxData(pageData);
     siteData = getValidCruxData(cruxHistorySitesData);
   } 

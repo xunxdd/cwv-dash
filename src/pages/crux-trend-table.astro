@@ -2,11 +2,11 @@
 import Sectionhead from "@components/sectionhead.astro";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
-import cruxHistoryOtherSitesData from "@assets/sample-data/crux-history-othersites.json";
+import cruxHistoryOtherSitesData from "@assets/sample-data/other-sites.json";
 import CruxSummaryData from "@components/crux/data-table/index";
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
-import pageData from '@assets/data/crux-history-urls.json'
-import cruxHistorySitesData from '@assets/data/crux-history-sites.json'
+import pageData from '@assets/data/all-page-urls.json'
+import cruxHistorySitesData from '@assets/data/sites.json'
 
 const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
 
