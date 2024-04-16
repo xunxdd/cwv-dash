@@ -21,7 +21,7 @@ export default function Drilldown() {
   const [cwvData, setcwvData] = useState(null);
   let trendCwvData = null;
   const [showError, setShowError] = useState(false);
-  const chartType = searchParams.get("type");
+  const chartType = searchParams.get("type") || "distribution";
 
   useEffect(() => {
     async function fetchData() {
@@ -32,7 +32,7 @@ export default function Drilldown() {
       }
     }
     fetchData();
-  }, []);
+  }, [url]);
 
   if (cwvData) {
     trendCwvData = getCruxTrendData({

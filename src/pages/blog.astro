@@ -21,13 +21,12 @@ publishedBlogEntries.sort(function (a, b) {
     <Sectionhead>
       <Fragment slot="title">Blog </Fragment>
       <Fragment slot="desc">
-        Yes. Yet another blog no one cares.
-        Still, there is so much about CWVs
+        To say INP is overwhelming is an understatement.
       </Fragment>
     </Sectionhead>
     <main class="mt-16">
       <ul class="grid gap-16 max-w-4xl mx-auto">
-        <!-- {
+        {
           publishedBlogEntries.map((blogPostEntry, index) => (
             <li>
               <a href={`/blog/${blogPostEntry.slug}`}>
@@ -52,8 +51,8 @@ publishedBlogEntries.sort(function (a, b) {
                     </h2>
 
                     <div class="flex gap-2 mt-3">
-                      <span class="text-gray-400">
-                        {blogPostEntry.data.author}
+                       <span class="text-gray-400">
+                         {blogPostEntry.data.author}
                       </span>
                       <span class="text-gray-400">• </span>
                       <time
@@ -67,7 +66,7 @@ publishedBlogEntries.sort(function (a, b) {
               </a>
             </li>
           ))
-        }-->
+        }
       </ul>
     </main>
   </Container>
