@@ -7,7 +7,7 @@ image:
     src: "https://web.dev/static/articles/inp/image/inp-desktop-v2.svg",
     alt: "interaction to next paint",
   }
-publishDate: "2024-4-15 15:39"
+publishDate: "2024-4-15 18:00"
 category: "Resources"
 author: "x.d"
 tags: [inp]
