@@ -37,13 +37,17 @@ export function sortCWVHistoryData({
   const lastCollectionPeriodData = data.map((item) => {
     const { metrics, collectionPeriods, key } = item.record;
     const totalCollectionPeriods = collectionPeriods.length - 1;
-
     const result = {};
 
     for (const name of metricNames) {
-      const value =
-        metrics[name].percentilesTimeseries.p75s[totalCollectionPeriods];
-      result[name] = value == null ? "na" : Number(value);
+      try {
+        const value =
+          metrics[name].percentilesTimeseries.p75s[totalCollectionPeriods];
+        result[name] = value == null ? "na" : Number(value);
+      } catch {
+        // console.error(`Error getting ${name} for ${key[cruxType]}`);
+        result[name] = "na";
+      }
     }
 
     return {

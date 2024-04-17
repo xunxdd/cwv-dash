@@ -9,11 +9,8 @@ export default function Summary({
   otherSiteData,
   cadHistoryData,
 }) {
-  const [selectedTab, setSelectedTab] = useState(
-    typeof window === "undefined" || window.envs?.environment === "production"
-      ? "sample-origins"
-      : "url"
-  );
+  const [selectedTab, setSelectedTab] = useState("sample-origins"); //'url', 'origin', 'sample-origins', 'cad'
+
   return (
     <>
       <Tabs

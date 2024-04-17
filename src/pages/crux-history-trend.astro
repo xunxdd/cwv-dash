@@ -10,8 +10,8 @@ import cruxHistorySitesData from '@assets/data/sites.json'
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
 
 const pageHistoryData = getValidCruxData(pageData); 
-const siteData= getValidCruxData(cruxHistorySitesData);
-const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
+const siteData= getValidCruxData(cruxHistorySitesData, false);
+const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData, false);
 const cadHistoryData = getValidCruxData(cadData);
 
 ---

@@ -5,15 +5,18 @@ import Layout from "@layouts/Layout.astro";
 import cruxHistoryOtherSitesData from "@assets/sample-data/other-sites.json";
 import CruxSummaryData from "@components/crux/data-table/index";
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
-import pageData from '@assets/data/all-page-urls.json'
+import pageData from '@assets/data/worst-inp-urls.json'
 import cruxHistorySitesData from '@assets/data/sites.json'
 import cadData from '@assets/data/car-and-driver-urls.json'
+import inpData1 from '@assets/data/worst-inp-urls1.json'
+import inpData2 from '@assets/data/worst-inp-urls2.json'
 
-const otherSiteData=getValidCruxData(cruxHistoryOtherSitesData);
+const otherSiteData= getValidCruxData(cruxHistoryOtherSitesData, false);
+const siteData= getValidCruxData(cruxHistorySitesData, false);
 
-let pageHistoryData = getValidCruxData(pageData); 
-let siteData= getValidCruxData(cruxHistorySitesData);
+let inpData = pageData.concat(inpData1).concat(inpData2);
 const cadHistoryData = getValidCruxData(cadData);
+const pageHistoryData = getValidCruxData(inpData); 
 
 ---
 
