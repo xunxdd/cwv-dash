@@ -3,6 +3,7 @@ const metricNames = [
   "interaction_to_next_paint",
   "largest_contentful_paint",
 ];
+import { columns } from "./constants";
 
 export function sortCWVData(data, metricName = "INP", sortDirection = "asc") {
   // Get the last day's data
@@ -26,15 +27,10 @@ export function sortCWVData(data, metricName = "INP", sortDirection = "asc") {
   return lastDayData;
 }
 
-export function sortCWVHistoryData({
-  data,
-  metricName = "interaction_to_next_paint",
-  sortDirection = "asc",
-  cruxType = "origin",
-  excludeNA = false,
-}) {
+export function sanitizeCWVData({ data, cruxType = "origin" }) {
   if (!data) return [];
-  const lastCollectionPeriodData = data.map((item) => {
+  const cwvData = [];
+  data.forEach((item) => {
     const { metrics, collectionPeriods, key } = item.record;
     const totalCollectionPeriods = collectionPeriods.length - 1;
     const result = {};
@@ -49,23 +45,65 @@ export function sortCWVHistoryData({
         result[name] = "na";
       }
     }
-
-    return {
+    const itmData = {
       URL: key[cruxType],
       lastCollectionPeriod: collectionPeriods[totalCollectionPeriods],
       ...result,
     };
+    cwvData.push(itmData);
   });
 
+  return cwvData;
+}
+
+export function filterCWVHistoryData({
+  data,
+  metricName = "interaction_to_next_paint",
+  filter = "all",
+}) {
+  if (!data || !Array.isArray(data)) return [];
+  const cwvData = [];
+  const threshold = columns.find(
+    (column) => column.key === metricName
+  ).threshold;
+
+  data.forEach((itmData) => {
+    const value = itmData[metricName];
+    if (filter === "good" && value <= threshold.good) {
+      cwvData.push(itmData);
+    } else if (filter === "poor" && value > threshold.poor) {
+      cwvData.push(itmData);
+    } else if (
+      filter === "needsImprovement" &&
+      value > threshold.good &&
+      value <= threshold.poor
+    ) {
+      cwvData.push(itmData);
+    } else if (filter === "all") {
+      cwvData.push(itmData);
+    }
+  });
+
+  return cwvData;
+}
+
+export function sortCWVHistoryData({
+  data,
+  metricName = "interaction_to_next_paint",
+  sortDirection = "asc",
+  excludeNA = false,
+}) {
+  if (!data) return [];
+
   if (metricName === "URL") {
-    return lastCollectionPeriodData.sort((a, b) =>
+    return data.sort((a, b) =>
       sortDirection === "asc"
         ? a[metricName].localeCompare(b[metricName])
         : b[metricName].localeCompare(a[metricName])
     );
   }
 
-  const sortedData = lastCollectionPeriodData
+  const sortedData = data
     .filter((item) => item[metricName] !== "na") // Exclude items where the metric is 'na'
     .sort((a, b) => {
       return sortDirection === "asc"
@@ -74,9 +112,7 @@ export function sortCWVHistoryData({
     });
 
   if (!excludeNA) {
-    return sortedData.concat(
-      lastCollectionPeriodData.filter((item) => item[metricName] === "na")
-    );
+    return sortedData.concat(data.filter((item) => item[metricName] === "na"));
   }
   return sortedData;
 }

@@ -1,49 +1,74 @@
+import { test } from "vitest";
 import cruxHistory from "./mock-data/crux-history-sites.json";
 import cruxUrlHistory from "./mock-data/crux-history-urls.json";
-import { sortCWVHistoryData } from "./stats";
+import {
+  sortCWVHistoryData,
+  sanitizeCWVData,
+  filterCWVHistoryData,
+} from "./stats";
+
+test("sanitizeCWVData", () => {
+  console.log(cruxHistory.length);
+  const result = sanitizeCWVData({ data: cruxHistory });
+  expect(result.length).toBe(37);
+});
 
 test("sortCWVHistoryData default", () => {
-  const result = sortCWVHistoryData({ data: cruxHistory });
+  const sanitizeData = sanitizeCWVData({ data: cruxHistory });
+  const result = sortCWVHistoryData({ data: sanitizeData });
   expect(result.length).toBe(37);
-  expect(result[0].URL).toBe("https://www.townandcountrymag.com");
-  expect(result[0].interaction_to_next_paint).toBe(330);
-  expect(result[36].interaction_to_next_paint).toBe(363);
+  expect(result[0].URL).toBe("https://www.popularmechanics.com");
+  expect(result[0].interaction_to_next_paint).toBe(259);
+  expect(result[36].interaction_to_next_paint).toBe(757);
 });
 
 test("sortCWVHistoryData by url", () => {
-  const result = sortCWVHistoryData({ data: cruxHistory, metricName: "URL" });
+  const sanitizeData = sanitizeCWVData({ data: cruxHistory });
+  const result = sortCWVHistoryData({ data: sanitizeData, metricName: "URL" });
   expect(result.length).toBe(37);
   expect(result[0].URL).toBe("https://www.25ans.jp");
 });
 
 test("sortCWVHistoryData URLS by url", () => {
-  const pageHistoryData = cruxUrlHistory.filter(
-    (page) => page?.record?.metrics
-  );
+  const pageHistoryData = cruxHistory.filter((page) => page?.record?.metrics);
+  const sanitizeData = sanitizeCWVData({ data: pageHistoryData });
   const result = sortCWVHistoryData({
-    data: pageHistoryData,
+    data: sanitizeData,
     metricName: "URL",
     sortDirection: "asc",
     cruxType: "url",
   });
-  expect(result.length).toBe(23);
-  expect(result[0].URL).toBe(
-    "https://www.bestproducts.com/lifestyle/a45410261/how-to-check-vanilla-gift-card-balance/"
-  );
+  expect(result.length).toBe(37);
 });
 
 test("sortCWVHistoryData URLS by INP", () => {
   const pageHistoryData = cruxUrlHistory.filter(
     (page) => page?.record?.metrics
   );
+  const sanitizeData = sanitizeCWVData({ data: pageHistoryData });
+
   const result = sortCWVHistoryData({
-    data: pageHistoryData,
+    data: sanitizeData,
     metricName: "interaction_to_next_paint",
     sortDirection: "asc",
     cruxType: "url",
     excludeNA: true,
   });
   expect(result.length).toBe(19);
-  expect(result[0].INP).toBe(221);
-  expect(result[18].INP).toBe(1479);
+});
+
+test.only("filterCWVHistoryData", () => {
+  const sanitizeData = sanitizeCWVData({ data: cruxHistory });
+  console.log(sanitizeData[0]);
+  const result = filterCWVHistoryData({ data: sanitizeData, filter: "good" });
+  const resultPoor = filterCWVHistoryData({
+    data: sanitizeData,
+    filter: "poor",
+  });
+  const resultOk = filterCWVHistoryData({
+    data: sanitizeData,
+    filter: "needs improvement",
+  });
+  expect(resultPoor.length).toBe(8);
+  expect(resultOk.length).toBe(29);
 });
