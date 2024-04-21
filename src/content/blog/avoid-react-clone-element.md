@@ -19,9 +19,9 @@ Recently saw that some code is plastered with <code>React.cloneElement</code>, w
 
 ## Why we should avoid `React.cloneElement`
 
-- Using cloneElement is uncommon and can lead to fragile code
-- Performance: Cloning an element creates a new element, which could have performance implications if done excessively or unnecessarily.
-- Readability and maintainability: Using React.cloneElement can make the code harder to understand and maintain, especially for developers who are not familiar with it. It's not immediately clear where the props of the cloned element are coming from, which can lead to confusion.
+- `cloneElement` is fragile
+- Performance: Cloning an element creates a new element, which could have performance implications
+- Readability and maintainability: Using `React.cloneElement` can make the code harder to understand and maintain.
 
 ## A sample replacement `React.cloneElement`
 
