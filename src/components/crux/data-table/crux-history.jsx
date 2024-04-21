@@ -3,7 +3,6 @@ import {
   sortCWVHistoryData,
   filterCWVHistoryData,
   getDateString,
-  sanitizeCWVData,
 } from "@components/cwv-data-utils/stats";
 import { useState, useMemo } from "react";
 import Papa from "papaparse";
@@ -114,10 +113,7 @@ export default function AllDataTable({ data, cruxType = "origin" }) {
   const [sortColumn, setSortColumn] = useState("interaction_to_next_paint");
   const [sortDirection, setSortDirection] = useState("asc");
   const [filter, setFilter] = useState("all");
-  const sanitizedData = useMemo(
-    () => sanitizeCWVData({ data, cruxType }),
-    [data]
-  );
+  const sanitizedData = data;
 
   if (!sanitizedData) return null;
 

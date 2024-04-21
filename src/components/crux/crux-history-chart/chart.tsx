@@ -1,10 +1,14 @@
 import { ChartControls } from "./crux-history-selecton-controls.js";
-import { sortCWVHistoryData } from "../../cwv-data-utils/stats.js";
+// import { sortCWVHistoryData } from "../../cwv-data-utils/stats.js";
 import { cruxMetricNames } from "@components/cwv-data-utils/constants.js";
 import { useReducer } from "react";
 import { getAvailableUrls } from "../../cwv-data-utils/stats.js";
 import HistoryCharts from "./crux-history-chart.js";
-
+const metricNames = [
+  "cumulative_layout_shift",
+  "interaction_to_next_paint",
+  "largest_contentful_paint",
+];
 const initialState = {
   dateType: "",
   urlType: "",
@@ -22,6 +26,62 @@ function reducer(state, action) {
     default:
       throw new Error();
   }
+}
+
+function sortCWVHistoryData({
+  data,
+  metricName = "interaction_to_next_paint",
+  sortDirection = "asc",
+  cruxType = "origin",
+  excludeNA = false,
+}) {
+  if (!data) return [];
+  const lastCollectionPeriodData = data.map((item) => {
+    const { metrics, collectionPeriods, key } = item.record;
+    const totalCollectionPeriods = collectionPeriods.length - 1;
+
+    const result = {};
+
+    for (const name of metricNames) {
+      const value =
+        metrics[name].percentilesTimeseries.p75s[totalCollectionPeriods];
+      result[name] = value == null ? "na" : Number(value);
+      try {
+        const value =
+          metrics[name].percentilesTimeseries.p75s[totalCollectionPeriods];
+        result[name] = value == null ? "na" : Number(value);
+      } catch {
+        // console.error(`Error getting ${name} for ${key[cruxType]}`);
+        result[name] = "na";
+      }
+    }
+
+    return {
+      URL: key[cruxType],
+      lastCollectionPeriod: collectionPeriods[totalCollectionPeriods],
+      ...result,
+    };
+  });
+  if (metricName === "URL") {
+    return lastCollectionPeriodData.sort((a, b) =>
+      sortDirection === "asc"
+        ? a[metricName].localeCompare(b[metricName])
+        : b[metricName].localeCompare(a[metricName])
+    );
+  }
+  const sortedData = lastCollectionPeriodData
+    .filter((item) => item[metricName] !== "na") // Exclude items where the metric is 'na'
+    .sort((a, b) => {
+      return sortDirection === "asc"
+        ? a[metricName] - b[metricName]
+        : b[metricName] - a[metricName];
+    });
+  if (!excludeNA) {
+    return sortedData.concat(
+      lastCollectionPeriodData.filter((item) => item[metricName] === "na")
+    );
+  }
+  return sortedData;
 }
 
 function getPageUrls({
@@ -46,13 +106,11 @@ function getPageUrls({
   }
 }
 
-function getCruxData({ pageUrls, data, dateType, cruxType = "url" }) {
+function getCruxData({ pageUrls, data, dateType }) {
   const cruxData: any = [];
 
   for (let i = 0; i < data.length; i++) {
-    const { key, collectionPeriods, metrics } = data[i].record;
-
-    const url = key[cruxType];
+    const { URL: url, collectionPeriods, metrics } = data[i];
 
     if (pageUrls.includes(url)) {
       const result = {};

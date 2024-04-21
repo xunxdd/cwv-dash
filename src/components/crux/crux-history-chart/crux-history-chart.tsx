@@ -13,7 +13,6 @@ import {
   getChartDataSet,
   getOptions,
 } from "@components/cwv-data-utils/chart-utils/crux-chart-data.ts";
-import { useEffect, useState } from "react";
 import { metrics } from "../../cwv-data-utils/constants.js";
 
 ChartJS.register(

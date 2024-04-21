@@ -1,8 +1,3 @@
-const metricNames = [
-  "cumulative_layout_shift",
-  "interaction_to_next_paint",
-  "largest_contentful_paint",
-];
 import { columns } from "./constants";
 
 export function sortCWVData(data, metricName = "INP", sortDirection = "asc") {
@@ -25,35 +20,6 @@ export function sortCWVData(data, metricName = "INP", sortDirection = "asc") {
   });
 
   return lastDayData;
-}
-
-export function sanitizeCWVData({ data, cruxType = "origin" }) {
-  if (!data) return [];
-  const cwvData = [];
-  data.forEach((item) => {
-    const { metrics, collectionPeriods, key } = item.record;
-    const totalCollectionPeriods = collectionPeriods.length - 1;
-    const result = {};
-
-    for (const name of metricNames) {
-      try {
-        const value =
-          metrics[name].percentilesTimeseries.p75s[totalCollectionPeriods];
-        result[name] = value == null ? "na" : Number(value);
-      } catch {
-        // console.error(`Error getting ${name} for ${key[cruxType]}`);
-        result[name] = "na";
-      }
-    }
-    const itmData = {
-      URL: key[cruxType],
-      lastCollectionPeriod: collectionPeriods[totalCollectionPeriods],
-      ...result,
-    };
-    cwvData.push(itmData);
-  });
-
-  return cwvData;
 }
 
 export function filterCWVHistoryData({
@@ -119,9 +85,7 @@ export function sortCWVHistoryData({
 
 export function getAvailableUrls({ data, cruxType }) {
   return data.map((item) => {
-    const { key } = item.record;
-
-    return key[cruxType];
+    return item.URL;
   });
 }
 

@@ -28,7 +28,6 @@ export default function Drilldown() {
       const data = await fetchCruxData(url);
       setShowError(!data);
       if (data) {
-        console.log(data);
         setcwvData(data);
       }
     }

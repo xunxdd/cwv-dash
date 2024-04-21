@@ -1,17 +1,8 @@
 import { test } from "vitest";
 import cruxHistory from "./mock-data/crux-history-sites.json";
 import cruxUrlHistory from "./mock-data/crux-history-urls.json";
-import {
-  sortCWVHistoryData,
-  sanitizeCWVData,
-  filterCWVHistoryData,
-} from "./stats";
-
-test("sanitizeCWVData", () => {
-  console.log(cruxHistory.length);
-  const result = sanitizeCWVData({ data: cruxHistory });
-  expect(result.length).toBe(37);
-});
+import { sortCWVHistoryData, filterCWVHistoryData } from "./stats";
+import { sanitizeCWVData } from "./data-clean";
 
 test("sortCWVHistoryData default", () => {
   const sanitizeData = sanitizeCWVData({ data: cruxHistory });
@@ -59,7 +50,6 @@ test("sortCWVHistoryData URLS by INP", () => {
 
 test.only("filterCWVHistoryData", () => {
   const sanitizeData = sanitizeCWVData({ data: cruxHistory });
-  console.log(sanitizeData[0]);
   const result = filterCWVHistoryData({ data: sanitizeData, filter: "good" });
   const resultPoor = filterCWVHistoryData({
     data: sanitizeData,

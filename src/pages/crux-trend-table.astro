@@ -11,12 +11,12 @@ import cadData from '@assets/data/car-and-driver-urls.json'
 import inpData1 from '@assets/data/worst-inp-urls1.json'
 import inpData2 from '@assets/data/worst-inp-urls2.json'
 
-const otherSiteData= getValidCruxData(cruxHistoryOtherSitesData, false);
-const siteData= getValidCruxData(cruxHistorySitesData, false);
+const otherSiteData= getValidCruxData({data: cruxHistoryOtherSitesData, cruxType: 'origin'});
+const siteData= getValidCruxData({data: cruxHistorySitesData,  cruxType: 'origin'});
 
 let inpData = pageData.concat(inpData1).concat(inpData2);
-const cadHistoryData = getValidCruxData(cadData);
-const pageHistoryData = getValidCruxData(inpData); 
+const cadHistoryData = getValidCruxData({data: cadData, cruxType: 'url'});
+const pageHistoryData = getValidCruxData({data: inpData, cruxType: 'url'}); 
 
 ---
 
