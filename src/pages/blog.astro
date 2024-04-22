@@ -7,13 +7,14 @@ import Sectionhead from "@components/sectionhead.astro";
 
 // Filter blog entries with 'draft: false' & date before current date
 const publishedBlogEntries = await getCollection("blog", ({ data }) => {
-  return !data.draft && data.publishDate < new Date();
+  return !data.draft;
 });
 
 // Sort content entries by publication date
 publishedBlogEntries.sort(function (a, b) {
   return b.data.publishDate.valueOf() - a.data.publishDate.valueOf();
 });
+
 ---
 
 <Layout title="Blog">
@@ -35,8 +36,8 @@ publishedBlogEntries.sort(function (a, b) {
                     src={blogPostEntry.data.image.src}
                     alt={blogPostEntry.data.image.alt}
                     sizes="(max-width: 800px) 100vw, 800px"
-                    width={800}
-                    height={600}
+                    width={200}
+                    height={100}
                     loading={index <= 2 ? "eager" : "lazy"}
                     decoding={index <= 2 ? "sync" : "async"}
                     class="w-full rounded-md object-cover object-center bg-white"
