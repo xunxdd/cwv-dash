@@ -94,7 +94,43 @@ function compareUrls(url1: string, url2: string): boolean {
   return processedUrl1 === processedUrl2;
 }
 
-export function getCruxTrendData({
+// export function getCruxTrendData({
+//   pageUrls,
+//   data,
+//   dateType,
+//   cruxType = "url",
+// }) {
+//   const cruxData: any = [];
+
+//   for (let i = 0; i < data.length; i++) {
+//     const { key, collectionPeriods, metrics } = data[i];
+
+//     const url = key[cruxType].replace(/https?:\/\//, "");
+
+//     if (pageUrls.some((pageUrl) => compareUrls(pageUrl, url))) {
+//       const result = {};
+
+//       for (const name of cruxMetricNames) {
+//         try {
+//           const values = metrics[name]?.percentilesTimeseries?.p75s ?? [];
+//           result[name] = dateType ? values?.slice(-dateType) : values;
+//         } catch {
+//           result[name] = [];
+//         }
+//       }
+//       cruxData.push({
+//         URL: url,
+//         collectionPeriods: dateType
+//           ? collectionPeriods.slice(-dateType)
+//           : collectionPeriods,
+//         ...result,
+//       });
+//     }
+//   }
+//   return cruxData;
+// }
+
+export function getCruxTrendDataDrillDown({
   pageUrls,
   data,
   dateType,
@@ -103,15 +139,20 @@ export function getCruxTrendData({
   const cruxData: any = [];
 
   for (let i = 0; i < data.length; i++) {
-    const { key, collectionPeriods, metrics } = data[i];
+    const { key, collectionPeriods, metrics } = data[i].record;
 
     const url = key[cruxType].replace(/https?:\/\//, "");
 
     if (pageUrls.some((pageUrl) => compareUrls(pageUrl, url))) {
       const result = {};
+
       for (const name of cruxMetricNames) {
-        const values = metrics[name].percentilesTimeseries.p75s;
-        result[name] = dateType ? values.slice(-dateType) : values;
+        try {
+          const values = metrics[name]?.percentilesTimeseries?.p75s ?? [];
+          result[name] = dateType ? values?.slice(-dateType) : values;
+        } catch {
+          result[name] = [];
+        }
       }
       cruxData.push({
         URL: url,
@@ -124,5 +165,4 @@ export function getCruxTrendData({
   }
   return cruxData;
 }
-
 export { getChartDataSet, getOptions };

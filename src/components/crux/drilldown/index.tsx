@@ -3,7 +3,7 @@ import ChartControl from "./chart-control";
 import TrendChart from "@components/crux/crux-history-chart/crux-history-chart";
 import { fetchCruxData } from "./fetch-crux";
 import { useEffect, useState } from "react";
-import { getCruxTrendData } from "@components/cwv-data-utils/chart-utils/crux-chart-data";
+import { getCruxTrendDataDrillDown } from "@components/cwv-data-utils/chart-utils/crux-chart-data";
 
 function Error({ text }) {
   return (
@@ -35,7 +35,7 @@ export default function Drilldown() {
   }, [url]);
 
   if (cwvData) {
-    trendCwvData = getCruxTrendData({
+    trendCwvData = getCruxTrendDataDrillDown({
       pageUrls: [url],
       data: [cwvData],
       cruxType: "url",

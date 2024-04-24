@@ -1,5 +1,5 @@
 import { ChartControls } from "./crux-history-selecton-controls.js";
-// import { sortCWVHistoryData } from "../../cwv-data-utils/stats.js";
+import { sortCWVHistoryData } from "../../cwv-data-utils/stats.js";
 import { cruxMetricNames } from "@components/cwv-data-utils/constants.js";
 import { useReducer } from "react";
 import { getAvailableUrls } from "../../cwv-data-utils/stats.js";
@@ -26,62 +26,6 @@ function reducer(state, action) {
     default:
       throw new Error();
   }
-}
-
-function sortCWVHistoryData({
-  data,
-  metricName = "interaction_to_next_paint",
-  sortDirection = "asc",
-  cruxType = "origin",
-  excludeNA = false,
-}) {
-  if (!data) return [];
-  const lastCollectionPeriodData = data.map((item) => {
-    const { metrics, collectionPeriods, key } = item.record;
-    const totalCollectionPeriods = collectionPeriods.length - 1;
-
-    const result = {};
-
-    for (const name of metricNames) {
-      const value =
-        metrics[name].percentilesTimeseries.p75s[totalCollectionPeriods];
-      result[name] = value == null ? "na" : Number(value);
-      try {
-        const value =
-          metrics[name].percentilesTimeseries.p75s[totalCollectionPeriods];
-        result[name] = value == null ? "na" : Number(value);
-      } catch {
-        // console.error(`Error getting ${name} for ${key[cruxType]}`);
-        result[name] = "na";
-      }
-    }
-
-    return {
-      URL: key[cruxType],
-      lastCollectionPeriod: collectionPeriods[totalCollectionPeriods],
-      ...result,
-    };
-  });
-  if (metricName === "URL") {
-    return lastCollectionPeriodData.sort((a, b) =>
-      sortDirection === "asc"
-        ? a[metricName].localeCompare(b[metricName])
-        : b[metricName].localeCompare(a[metricName])
-    );
-  }
-  const sortedData = lastCollectionPeriodData
-    .filter((item) => item[metricName] !== "na") // Exclude items where the metric is 'na'
-    .sort((a, b) => {
-      return sortDirection === "asc"
-        ? a[metricName] - b[metricName]
-        : b[metricName] - a[metricName];
-    });
-  if (!excludeNA) {
-    return sortedData.concat(
-      lastCollectionPeriodData.filter((item) => item[metricName] === "na")
-    );
-  }
-  return sortedData;
 }
 
 function getPageUrls({
@@ -115,8 +59,12 @@ function getCruxData({ pageUrls, data, dateType }) {
     if (pageUrls.includes(url)) {
       const result = {};
       for (const name of cruxMetricNames) {
-        const values = metrics[name].percentilesTimeseries.p75s;
-        result[name] = dateType ? values.slice(-dateType) : values;
+        try {
+          const values = metrics[name].percentilesTimeseries.p75s;
+          result[name] = dateType ? values.slice(-dateType) : values;
+        } catch (e) {
+          result[name] = [];
+        }
       }
       cruxData.push({
         URL: url,

@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "Can you disable a hyperlink to get out of the wrath of INP?"
-snippet: "Can you disable your buttons or links or other interationable "
+snippet: "Can you disable your buttons or links or other interationable to avoid punishing INP"
 image:
   {
     src: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrXUREYb7cYZoOKT7GbTB_z0KaYJPdeRGzC_lre5uRRiuW274GO1Obj36r6KjajzsrD6s7A60e6TksOs9GrUSY6z7401ev-aEdVw91evYZ6U8A0KmtVkBwNZvq_nBU7JkUyLt8aXneZbLQ4_br-JYKIW-MoIsx8MaVIvk_x1sFU8L-pCWreXhLm2xTs3Y/w1684-h1069-p-k-no-nu/inp.jpg",
