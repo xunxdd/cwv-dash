@@ -27,6 +27,22 @@ const siteData= getValidCruxData({data: cruxHistorySitesData, cruxType: 'origin'
 const otherSiteData=getValidCruxData({data: cruxHistoryOtherSitesData, cruxType: 'origin', summaryOnly: false});
 const cadHistoryData = getValidCruxData({data:cadData, cruxType: 'url', summaryOnly: false});
 
+let availableDomains : string[]= [];
+
+pageHistoryData.map((d) => {
+  try {
+  const url = new URL(d.URL);
+  const hostName = url.hostname;
+  if (hostName && !availableDomains.includes(hostName)) {
+    availableDomains.push(url.hostname);
+  }
+
+  } catch(e) {
+    console.log(d)
+  }
+  return ''
+});
+
 ---
 
 <Layout title="Crux History Trend">
@@ -36,7 +52,7 @@ const cadHistoryData = getValidCruxData({data:cadData, cruxType: 'url', summaryO
       <Fragment slot="desc">Trend chart for selected urls</Fragment>
     </Sectionhead>
     <div class="flex flex-col max-w-4xl mt-8">
-      <HistoryChart client:only data={pageHistoryData} siteData={siteData} otherSiteData={otherSiteData} cadHistoryData={cadHistoryData} />
+      <HistoryChart client:only data={pageHistoryData} siteData={siteData} otherSiteData={otherSiteData} cadHistoryData={cadHistoryData} availableDomains={availableDomains} />
     </div>
   </Container>  
 </Layout>
