@@ -58,28 +58,33 @@ export function getMetricDistriutionData({ metricName, cwvData }) {
 
 function getChartDataSet({ metricName, cwvData }) {
   const datasets: any = [];
-  const dates = cwvData[0].collectionPeriods.map(({ lastDate }) =>
-    getDateString(lastDate)
-  );
-  for (let i = 0; i < cwvData.length; i++) {
-    const dataPoints = cwvData[i][metricName];
+  try {
+    const dates = cwvData[0].collectionPeriods.map(({ lastDate }) =>
+      getDateString(lastDate)
+    );
+    for (let i = 0; i < cwvData.length; i++) {
+      const dataPoints = cwvData[i][metricName];
 
-    const color = colors[i];
+      const color = colors[i];
 
-    datasets.push({
-      label: cwvData[i].URL,
-      data: dataPoints,
-      lineTension: 0,
-      fill: false,
-      backgroundColor: colorLib(color).alpha(0.5).rgbString(),
-      borderColor: color,
-    });
+      datasets.push({
+        label: cwvData[i].URL,
+        data: dataPoints,
+        lineTension: 0,
+        fill: false,
+        backgroundColor: colorLib(color).alpha(0.5).rgbString(),
+        borderColor: color,
+      });
+    }
+
+    return {
+      labels: dates,
+      datasets,
+    };
+  } catch (e) {
+    console.log(e, cwvData[0]);
+    return { labels: [], datasets: [] };
   }
-
-  return {
-    labels: dates,
-    datasets,
-  };
 }
 
 function compareUrls(url1: string, url2: string): boolean {
@@ -93,42 +98,6 @@ function compareUrls(url1: string, url2: string): boolean {
     .toLowerCase();
   return processedUrl1 === processedUrl2;
 }
-
-// export function getCruxTrendData({
-//   pageUrls,
-//   data,
-//   dateType,
-//   cruxType = "url",
-// }) {
-//   const cruxData: any = [];
-
-//   for (let i = 0; i < data.length; i++) {
-//     const { key, collectionPeriods, metrics } = data[i];
-
-//     const url = key[cruxType].replace(/https?:\/\//, "");
-
-//     if (pageUrls.some((pageUrl) => compareUrls(pageUrl, url))) {
-//       const result = {};
-
-//       for (const name of cruxMetricNames) {
-//         try {
-//           const values = metrics[name]?.percentilesTimeseries?.p75s ?? [];
-//           result[name] = dateType ? values?.slice(-dateType) : values;
-//         } catch {
-//           result[name] = [];
-//         }
-//       }
-//       cruxData.push({
-//         URL: url,
-//         collectionPeriods: dateType
-//           ? collectionPeriods.slice(-dateType)
-//           : collectionPeriods,
-//         ...result,
-//       });
-//     }
-//   }
-//   return cruxData;
-// }
 
 export function getCruxTrendDataDrillDown({
   pageUrls,

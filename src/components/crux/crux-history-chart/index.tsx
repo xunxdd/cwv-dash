@@ -17,7 +17,14 @@ export default function CruxChart({
       : "url"
   );
   const [selectedDomain, setSelectedDomain] = useState("all");
-  console.log("data", selectedDomain);
+  //console.log("data", selectedDomain);
+  const filteredCwvUrlData =
+    selectedDomain === "all"
+      ? data
+      : data.filter((d) => {
+          return d.URL?.includes(selectedDomain);
+        });
+
   return (
     <>
       <Tabs
@@ -32,7 +39,9 @@ export default function CruxChart({
           setDomainSelected={setSelectedDomain}
         />
       )}
-      {selectedTab == "url" && <ChartContainer data={data} cruxType="url" />}
+      {selectedTab == "url" && (
+        <ChartContainer data={filteredCwvUrlData} cruxType="url" />
+      )}
       {selectedTab == "cad" && (
         <ChartContainer data={cadHistoryData} cruxType="url" />
       )}
