@@ -77,7 +77,7 @@ function UrlsSelection({ urls, state, dispatch }) {
         <div className="mt-4">
           <select
             multiple
-            size={10}
+            size={8}
             disabled={state.urlType !== "select-url"}
             className="w-full p-2 border border-gray-300 rounded"
             onChange={(e) => onUrlSelectionChange(e)}>

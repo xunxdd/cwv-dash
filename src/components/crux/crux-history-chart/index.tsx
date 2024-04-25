@@ -17,12 +17,22 @@ export default function CruxChart({
       : "url"
   );
   const [selectedDomain, setSelectedDomain] = useState("all");
-  //console.log("data", selectedDomain);
+  const [typeSelected, setTypeSelected] = useState("all");
+
+  const regex = typeSelected === "listicle/gallery" ? /g\d+/ : /a\d+/;
+
   const filteredCwvUrlData =
-    selectedDomain === "all"
+    selectedDomain === "all" && typeSelected === "all"
       ? data
       : data.filter((d) => {
-          return d.URL?.includes(selectedDomain);
+          let match = true;
+          if (
+            ["listicle/gallery", "standard/long-form"].includes(typeSelected)
+          ) {
+            match = d.URL?.match(regex);
+          }
+
+          return match && d.URL?.includes(selectedDomain);
         });
 
   return (
@@ -37,6 +47,8 @@ export default function CruxChart({
           domains={availableDomains}
           domainSelected={selectedDomain}
           setDomainSelected={setSelectedDomain}
+          typeSelected={typeSelected}
+          setTypeSelected={setTypeSelected}
         />
       )}
       {selectedTab == "url" && (
