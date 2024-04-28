@@ -24,3 +24,5 @@ The question is why?
 ![Median lighthouse score and page weight](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhQNcw9cSSje6IopZFM62mSPIYh1IGE5laqzg79r8ekBULJ2l2rVt2-CF_fg-0h7-Pk300JyNyCPNTL3Kx7hEZ2V110RkCMLjQsZxpmWY_lr94ElbguRd4cK70VbMffSXM6MUYauQSpm1dGBePscZ4DGW_HeMQMfbPuEprW4Y5jMgRJOQoOaNeeZbeKZO8/s1600/Screenshot%202024-04-27%20at%205.18.52%20PM.png")
 
 The dismal mobile performance of Next JS sites is detailed in this [article](https://calendar.perfplanet.com/2022/mobile-performance-of-next-js-sites/)
+
+An old discussion [here](https://github.com/vercel/next.js/discussions/37341) largely pinned the blame on css-in-js. It points out the cost of rehydration of every dom node on the client and rests some hope on React 18 and react server components.
