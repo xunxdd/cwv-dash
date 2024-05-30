@@ -8,16 +8,24 @@ import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
 import pageData from '@assets/data/all-page-urls.json'
 import cruxHistorySitesData from '@assets/data/sites.json'
 import cadData from '@assets/data/car-and-driver-urls.json'
+import allInpUrlData from '@assets/data/all-inp-urls.json'
 // import inpData0 from '@assets/data/worst-inp-urls.json'
 // import inpData1 from '@assets/data/worst-inp-urls1.json'
 // import inpData2 from '@assets/data/worst-inp-urls2.json'
+let result = [];
+if (Array.isArray(allInpUrlData)) {
+ result = pageData.concat(allInpUrlData);
+  // Use result
+} else {
+  console.error('inpData must be arrays');
+}
 
 const otherSiteData= getValidCruxData({data: cruxHistoryOtherSitesData, cruxType: 'origin'});
 const siteData= getValidCruxData({data: cruxHistorySitesData,  cruxType: 'origin'});
 
 //let inpData = inpData0.concat(inpData1).concat(inpData2);
 const cadHistoryData = getValidCruxData({data: cadData, cruxType: 'url'});
-const pageHistoryData = getValidCruxData({data: pageData, cruxType: 'url'}); 
+const pageHistoryData = getValidCruxData({data: result, cruxType: 'url'}); 
 
 //console.log(pageHistoryData.length)
 ---

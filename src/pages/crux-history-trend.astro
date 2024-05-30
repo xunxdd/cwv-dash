@@ -8,16 +8,14 @@ import pageData from '@assets/data/all-page-urls.json'
 import cadData from '@assets/data/car-and-driver-urls.json'
 import cruxHistorySitesData from '@assets/data/sites.json'
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
-import inpData0 from '@assets/data/worst-inp-urls.json'
-import inpData1 from '@assets/data/worst-inp-urls1.json'
-import inpData2 from '@assets/data/worst-inp-urls2.json'
+import allInpUrlData from '@assets/data/all-inp-urls.json'
 
 let result;
-if (Array.isArray(inpData0) && Array.isArray(inpData1) && Array.isArray(inpData2)) {
- result = pageData.concat(inpData0).concat(inpData1).concat(inpData2);
+if (Array.isArray(allInpUrlData)) {
+ result = pageData.concat(allInpUrlData);
   // Use result
 } else {
-  console.error('inpData0, inpData1, and inpData2 must be arrays');
+  console.error('inpData must be arrays');
 }
 //let inpData = inpData0.concat(inpData1).concat(inpData2);
 

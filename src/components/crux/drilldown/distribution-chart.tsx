@@ -11,8 +11,6 @@ import {
 } from "chart.js";
 import { getMetricDistriutionData } from "@components/cwv-data-utils/chart-utils/crux-chart-data.ts";
 import { metrics } from "@components/cwv-data-utils/constants.js";
-import { fetchCruxData } from "./fetch-crux";
-import { useEffect, useState } from "react";
 
 ChartJS.register(
   BarController,
@@ -60,6 +58,8 @@ function getOptions(title: string): any {
       },
       y: {
         stacked: true,
+        min: 0,
+        max: 100,
       },
     },
   };

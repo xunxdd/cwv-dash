@@ -61,7 +61,7 @@ function Header({ onSort, currentSortColumn, currentSortDirection }) {
     </thead>
   );
 }
-function Body({ dataSorted }) {
+function Body({ dataSorted, cruxType }) {
   return (
     <tbody className="bg-white divide-y divide-gray-200">
       {dataSorted.map((item, index) => {
@@ -79,7 +79,7 @@ function Body({ dataSorted }) {
                   key={`${item.URL}-${key}`}>
                   {key === "URL" ? (
                     <a
-                      href={`/crux-visualizer?url=${item[key]}`}
+                      href={`/crux-visualizer?url=${item[key]}&cruxType=${cruxType}`}
                       className="relative flex flex-wrap font-medium hover:text-gray-900 text-gray-500 dark:text-gray-400 dark:hover:text-white">
                       {item[key]} <span className="mr-2">🔗</span>
                     </a>

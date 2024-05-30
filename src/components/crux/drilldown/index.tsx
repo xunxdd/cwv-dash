@@ -18,6 +18,7 @@ function Error({ text }) {
 export default function Drilldown() {
   const searchParams = new URLSearchParams(window?.location?.search);
   const url = searchParams.get("url");
+  const cruxType = searchParams.get("cruxType");
   const [cwvData, setcwvData] = useState(null);
   let trendCwvData = null;
   const [showError, setShowError] = useState(false);
@@ -25,7 +26,7 @@ export default function Drilldown() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await fetchCruxData(url);
+      const data = await fetchCruxData(url, cruxType);
       setShowError(!data);
       if (data) {
         setcwvData(data);
@@ -38,7 +39,7 @@ export default function Drilldown() {
     trendCwvData = getCruxTrendDataDrillDown({
       pageUrls: [url],
       data: [cwvData],
-      cruxType: "url",
+      cruxType,
       dateType: "",
     });
   }
