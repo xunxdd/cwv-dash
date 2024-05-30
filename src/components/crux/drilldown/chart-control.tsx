@@ -9,11 +9,12 @@ export default function UrlInput() {
   const searchParams = new URLSearchParams(window?.location?.search);
   const url = searchParams.get("url");
   const chartType = searchParams.get("type");
+  const cruxType = searchParams.get("cruxType");
   const [textUrl, setTextUrl] = useState(url || "");
   const type = chartType || "distribution";
 
   const onRatioSelect = (selected: string) => {
-    window.location.href = `/crux-visualizer?url=${textUrl}&type=${selected}`;
+    window.location.href = `/crux-visualizer?url=${textUrl}&type=${selected}&cruxType=${cruxType}`;
   };
 
   const handleInputChange = (event) => {
@@ -21,7 +22,7 @@ export default function UrlInput() {
   };
 
   const onHandleClick = () => {
-    window.location.href = `/crux-visualizer?url=${textUrl}&type=${type}`;
+    window.location.href = `/crux-visualizer?url=${textUrl}&type=${type}&cruxType=${cruxType}`;
   };
 
   return (
