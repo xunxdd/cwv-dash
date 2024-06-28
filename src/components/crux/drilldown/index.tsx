@@ -15,21 +15,21 @@ function Error({ text }) {
   );
 }
 
-export default function Drilldown() {
-  const searchParams = new URLSearchParams(window?.location?.search);
-  const url = searchParams.get("url");
-  const cruxType = searchParams.get("cruxType");
+function DrillDownChart({ url, cruxType, chartType = "distribution" }) {
   const [cwvData, setcwvData] = useState(null);
+  const [error, setError] = useState("");
   let trendCwvData = null;
-  const [showError, setShowError] = useState(false);
-  const chartType = searchParams.get("type") || "distribution";
 
   useEffect(() => {
     async function fetchData() {
-      const data = await fetchCruxData(url, cruxType);
-      setShowError(!data);
-      if (data) {
-        setcwvData(data);
+      try {
+        const data = await fetchCruxData(url, cruxType);
+        console.log(data);
+        if (data) {
+          setcwvData(data);
+        }
+      } catch (e) {
+        setError("Error fetching data");
       }
     }
     fetchData();
@@ -39,30 +39,64 @@ export default function Drilldown() {
     trendCwvData = getCruxTrendDataDrillDown({
       pageUrls: [url],
       data: [cwvData],
-      cruxType,
+      cruxType: cruxType || "url",
       dateType: "",
     });
   }
 
   return (
+    <div>
+      <b>{url}</b>-<b> {cruxType}</b>-<b> {chartType}</b>
+      {error && <Error text={error} />}
+      {cwvData && (
+        <div
+          style={{
+            display: chartType === "distribution" ? "block" : "none",
+          }}>
+          <DistributionChart cwvData={cwvData} />
+        </div>
+      )}
+      {trendCwvData && (
+        <div
+          style={{
+            display: chartType === "75percentile" ? "block" : "none",
+          }}>
+          <TrendChart cwvData={trendCwvData} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function Drilldown() {
+  const searchParams = new URLSearchParams(window?.location?.search);
+  const url = searchParams.get("url");
+  let urlVal = "";
+  let errorMsg = url ? "" : "URL not provided";
+
+  if (url) {
+    try {
+      const urlObj = new URL(url);
+      const { origin, pathname } = urlObj;
+      urlVal = `${origin}${pathname}`;
+    } catch {
+      errorMsg = "Invalid URL";
+    }
+  }
+  const cruxType = searchParams.get("cruxType");
+  const [error, setError] = useState(errorMsg);
+  const chartType = searchParams.get("type") || "distribution";
+
+  return (
     <>
       <ChartControl />
-      {showError && <Error text="No data found for the given URL" />}
-      {cwvData && (
-        <>
-          <div
-            style={{
-              display: chartType === "distribution" ? "block" : "none",
-            }}>
-            <DistributionChart cwvData={cwvData} />
-          </div>
-          <div
-            style={{
-              display: chartType === "75percentile" ? "block" : "none",
-            }}>
-            <TrendChart cwvData={trendCwvData} />
-          </div>
-        </>
+      {error && <Error text={error} />}
+      {url && !error && (
+        <DrillDownChart
+          url={urlVal}
+          cruxType={cruxType}
+          chartType={chartType}
+        />
       )}
     </>
   );

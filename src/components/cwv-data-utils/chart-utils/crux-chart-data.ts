@@ -112,7 +112,10 @@ export function getCruxTrendDataDrillDown({
     console.log(data[i].record);
     const url = key[cruxType].replace(/https?:\/\//, "");
 
-    if (pageUrls.some((pageUrl) => compareUrls(pageUrl, url))) {
+    if (
+      pageUrls.length === 1 ||
+      pageUrls.some((pageUrl) => compareUrls(pageUrl, url))
+    ) {
       const result = {};
 
       for (const name of cruxMetricNames) {
