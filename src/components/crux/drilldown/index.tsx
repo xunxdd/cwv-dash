@@ -24,7 +24,6 @@ function DrillDownChart({ url, cruxType, chartType = "distribution" }) {
     async function fetchData() {
       try {
         const data = await fetchCruxData(url, cruxType);
-        console.log(data);
         if (data) {
           setcwvData(data);
         }
@@ -72,26 +71,29 @@ export default function Drilldown() {
   const searchParams = new URLSearchParams(window?.location?.search);
   const url = searchParams.get("url");
   let urlVal = "";
-  let errorMsg = url ? "" : "URL not provided";
+  const [error, setError] = useState("");
 
-  if (url) {
+  if (url && (origin.startsWith("http://") || origin.startsWith("https://"))) {
     try {
       const urlObj = new URL(url);
-      const { origin, pathname } = urlObj;
-      urlVal = `${origin}${pathname}`;
+      const { origin, pathname, protocol, hostname } = urlObj;
+      if (!urlObj.hostname.startsWith("www.")) {
+        urlVal = `${protocol}//www.${hostname}${urlObj.pathname}`;
+      } else {
+        urlVal = `${origin}${pathname}`;
+      }
     } catch {
-      errorMsg = "Invalid URL";
+      setError("Invalid URL. Please make sure to enter a valid URL");
     }
   }
   const cruxType = searchParams.get("cruxType");
-  const [error, setError] = useState(errorMsg);
   const chartType = searchParams.get("type") || "distribution";
 
   return (
     <>
       <ChartControl />
       {error && <Error text={error} />}
-      {url && !error && (
+      {url && (
         <DrillDownChart
           url={urlVal}
           cruxType={cruxType}
