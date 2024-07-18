@@ -1,7 +1,7 @@
 const fs = require("fs").promises;
 const path = require("path");
 
-const rawJsonFilePath = path.join(__dirname, "./data/loaf.json");
+const rawJsonFilePath = path.join(__dirname, "./data/worst-entries.json");
 
 const loafTableData = require(rawJsonFilePath);
 
