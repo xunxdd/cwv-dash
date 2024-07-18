@@ -1,6 +1,6 @@
 ---
 import Sectionhead from "@components/sectionhead.astro";
-import LoAFTable from "@components/loaf/index";
+import LoAFTable from "@components/loaf/index.astro";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
 import loafData from '@assets/sample-data/loaf.json';
@@ -49,8 +49,20 @@ const columns = [
       <Fragment slot="title">LoAF</Fragment>
       <Fragment slot="desc">LoAF INP Data for selected urls</Fragment>
     </Sectionhead>
+   
     <div class="flex flex-col max-w-4xl mt-8">
       <LoAFTable data={paginatedData} columns={columns} />
+      <div class="pagination flex justify-center space-x-2 my-4">
+       {pageIndex > 1 && <a href={`?page=${pageIndex - 1}`} class="prev">Previous</a>}
+       {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((pageNum) => (
+          <a href={`?page=${pageNum}`} class={`page-number ${pageIndex === pageNum ? 'active' : ''}`} aria-current={pageIndex === pageNum ? 'page' : undefined}>
+            {pageNum}
+          </a>
+       ))}
+      
+      {totalPages > maxPagesToShow && endPage < totalPages && <span class="ellipsis">...</span>}
+      {pageIndex < totalPages && <a href={`?page=${pageIndex + 1}`} class="next">Next</a>}
+      </div>
     </div>
   </Container>  
 </Layout>
