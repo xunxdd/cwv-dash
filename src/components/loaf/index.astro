@@ -1,29 +1,54 @@
 ---
-const sortTable = (data, column, direction) => {
-  // Sorting logic here
-  return [];
-};
 
-const { data, columns } = Astro.props;
-
+const { data, columns, sortBy = 'page', sortDirection = 'asc'} = Astro.props;
 ---
 
+<html>
+<head>
+  <title>Loaf Data</title>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto py-8">
+      <div class="py-2 align-middle inline-block min-w-full">
+          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">      
+             <thead class="bg-gray-50">
+                <tr>
+                {columns.map(({key, label}) => (
+                  <th  scope="col" data-key={key} data-sort={sortBy===key? sortDirection : 'asc'} class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer">
+                    {" "} {label}  
+                    {sortBy === key  && (<span>{sortDirection === "asc" ? "▲" : "▼"}</span>)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {data.map((row, index) => (
+                <tr class={index % 2 === 0 ? "bg-gray-100" : ""}>
+                  {columns.map((column) => (
+                    <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500 max-w-lg truncate">{row[column.key]}</td>
+                  ))}
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>  
+    </div>
+  </div>
+  <script>
+    const searchParams = new URLSearchParams(document.location.search);
+    document.addEventListener('DOMContentLoaded', () => {
+      const tableHeaders = document.querySelectorAll('th');
+      tableHeaders.forEach(header => {
+        header.addEventListener('click', (e) => {
+          console.log('Sorting by:', e.target?.dataset?.sort);
+          searchParams.set('sortBy', e.target?.dataset?.key);
+          searchParams.set('sortDirection', e.target?.dataset?.sort === 'asc' ? 'desc' : 'asc');
+          document.location.search =  searchParams.toString(); 
+        });
+      });
+    });
+  </script>
+</body>
+</html>
 
-<table>
-  <thead>
-    <tr>
-      {columns.map((column) => (
-        <th>{column.label}</th>
-      ))}
-    </tr>
-  </thead>
-  <tbody>
-    {data.map((row) => (
-      <tr>
-        {columns.map((column) => (
-          <td>{row[column.key]}</td>
-        ))}
-      </tr>
-    ))}
-  </tbody>
-</table>
