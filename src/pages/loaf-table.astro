@@ -30,9 +30,12 @@ const sortedData = loafData.sort((a: any, b: any) => {
     const dateB: any = new Date(b[sortBy]);
     return dateA - dateB; // This works because date subtraction returns the difference in milliseconds
   } else {
+    const numberA = parseInt(a[sortBy], 10);
+    const numberB = parseInt(b[sortBy], 10);
+    console.log("Number A:", numberA);
     // Fallback for numeric and other sortable fields
-    if (a[sortBy] < b[sortBy]) return -1;
-    if (a[sortBy] > b[sortBy]) return 1;
+    if ( numberA < numberB) return -1;
+    if ( numberA > numberB) return 1;
     return 0;
   }
 });

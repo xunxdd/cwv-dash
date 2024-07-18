@@ -41,10 +41,12 @@ const { data, columns, sortBy = 'page', sortDirection = 'asc'} = Astro.props;
       const tableHeaders = document.querySelectorAll('th');
       tableHeaders.forEach(header => {
         header.addEventListener('click', (e) => {
-          // console.log('Sorting by:', e.target?.dataset?.sort);
-          searchParams.set('sortBy', e.target?.dataset?.key);
-          searchParams.set('sortDirection', e.target?.dataset?.sort === 'asc' ? 'desc' : 'asc');
-          document.location.search =  searchParams.toString(); 
+          console.log('Sorting by:', e.target?.dataset?.key, e.target?.dataset?.sort);
+          if (e.target?.dataset?.key) {
+            searchParams.set('sortBy', e.target?.dataset?.key);
+            searchParams.set('sortDirection', e.target?.dataset?.sort === 'asc'  ? 'desc' : 'asc');
+            document.location.search =  searchParams.toString(); 
+          }
         });
       });
     });
