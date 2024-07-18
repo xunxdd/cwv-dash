@@ -1,0 +1,56 @@
+---
+import Sectionhead from "@components/sectionhead.astro";
+import LoAFTable from "@components/loaf/index";
+import Container from "@components/container.astro";
+import Layout from "@layouts/Layout.astro";
+import loafData from '@assets/sample-data/loaf.json';
+
+// Pagination settings
+const pageSize = 10; // Number of items per page
+const { searchParams } = new URL(Astro.request.url);
+const pageIndex = parseInt(searchParams.get('page') || '1', 10); // Current page number
+
+console.log("URL:", Astro.url.searchParams.get('page') || ''); // Debug: Log the URL
+console.log("Search Params:", searchParams.toString()); // Debug: Log the search parameters
+console.log("Page Index:", pageIndex); // Debug: Log the parsed page index
+// Calculate pagination
+const startIndex = (pageIndex - 1) * pageSize;
+const endIndex = startIndex + pageSize;
+
+const inpLoafData = loafData.map((data) => {
+  const {page, entries, cwvScore, geo_country, device_category, event_timestamp} = data;
+  return {
+   page, entries, cwvScore, geo_country, device_category, event_timestamp
+  };
+});
+const totalPages = Math.ceil(inpLoafData.length / pageSize);
+const paginatedData = inpLoafData.slice(startIndex, endIndex);
+const maxPagesToShow = 10; // Maximum number of pages to display in the pagination
+let startPage = Math.max(1, pageIndex - Math.floor(maxPagesToShow / 2));
+let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+// Adjust startPage if we're near the end of totalPages and can't show maxPagesToShow
+startPage = Math.max(1, endPage - maxPagesToShow + 1);
+
+const columns = [
+  { label: 'URL', key: 'page' },
+  { label: 'Total Entries', key: 'entries' },
+  { label: 'Score', key: 'cwvScore' },
+  { label: 'Country', key: 'geo_country' },
+  { label: 'Device', key: 'device_category' },
+  { label: 'Date', key: 'event_timestamp' }];
+  console.log({page: pageIndex})
+---
+
+
+<Layout title="Dashboard">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">LoAF</Fragment>
+      <Fragment slot="desc">LoAF INP Data for selected urls</Fragment>
+    </Sectionhead>
+    <div class="flex flex-col max-w-4xl mt-8">
+      <LoAFTable data={paginatedData} columns={columns} />
+    </div>
+  </Container>  
+</Layout>

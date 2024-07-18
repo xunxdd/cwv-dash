@@ -1,0 +1,17 @@
+---
+const  maxPagesToShow=10
+const { pageIndex, endPage, startPage, totalPages } = Astro.props;
+
+---
+
+<div class="pagination flex justify-center space-x-2 my-4">
+  {pageIndex > 1 && <a href={`?page=${pageIndex - 1}`} class="prev">Previous</a>}
+  
+  {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((pageNum) => (
+    <a href={`?page=${pageNum}`} class={`page-number ${pageIndex === pageNum ? 'active' : ''}`} aria-current={pageIndex === pageNum ? 'page' : undefined}>
+      {pageNum}
+    </a>
+  ))}
+  {totalPages > maxPagesToShow && endPage < totalPages && <span class="ellipsis">...</span>}
+  {pageIndex < totalPages && <a href={`?page=${pageIndex + 1}`} class="next">Next</a>}
+</div>

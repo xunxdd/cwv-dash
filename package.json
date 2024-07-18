@@ -12,15 +12,16 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@astrojs/mdx": "^1.1.5",
-    "@astrojs/react": "^3.1.1",
-    "@astrojs/sitemap": "^3.0.3",
-    "@astrojs/tailwind": "^5.0.2",
+    "@astrojs/mdx": "^3.1.2",
+    "@astrojs/react": "^3.6.0",
+    "@astrojs/sitemap": "^3.1.6",
+    "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/vercel": "^7.7.2",
     "@fontsource-variable/inter": "^5.0.15",
     "@tailwindcss/typography": "^0.5.10",
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.24",
-    "astro": "^3.5.5",
+    "astro": "^4.11.6",
     "astro-icon": "^0.8.1",
     "astro-navbar": "^2.3.0",
     "astro-seo": "^0.8.0",
@@ -36,5 +37,8 @@
     "solid-js": "^1.8.16",
     "tailwindcss": "^3.3.5",
     "vitest": "^1.4.0"
+  },
+  "devDependencies": {
+    "csv-parser": "^3.0.0"
   }
 }
