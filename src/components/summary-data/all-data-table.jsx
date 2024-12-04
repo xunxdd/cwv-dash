@@ -58,14 +58,14 @@ function Body({ dataSorted }) {
 export default function AllDataTable({ data }) {
   const [sortColumn, setSortColumn] = useState("INP");
   const [sortDirection, setSortDirection] = useState("asc");
-
+  console.log("test");
   const dataSorted = sortCWVData(
     data,
     sortColumn || metrics.INP.key,
     sortDirection
   );
-  const date = dataSorted[0].analysisUTCTimestamp;
-
+  const date = dataSorted[1].analysisUTCTimestamp;
+  console.log(date, "test");
   const handleSort = (column) => {
     if (sortColumn === column) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
