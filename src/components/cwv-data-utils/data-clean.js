@@ -9,7 +9,7 @@ export function sanitizeCWVData({ data, cruxType = "origin", summaryOnly }) {
   const cwvData = [];
   data.forEach((item) => {
     const { metrics, collectionPeriods, key } = item.record;
-    const totalCollectionPeriods = collectionPeriods.length - 2; // modify to adjust time period
+    const totalCollectionPeriods = collectionPeriods.length - 1; // modify to adjust time period
     const result = summaryOnly ? {} : { collectionPeriods, metrics };
     for (const name of metricNames) {
       try {
