@@ -17,6 +17,8 @@ import("file-saver")
     console.error("Failed to load file-saver", err);
   });
 
+const metricOptions = columns.filter(({ threshold }) => threshold);
+
 function downloadCSV(data) {
   try {
     const csvData = data.map((item) => {
@@ -96,33 +98,38 @@ function Body({ dataSorted, cruxType }) {
   );
 }
 
-function getFilterData(data) {
+function getFilterData(data, metricName) {
   return {
     good: filterCWVHistoryData({
       data,
+      metricName,
       filter: "good",
     }),
-    poor: filterCWVHistoryData({ data, filter: "poor" }),
+    poor: filterCWVHistoryData({ data, metricName, filter: "poor" }),
     needsImprovement: filterCWVHistoryData({
       data,
+      metricName,
       filter: "needsImprovement",
     }),
   };
 }
+
 export default function AllDataTable({ data, cruxType = "origin" }) {
   const [sortColumn, setSortColumn] = useState("interaction_to_next_paint");
   const [sortDirection, setSortDirection] = useState("asc");
   const [filter, setFilter] = useState("all");
+  const [summaryMetric, setSummaryMetric] = useState(metrics.INP.cruxKey);
   const sanitizedData = data;
 
   if (!sanitizedData) return null;
 
   const filterData = useMemo(
-    () => getFilterData(sanitizedData),
-    [sanitizedData]
+    () => getFilterData(sanitizedData, summaryMetric),
+    [sanitizedData, summaryMetric]
   );
 
   const filteredResult = filterData[filter] ?? sanitizedData;
+  const selectedMetric = metricOptions.find(({ key }) => key === summaryMetric);
 
   const dataSorted = useMemo(
     () =>
@@ -166,6 +173,13 @@ export default function AllDataTable({ data, cruxType = "origin" }) {
     setFilter(event.target.value);
   };
 
+  const handleSummaryMetricChange = (event) => {
+    const metricName = event.target.value;
+    setSummaryMetric(metricName);
+    setSortColumn(metricName);
+    setSortDirection("asc");
+  };
+
   return (
     <div className="flex flex-col ">
       <div className="-my-2 overflow-x-auto">
@@ -176,8 +190,21 @@ export default function AllDataTable({ data, cruxType = "origin" }) {
               From {firstDateString} to {lastDateString}{" "}
             </span>
           </div>
-          <div>
-            INP
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <label htmlFor="summary-metric" className="text-sm">
+              Summarize by
+            </label>
+            <select
+              id="summary-metric"
+              value={summaryMetric}
+              onChange={handleSummaryMetricChange}
+              className="border rounded p-1 text-sm">
+              {metricOptions.map(({ key, label }) => (
+                <option key={key} value={key}>
+                  {label}
+                </option>
+              ))}
+            </select>
             <span className="text-green-600 px-3">
               Good: {filterData.good.length}{" "}
             </span>
@@ -192,7 +219,7 @@ export default function AllDataTable({ data, cruxType = "origin" }) {
         <h2 className="text-lg mt-4 text-black-600"></h2>
         <div className="flex justify-between mt-4">
           <div>
-            Filter by:
+            Filter by {selectedMetric?.label ?? "metric"}:
             <select
               value={filter}
               onChange={handleFilterChange}

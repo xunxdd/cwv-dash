@@ -32,7 +32,12 @@ export default function UrlInput() {
   };
 
   const onHandleClick = () => {
-    window.location.href = `/crux-visualizer?url=${textUrl}&type=${type}&cruxType=${crux}`;
+    const params = new URLSearchParams({
+      url: textUrl,
+      type,
+      cruxType: crux,
+    });
+    window.location.href = `/crux-visualizer?${params.toString()}`;
   };
 
   return (

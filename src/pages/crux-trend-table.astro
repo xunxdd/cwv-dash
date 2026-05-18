@@ -36,9 +36,13 @@ const pageHistoryData = getValidCruxData({data: result, cruxType: 'url'});
       <Fragment slot="title">Crux Data</Fragment>
       <Fragment slot="desc">Core Web Vitasl as in <a class='text-blue-600' href="https://developer.chrome.com/docs/crux/history-api/">Crux History Api</a></Fragment>
     </Sectionhead>
+    <div class="px-4">
+      <a class="text-blue-600 hover:text-blue-800" href="/crux-issue-timing">
+        View issue timing report
+      </a>
+    </div>
     <div class="flex flex-col p-4">
        <CruxSummaryData pageData={pageHistoryData} siteData={siteData} otherSiteData={otherSiteData} cadHistoryData={cadHistoryData} client:load /> 
     </div>  
   </Container>  
 </Layout>
-

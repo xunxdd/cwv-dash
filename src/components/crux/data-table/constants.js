@@ -4,7 +4,7 @@ export const columns = [
   {
     label: "LCP",
     key: metrics.LCP.cruxKey,
-    threshold: { good: 2.5, poor: 4 },
+    threshold: { good: 2500, poor: 4000 },
   },
   {
     label: "INP",

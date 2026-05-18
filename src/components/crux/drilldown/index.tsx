@@ -28,11 +28,11 @@ function DrillDownChart({ url, cruxType, chartType = "distribution" }) {
           setcwvData(data);
         }
       } catch (e) {
-        setError("Error fetching data");
+        setError(e?.error || e?.message || "Error fetching data");
       }
     }
     fetchData();
-  }, [url]);
+  }, [url, cruxType]);
 
   if (cwvData) {
     trendCwvData = getCruxTrendDataDrillDown({
@@ -73,7 +73,7 @@ export default function Drilldown() {
   let urlVal = "";
   const [error, setError] = useState("");
 
-  if (url && (origin.startsWith("http://") || origin.startsWith("https://"))) {
+  if (url) {
     try {
       const urlObj = new URL(url);
       const { origin, pathname, protocol, hostname } = urlObj;
