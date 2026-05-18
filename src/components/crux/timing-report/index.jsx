@@ -380,37 +380,15 @@ function TimingReportTable({ data, metricName, reportType }) {
   );
 }
 
-export default function CruxIssueTiming({ siteData, otherSiteData }) {
-  const [selectedDataSet, setSelectedDataSet] = useState("origin");
+export default function CruxIssueTiming({ siteData }) {
   const [selectedMetric, setSelectedMetric] = useState(
     "cumulative_layout_shift"
   );
   const [reportType, setReportType] = useState("worsening");
-  const data = selectedDataSet === "origin" ? siteData : otherSiteData;
 
   return (
     <div>
       <div className="flex flex-wrap items-center gap-3">
-        <div>
-          <button
-            className={
-              selectedDataSet === "origin"
-                ? "px-4 py-2 bg-blue-500 text-white"
-                : "px-4 py-2 bg-gray-100 text-black"
-            }
-            onClick={() => setSelectedDataSet("origin")}>
-            Origin Data
-          </button>
-          <button
-            className={
-              selectedDataSet === "sample-origins"
-                ? "px-4 py-2 bg-blue-500 text-white"
-                : "px-4 py-2 bg-gray-100 text-black"
-            }
-            onClick={() => setSelectedDataSet("sample-origins")}>
-            Sample Site Data
-          </button>
-        </div>
         <label htmlFor="timing-metric" className="text-sm">
           Metric
         </label>
@@ -438,7 +416,7 @@ export default function CruxIssueTiming({ siteData, otherSiteData }) {
         </select>
       </div>
       <TimingReportTable
-        data={data}
+        data={siteData}
         metricName={selectedMetric}
         reportType={reportType}
       />

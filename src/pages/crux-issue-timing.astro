@@ -3,17 +3,11 @@ import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
 import CruxIssueTiming from "@components/crux/timing-report/index";
 import { getValidCruxData } from "@components/cwv-data-utils/data-clean";
-import cruxHistoryOtherSitesData from "@assets/sample-data/crux-history-othersites.json";
 import cruxHistorySitesData from "@assets/data/crux-history-sites.json";
 import Layout from "@layouts/Layout.astro";
 
 const siteData = getValidCruxData({
   data: cruxHistorySitesData,
-  cruxType: "origin",
-  summaryOnly: false,
-});
-const otherSiteData = getValidCruxData({
-  data: cruxHistoryOtherSitesData,
   cruxType: "origin",
   summaryOnly: false,
 });
@@ -29,11 +23,7 @@ const otherSiteData = getValidCruxData({
       </Fragment>
     </Sectionhead>
     <div class="flex flex-col p-4">
-      <CruxIssueTiming
-        siteData={siteData}
-        otherSiteData={otherSiteData}
-        client:load
-      />
+      <CruxIssueTiming siteData={siteData} client:load />
     </div>
   </Container>
 </Layout>
