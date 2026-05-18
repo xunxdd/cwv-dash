@@ -11,11 +11,7 @@ export default function CruxChart({
   cadHistoryData,
   availableDomains,
 }) {
-  const [selectedTab, setSelectedTab] = useState(
-    typeof window === "undefined" || window.envs?.environment === "production"
-      ? "sample-origins"
-      : "url"
-  );
+  const [selectedTab, setSelectedTab] = useState("url");
   const [selectedDomain, setSelectedDomain] = useState("all");
   const [typeSelected, setTypeSelected] = useState("all");
 

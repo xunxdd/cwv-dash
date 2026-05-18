@@ -1,21 +1,8 @@
-import { useEffect, useState } from "react";
-
 export function Tabs({ selectedTab, setSelectedTab, options }) {
-  const [tabOptions, setTabOptions] = useState(options);
-
-  useEffect(() => {
-    const env = window.envs?.environment;
-
-    if (env === "production") {
-      setSelectedTab("sample-origins");
-      setTabOptions([]);
-    }
-  }, []);
-
   return (
     <>
       <div>
-        {tabOptions.map(({ label, key }) => {
+        {options.map(({ label, key }) => {
           return (
             <button
               key={key}
