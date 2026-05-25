@@ -15,6 +15,7 @@ const sortableTableColumns = [
   { key: "URL", label: "Origin" },
   { key: "startValue", label: "Start" },
   { key: "currentValue", label: "Current" },
+  { key: "lastPeriodDelta", label: "Last Period" },
   { key: "delta", label: "Delta" },
   { key: "currentStatus", label: "Status" },
 ];
@@ -37,13 +38,87 @@ function getSortableDate(dateString) {
   return new Date(year, month - 1, day);
 }
 
+function getDateTimestamp(date) {
+  if (!date) return 0;
+  return new Date(
+    Number(date.year),
+    Number(date.month) - 1,
+    Number(date.day)
+  ).getTime();
+}
+
+function getLatestCollectionPeriodLabel(data) {
+  const latestPeriod = (data ?? []).reduce((latest, item) => {
+    const period = item.lastCollectionPeriod ?? item.collectionPeriods?.at(-1);
+    if (!period?.lastDate) return latest;
+    if (!latest?.lastDate) return period;
+    return getDateTimestamp(period.lastDate) > getDateTimestamp(latest.lastDate)
+      ? period
+      : latest;
+  }, null);
+
+  return latestPeriod?.lastDate
+    ? getDateString(latestPeriod.lastDate)
+    : "Current";
+}
+
 function getValueDelta(startValue, currentValue) {
   return Number((currentValue - startValue).toFixed(3));
 }
 
 function getNumericValue(value) {
+  if (value == null || value === "na") return null;
   const numericValue = Number(value);
   return Number.isNaN(numericValue) ? null : numericValue;
+}
+
+function getLastPeriodChange(values) {
+  const currentIndex = values.length - 1;
+  const previousValue = getNumericValue(values[currentIndex - 1]);
+  const currentValue = getNumericValue(values[currentIndex]);
+
+  if (previousValue == null || currentValue == null) {
+    return {
+      lastPeriodDelta: null,
+      lastPeriodDirection: "na",
+    };
+  }
+
+  const lastPeriodDelta = getValueDelta(previousValue, currentValue);
+  let lastPeriodDirection = "flat";
+  if (lastPeriodDelta < 0) {
+    lastPeriodDirection = "improved";
+  } else if (lastPeriodDelta > 0) {
+    lastPeriodDirection = "worse";
+  }
+
+  return {
+    lastPeriodDelta,
+    lastPeriodDirection,
+  };
+}
+
+function formatSignedDelta(value) {
+  if (value == null) return "n/a";
+  if (value > 0) return `+${value}`;
+  return String(value);
+}
+
+function formatLastPeriodChange(row) {
+  if (row.lastPeriodDelta == null) return "n/a";
+  const directionLabel = {
+    improved: "Improved",
+    worse: "Worse",
+    flat: "Flat",
+  }[row.lastPeriodDirection];
+
+  return `${directionLabel} ${formatSignedDelta(row.lastPeriodDelta)}`;
+}
+
+function getLastPeriodChangeClass(direction) {
+  if (direction === "improved") return "text-green-700";
+  if (direction === "worse") return "text-red-700";
+  return "text-gray-600";
 }
 
 function hasWorseStatus(startStatus, currentStatus) {
@@ -60,7 +135,13 @@ function compareRows(a, b, sortKey) {
   if (sortKey === "currentStatus") {
     return statusRank[a.currentStatus] - statusRank[b.currentStatus];
   }
-  return Number(a[sortKey]) - Number(b[sortKey]);
+
+  const aValue = getNumericValue(a[sortKey]);
+  const bValue = getNumericValue(b[sortKey]);
+  if (aValue == null && bValue == null) return 0;
+  if (aValue == null) return -1;
+  if (bValue == null) return 1;
+  return aValue - bValue;
 }
 
 function getFilteredCollectionData({ values, periods }) {
@@ -95,6 +176,7 @@ function getCurrentNonGoodRun({ item, values, periods, statuses }) {
     currentValue: values[currentIndex],
     currentStatus,
     delta: getValueDelta(values[startIndex], values[currentIndex]),
+    ...getLastPeriodChange(values),
     sparklineValues: values.slice(Math.max(0, startIndex - 1), currentIndex + 1),
   };
 }
@@ -149,6 +231,7 @@ function getRecentWorseningRun({ item, values, periods, statuses, metricName }) 
     currentValue,
     currentStatus,
     delta,
+    ...getLastPeriodChange(values),
     sparklineValues: values.slice(
       Math.max(0, baselineIndex - 1),
       currentIndex + 1
@@ -268,6 +351,14 @@ function TimingReportTable({ data, metricName, reportType }) {
     () => getTimingReport(data, metricName, reportType),
     [data, metricName, reportType]
   );
+  const tableColumns = useMemo(() => {
+    const currentColumnLabel = getLatestCollectionPeriodLabel(data);
+    return sortableTableColumns.map((column) =>
+      column.key === "currentValue"
+        ? { ...column, label: currentColumnLabel }
+        : column
+    );
+  }, [data]);
   const sortedRows = useMemo(() => {
     return timingReport
       .flatMap(({ startDate, rows }) =>
@@ -317,7 +408,7 @@ function TimingReportTable({ data, metricName, reportType }) {
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
-              {sortableTableColumns.map(({ key, label }) => {
+              {tableColumns.map(({ key, label }) => {
                 const isActiveSort = sortConfig.key === key;
                 return (
                   <th
@@ -362,8 +453,14 @@ function TimingReportTable({ data, metricName, reportType }) {
                 <td className="px-3 py-2 text-sm text-gray-600 whitespace-nowrap">
                   {row.currentValue}
                 </td>
+                <td
+                  className={`px-3 py-2 text-sm font-medium whitespace-nowrap ${getLastPeriodChangeClass(
+                    row.lastPeriodDirection
+                  )}`}>
+                  {formatLastPeriodChange(row)}
+                </td>
                 <td className="px-3 py-2 text-sm text-gray-600 whitespace-nowrap">
-                  +{row.delta}
+                  {formatSignedDelta(row.delta)}
                 </td>
                 <td className="px-3 py-2 text-sm text-gray-600 whitespace-nowrap">
                   {formatStatus(row.currentStatus)}
