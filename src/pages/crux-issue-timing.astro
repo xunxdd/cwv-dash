@@ -4,6 +4,7 @@ import Sectionhead from "@components/sectionhead.astro";
 import CruxIssueTiming from "@components/crux/timing-report/index";
 import { getValidCruxData } from "@components/cwv-data-utils/data-clean";
 import cruxHistorySitesData from "@assets/data/sites.json";
+import cruxHistorySitesDesktopData from "@assets/data/sites-desktop.json";
 import Layout from "@layouts/Layout.astro";
 
 const siteData = getValidCruxData({
@@ -11,6 +12,15 @@ const siteData = getValidCruxData({
   cruxType: "origin",
   summaryOnly: false,
 });
+const siteDesktopData = getValidCruxData({
+  data: cruxHistorySitesDesktopData,
+  cruxType: "origin",
+  summaryOnly: false,
+});
+const dataByFormFactor = {
+  PHONE: siteData,
+  DESKTOP: siteDesktopData,
+};
 ---
 
 <Layout title="CrUX Issue Timing">
@@ -22,7 +32,7 @@ const siteData = getValidCruxData({
       </Fragment>
     </Sectionhead>
     <div class="flex flex-col p-4">
-      <CruxIssueTiming siteData={siteData} client:load />
+      <CruxIssueTiming dataByFormFactor={dataByFormFactor} client:load />
     </div>
   </Container>
 </Layout>

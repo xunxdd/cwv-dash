@@ -1,5 +1,9 @@
-export async function fetchCruxData(url, cruxType = "origin") {
-  const params = new URLSearchParams({ url, cruxType });
+export async function fetchCruxData(
+  url,
+  cruxType = "origin",
+  formFactor = "PHONE"
+) {
+  const params = new URLSearchParams({ url, cruxType, formFactor });
 
   return fetch(`/api/crux-record.json?${params.toString()}`)
     .then(async (response) => {

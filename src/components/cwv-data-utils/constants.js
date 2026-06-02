@@ -1,8 +1,8 @@
 const urlQualityOptions = [
   { value: "", label: "First 10 urls" },
   { value: "select-url", label: "Used Selected URLs" },
-  { value: "best-url", label: "Best 5 URLs (By INP)" },
-  { value: "worst-url", label: "Worst 5 URLs (By INP)" },
+  { value: "best-url", label: "Best 5 URLs (By CLS)" },
+  { value: "worst-url", label: "Worst 5 URLs (By CLS)" },
 ];
 
 const datesOptions = [
@@ -46,9 +46,13 @@ export const cruxMetricNames = [
 
 export const cruxTabOptions = [
   { key: "url", label: "All Page Urls" },
-  { key: "cad", label: "CAD Urls" },
   { key: "origin", label: "Origin Data" },
   { key: "sample-origins", label: "Sample Site Data" },
+];
+
+export const formFactorOptions = [
+  { value: "PHONE", label: "Mobile" },
+  { value: "DESKTOP", label: "Desktop" },
 ];
 
 export { urlQualityOptions, datesOptions, metrics, cwvDatesOptions };

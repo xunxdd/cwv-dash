@@ -1,6 +1,6 @@
 import { columns } from "./constants";
 
-export function sortCWVData(data, metricName = "INP", sortDirection = "asc") {
+export function sortCWVData(data, metricName = "CLS", sortDirection = "asc") {
   // Get the last day's data
   const lastDay = data[data.length - 1].analysisUTCTimestamp;
 
@@ -24,7 +24,7 @@ export function sortCWVData(data, metricName = "INP", sortDirection = "asc") {
 
 export function filterCWVHistoryData({
   data,
-  metricName = "interaction_to_next_paint",
+  metricName = "cumulative_layout_shift",
   filter = "all",
 }) {
   if (!data || !Array.isArray(data)) return [];
@@ -55,7 +55,7 @@ export function filterCWVHistoryData({
 
 export function sortCWVHistoryData({
   data,
-  metricName = "interaction_to_next_paint",
+  metricName = "cumulative_layout_shift",
   sortDirection = "asc",
   excludeNA = false,
 }) {

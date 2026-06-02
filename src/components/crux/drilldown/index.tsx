@@ -15,7 +15,12 @@ function Error({ text }) {
   );
 }
 
-function DrillDownChart({ url, cruxType, chartType = "distribution" }) {
+function DrillDownChart({
+  url,
+  cruxType,
+  formFactor,
+  chartType = "distribution",
+}) {
   const [cwvData, setcwvData] = useState(null);
   const [error, setError] = useState("");
   let trendCwvData = null;
@@ -23,7 +28,7 @@ function DrillDownChart({ url, cruxType, chartType = "distribution" }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await fetchCruxData(url, cruxType);
+        const data = await fetchCruxData(url, cruxType, formFactor);
         if (data) {
           setcwvData(data);
         }
@@ -32,7 +37,7 @@ function DrillDownChart({ url, cruxType, chartType = "distribution" }) {
       }
     }
     fetchData();
-  }, [url, cruxType]);
+  }, [url, cruxType, formFactor]);
 
   if (cwvData) {
     trendCwvData = getCruxTrendDataDrillDown({
@@ -45,7 +50,7 @@ function DrillDownChart({ url, cruxType, chartType = "distribution" }) {
 
   return (
     <div>
-      <b>{url}</b>-<b> {cruxType}</b>-<b> {chartType}</b>
+      <b>{url}</b>-<b> {cruxType}</b>-<b> {formFactor}</b>-<b> {chartType}</b>
       {error && <Error text={error} />}
       {cwvData && (
         <div
@@ -87,6 +92,10 @@ export default function Drilldown() {
     }
   }
   const cruxType = searchParams.get("cruxType");
+  const formFactor =
+    searchParams.get("formFactor")?.toUpperCase() === "DESKTOP"
+      ? "DESKTOP"
+      : "PHONE";
   const chartType = searchParams.get("type") || "distribution";
 
   return (
@@ -97,6 +106,7 @@ export default function Drilldown() {
         <DrillDownChart
           url={urlVal}
           cruxType={cruxType}
+          formFactor={formFactor}
           chartType={chartType}
         />
       )}

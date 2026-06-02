@@ -63,7 +63,16 @@ function Header({ onSort, currentSortColumn, currentSortDirection }) {
     </thead>
   );
 }
-function Body({ dataSorted, cruxType }) {
+function getVisualizerHref({ url, cruxType, formFactor }) {
+  const params = new URLSearchParams({
+    url,
+    cruxType,
+    formFactor,
+  });
+  return `/crux-visualizer?${params.toString()}`;
+}
+
+function Body({ dataSorted, cruxType, formFactor }) {
   return (
     <tbody className="bg-white divide-y divide-gray-200">
       {dataSorted.map((item, index) => {
@@ -81,7 +90,11 @@ function Body({ dataSorted, cruxType }) {
                   key={`${item.URL}-${key}`}>
                   {key === "URL" ? (
                     <a
-                      href={`/crux-visualizer?url=${item[key]}&cruxType=${cruxType}`}
+                      href={getVisualizerHref({
+                        url: item[key],
+                        cruxType,
+                        formFactor,
+                      })}
                       className="relative flex flex-wrap font-medium hover:text-gray-900 text-gray-500 dark:text-gray-400 dark:hover:text-white">
                       {item[key]} <span className="mr-2">🔗</span>
                     </a>
@@ -114,11 +127,15 @@ function getFilterData(data, metricName) {
   };
 }
 
-export default function AllDataTable({ data, cruxType = "origin" }) {
-  const [sortColumn, setSortColumn] = useState("interaction_to_next_paint");
+export default function AllDataTable({
+  data,
+  cruxType = "origin",
+  formFactor = "PHONE",
+}) {
+  const [sortColumn, setSortColumn] = useState(metrics.CLS.cruxKey);
   const [sortDirection, setSortDirection] = useState("asc");
   const [filter, setFilter] = useState("all");
-  const [summaryMetric, setSummaryMetric] = useState(metrics.INP.cruxKey);
+  const [summaryMetric, setSummaryMetric] = useState(metrics.CLS.cruxKey);
   const sanitizedData = data;
 
   if (!sanitizedData) return null;
@@ -135,14 +152,14 @@ export default function AllDataTable({ data, cruxType = "origin" }) {
     () =>
       sortCWVHistoryData({
         data: filteredResult,
-        metricName: sortColumn || metrics.INP.cruxKey,
+        metricName: sortColumn || metrics.CLS.cruxKey,
         sortDirection,
         sortColumn,
       }),
     [
       sortColumn,
       sortDirection,
-      metrics.INP.cruxKey,
+      metrics.CLS.cruxKey,
       sortDirection,
       filteredResult,
     ]
@@ -245,7 +262,11 @@ export default function AllDataTable({ data, cruxType = "origin" }) {
                 currentSortColumn={sortColumn}
                 currentSortDirection={sortDirection}
               />
-              <Body dataSorted={dataSorted} cruxType={cruxType} />
+              <Body
+                dataSorted={dataSorted}
+                cruxType={cruxType}
+                formFactor={formFactor}
+              />
             </table>
           </div>
         </div>

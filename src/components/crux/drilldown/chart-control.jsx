@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { formFactorOptions } from "@components/cwv-data-utils/constants";
 
 const ratioOptions = [
   { value: "distribution", label: "Distribution" },
@@ -15,9 +16,14 @@ export default function UrlInput() {
   const url = searchParams.get("url");
   const chartType = searchParams.get("type") || "distribution";
   const cruxType = searchParams.get("cruxType") || "url";
+  const formFactor =
+    searchParams.get("formFactor")?.toUpperCase() === "DESKTOP"
+      ? "DESKTOP"
+      : "PHONE";
   const [textUrl, setTextUrl] = useState(url || "");
   const [type, setType] = useState(chartType);
   const [crux, setCrux] = useState(cruxType);
+  const [selectedFormFactor, setSelectedFormFactor] = useState(formFactor);
 
   const onRatioSelect = (selected) => {
     setType(selected);
@@ -25,6 +31,10 @@ export default function UrlInput() {
 
   const onCruxTypeSelect = (selected) => {
     setCrux(selected);
+  };
+
+  const onFormFactorSelect = (selected) => {
+    setSelectedFormFactor(selected);
   };
 
   const handleInputChange = (event) => {
@@ -36,6 +46,7 @@ export default function UrlInput() {
       url: textUrl,
       type,
       cruxType: crux,
+      formFactor: selectedFormFactor,
     });
     window.location.href = `/crux-visualizer?${params.toString()}`;
   };
@@ -70,6 +81,22 @@ export default function UrlInput() {
               value={option.value}
               checked={crux === option.value}
               onChange={() => onCruxTypeSelect(option.value)}
+              className="form-radio text-indigo-600 h-5 w-5"
+            />
+            <span className="ml-2 text-gray-700">{option.label}</span>
+          </label>
+        ))}
+        <span className="space-x-1 text-lg">Device: </span>
+        {formFactorOptions.map((option) => (
+          <label
+            key={option.value}
+            className="flex items-center cursor-pointer">
+            <input
+              type="radio"
+              name="formFactor"
+              value={option.value}
+              checked={selectedFormFactor === option.value}
+              onChange={() => onFormFactorSelect(option.value)}
               className="form-radio text-indigo-600 h-5 w-5"
             />
             <span className="ml-2 text-gray-700">{option.label}</span>

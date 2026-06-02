@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { columns } from "@components/cwv-data-utils/constants";
+import {
+  columns,
+  formFactorOptions,
+} from "@components/cwv-data-utils/constants";
 import { getDateString } from "@components/cwv-data-utils/stats";
 
 const metricOptions = columns.filter(({ threshold }) => threshold);
@@ -666,15 +669,32 @@ function TimingReportTable({ data, metricName, reportType }) {
   );
 }
 
-export default function CruxIssueTiming({ siteData }) {
+export default function CruxIssueTiming({ siteData, dataByFormFactor }) {
   const [selectedMetric, setSelectedMetric] = useState(
     "cumulative_layout_shift"
   );
   const [reportType, setReportType] = useState("worsening");
+  const [selectedFormFactor, setSelectedFormFactor] = useState("PHONE");
+  const currentSiteData =
+    dataByFormFactor?.[selectedFormFactor] ?? siteData ?? [];
 
   return (
     <div>
       <div className="flex flex-wrap items-center gap-3">
+        <label htmlFor="timing-form-factor" className="text-sm">
+          Device
+        </label>
+        <select
+          id="timing-form-factor"
+          value={selectedFormFactor}
+          onChange={(event) => setSelectedFormFactor(event.target.value)}
+          className="border rounded p-1 text-sm">
+          {formFactorOptions.map(({ value, label }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
         <label htmlFor="timing-metric" className="text-sm">
           Metric
         </label>
@@ -703,7 +723,7 @@ export default function CruxIssueTiming({ siteData }) {
         </select>
       </div>
       <TimingReportTable
-        data={siteData}
+        data={currentSiteData}
         metricName={selectedMetric}
         reportType={reportType}
       />

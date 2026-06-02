@@ -4,41 +4,54 @@ import HistoryChart from "@components/crux/crux-history-chart/index";
 import Container from "@components/container.astro";
 import Layout from "@layouts/Layout.astro";
 import cruxHistoryOtherSitesData from '@assets/sample-data/other-sites.json';
+import cruxHistoryOtherSitesDesktopData from '@assets/sample-data/other-sites-desktop.json';
 import pageData from '@assets/data/all-page-urls.json'
-import cadData from '@assets/data/car-and-driver-urls.json'
+import pageDesktopData from '@assets/data/all-page-urls-desktop.json'
 import cruxHistorySitesData from '@assets/data/sites.json'
+import cruxHistorySitesDesktopData from '@assets/data/sites-desktop.json'
 import {getValidCruxData} from "@components/cwv-data-utils/data-clean";
-import allInpUrlData from '@assets/data/all-inp-urls.json'
 
-let result;
-if (Array.isArray(allInpUrlData)) {
- result = pageData.concat(allInpUrlData);
-  // Use result
-} else {
-  console.error('inpData must be arrays');
-}
-//let inpData = inpData0.concat(inpData1).concat(inpData2);
-
-const pageHistoryData = getValidCruxData({data: result, cruxType: 'url', summaryOnly: false}); 
+const pageHistoryData = getValidCruxData({data: pageData, cruxType: 'url', summaryOnly: false});
 const siteData= getValidCruxData({data: cruxHistorySitesData, cruxType: 'origin', summaryOnly: false});
 const otherSiteData=getValidCruxData({data: cruxHistoryOtherSitesData, cruxType: 'origin', summaryOnly: false});
-const cadHistoryData = getValidCruxData({data:cadData, cruxType: 'url', summaryOnly: false});
+const pageHistoryDesktopData = getValidCruxData({data: pageDesktopData, cruxType: 'url', summaryOnly: false});
+const siteDesktopData= getValidCruxData({data: cruxHistorySitesDesktopData, cruxType: 'origin', summaryOnly: false});
+const otherSiteDesktopData=getValidCruxData({data: cruxHistoryOtherSitesDesktopData, cruxType: 'origin', summaryOnly: false});
 
-let availableDomains : string[]= [];
+function getAvailableDomains(pageHistoryData) {
+  const availableDomains : string[]= [];
 
-pageHistoryData.map((d) => {
-  try {
-  const url = new URL(d.URL);
-  const hostName = url.hostname;
-  if (hostName && !availableDomains.includes(hostName)) {
-    availableDomains.push(url.hostname);
-  }
+  pageHistoryData.map((d) => {
+    try {
+      const url = new URL(d.URL);
+      const hostName = url.hostname;
+      if (hostName && !availableDomains.includes(hostName)) {
+        availableDomains.push(url.hostname);
+      }
 
-  } catch(e) {
-    console.log(d)
-  }
-  return ''
-});
+    } catch(e) {
+      console.log(d)
+    }
+    return ''
+  });
+
+  return availableDomains;
+}
+
+const dataByFormFactor = {
+  PHONE: {
+    pageData: pageHistoryData,
+    siteData,
+    otherSiteData,
+    availableDomains: getAvailableDomains(pageHistoryData),
+  },
+  DESKTOP: {
+    pageData: pageHistoryDesktopData,
+    siteData: siteDesktopData,
+    otherSiteData: otherSiteDesktopData,
+    availableDomains: getAvailableDomains(pageHistoryDesktopData),
+  },
+};
 
 ---
 
@@ -49,7 +62,7 @@ pageHistoryData.map((d) => {
       <Fragment slot="desc">Trend chart for selected urls</Fragment>
     </Sectionhead>
     <div class="flex flex-col max-w-4xl mt-8">
-      <HistoryChart client:only data={pageHistoryData} siteData={siteData} otherSiteData={otherSiteData} cadHistoryData={cadHistoryData} availableDomains={availableDomains} />
+      <HistoryChart client:only dataByFormFactor={dataByFormFactor} />
     </div>
   </Container>  
 </Layout>
