@@ -21,6 +21,11 @@ const dataByFormFactor = {
   PHONE: siteData,
   DESKTOP: siteDesktopData,
 };
+const requestedFormFactor = Astro.url.searchParams
+  .get("formFactor")
+  ?.toUpperCase();
+const initialFormFactor =
+  requestedFormFactor === "DESKTOP" ? "DESKTOP" : "PHONE";
 ---
 
 <Layout title="CrUX Issue Timing">
@@ -32,7 +37,11 @@ const dataByFormFactor = {
       </Fragment>
     </Sectionhead>
     <div class="flex flex-col p-4">
-      <CruxIssueTiming dataByFormFactor={dataByFormFactor} client:load />
+      <CruxIssueTiming
+        dataByFormFactor={dataByFormFactor}
+        initialFormFactor={initialFormFactor}
+        client:load
+      />
     </div>
   </Container>
 </Layout>

@@ -4,6 +4,7 @@ import {
   formFactorOptions,
 } from "@components/cwv-data-utils/constants";
 import { getDateString } from "@components/cwv-data-utils/stats";
+import { formatList, getLatestPeriodSummary } from "../latest-period-summary";
 
 const metricOptions = columns.filter(({ threshold }) => threshold);
 const statusRank = { na: 0, good: 1, needsImprovement: 2, poor: 3 };
@@ -374,46 +375,27 @@ function getTimingReport(data, metricName, reportType) {
 }
 
 function getTrendSummary(data, metricName) {
-  const rows = getTimingReport(data, metricName, "all").flatMap(
-    ({ rows: groupedRows }) => groupedRows
-  );
-  const summary = rows.reduce(
-    (result, row) => {
-      result.total += 1;
-      result.directions[row.lastPeriodDirection] =
-        (result.directions[row.lastPeriodDirection] ?? 0) + 1;
-      result.statuses[row.currentStatus] =
-        (result.statuses[row.currentStatus] ?? 0) + 1;
-      if (row.lastPeriodDelta != null) {
-        result.deltas.push(row.lastPeriodDelta);
-      }
-      return result;
-    },
-    {
-      total: 0,
-      directions: { improved: 0, worse: 0, flat: 0, na: 0 },
-      statuses: { good: 0, needsImprovement: 0, poor: 0, na: 0 },
-      deltas: [],
-    }
-  );
-
-  const sortedDeltas = [...summary.deltas].sort((a, b) => a - b);
-  const middleIndex = Math.floor(sortedDeltas.length / 2);
-  const medianDelta =
-    sortedDeltas.length === 0
-      ? null
-      : sortedDeltas.length % 2
-        ? sortedDeltas[middleIndex]
-        : Number(
-            (
-              (sortedDeltas[middleIndex - 1] + sortedDeltas[middleIndex]) /
-              2
-            ).toFixed(3)
-          );
+  const metric = metricOptions.find(({ key }) => key === metricName);
+  const summary = metric
+    ? getLatestPeriodSummary({
+        data,
+        metricName,
+        threshold: metric.threshold,
+      })
+    : {
+        total: 0,
+        directions: { improved: 0, worse: 0, flat: 0, na: 0 },
+        directionSites: { improved: [], worse: [], flat: [], na: [] },
+        statuses: { good: 0, needsImprovement: 0, poor: 0, na: 0 },
+        medianDelta: null,
+      };
 
   return {
-    ...summary,
-    medianDelta,
+    total: summary.total,
+    directions: summary.directions,
+    directionSites: summary.directionSites,
+    statuses: summary.statuses,
+    medianDelta: summary.medianDelta,
     ...getCollectionPeriodLabels(data),
   };
 }
@@ -447,6 +429,14 @@ function TrendSummary({ selectedMetric, summary }) {
           <div className="text-sm text-gray-600">
             {summary.directions.flat} flat
           </div>
+          <div className="text-sm text-gray-600">
+            {summary.directions.na} n/a
+          </div>
+          {summary.directions.na > 0 && (
+            <div className="mt-2 text-xs text-gray-500">
+              N/A: {formatList(summary.directionSites.na)}
+            </div>
+          )}
         </div>
         <div className="border rounded p-3">
           <div className="text-xs uppercase text-gray-500">Current Status</div>
@@ -669,14 +659,32 @@ function TimingReportTable({ data, metricName, reportType }) {
   );
 }
 
-export default function CruxIssueTiming({ siteData, dataByFormFactor }) {
+export default function CruxIssueTiming({
+  siteData,
+  dataByFormFactor,
+  initialFormFactor = "PHONE",
+}) {
   const [selectedMetric, setSelectedMetric] = useState(
     "cumulative_layout_shift"
   );
   const [reportType, setReportType] = useState("worsening");
-  const [selectedFormFactor, setSelectedFormFactor] = useState("PHONE");
+  const [selectedFormFactor, setSelectedFormFactor] =
+    useState(initialFormFactor);
   const currentSiteData =
     dataByFormFactor?.[selectedFormFactor] ?? siteData ?? [];
+  const handleFormFactorChange = (event) => {
+    const formFactor = event.target.value;
+    setSelectedFormFactor(formFactor);
+
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("formFactor", formFactor);
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}?${params.toString()}`
+    );
+  };
 
   return (
     <div>
@@ -687,7 +695,7 @@ export default function CruxIssueTiming({ siteData, dataByFormFactor }) {
         <select
           id="timing-form-factor"
           value={selectedFormFactor}
-          onChange={(event) => setSelectedFormFactor(event.target.value)}
+          onChange={handleFormFactorChange}
           className="border rounded p-1 text-sm">
           {formFactorOptions.map(({ value, label }) => (
             <option key={value} value={value}>

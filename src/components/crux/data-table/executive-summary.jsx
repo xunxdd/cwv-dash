@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import chartImage from "@assets/chart.webp";
+import { getStatusColorClass } from "@components/crux/latest-period-summary";
 
 const chartImageSrc =
   typeof chartImage === "string" ? chartImage : chartImage.src;
@@ -48,12 +49,20 @@ function formatImprovedSites(sites) {
   )}.`;
 }
 
-function getUnavailableText(count) {
+function StatusCount({ count, status }) {
+  return (
+    <span className={`font-semibold ${getStatusColorClass(status)}`}>
+      {formatCount(count)}
+    </span>
+  );
+}
+
+function getUnavailableText({ count, sites }) {
   if (!count) return "";
 
   return ` ${formatCount(
     count
-  )} did not have a comparable latest-period delta.`;
+  )} did not have a comparable latest-period delta (${formatList(sites)}).`;
 }
 
 function getDeviceSummaryText({ label, summary, latestDate }) {
@@ -74,10 +83,18 @@ function getDeviceSummaryText({ label, summary, latestDate }) {
       For {label}, {formatCount(summary.improvedCount)} improved,{" "}
       {formatCount(summary.worseCount)} got worse, and{" "}
       {formatCount(summary.flatCount)} remained flat.
-      {getUnavailableText(summary.unavailableCount)} As of {latestDate}, we have{" "}
-      {formatCount(needsImprovementCount)} in the "Needs Improvement" category (
-      {needsImprovementChange} in the previous period) and{" "}
-      {formatCount(poorCount)} in the "Poor" category ({poorSites}).{" "}
+      {getUnavailableText({
+        count: summary.unavailableCount,
+        sites: summary.unavailableSites,
+      })}{" "}
+      As of {latestDate}, we have{" "}
+      <StatusCount
+        count={needsImprovementCount}
+        status="needsImprovement"
+      />{" "}
+      in the "Needs Improvement" category ({needsImprovementChange} in the
+      previous period) and <StatusCount count={poorCount} status="poor" /> in
+      the "Poor" category ({poorSites}).{" "}
       {formatImprovedSites(summary.topImprovedSites)}
     </>
   );
@@ -104,6 +121,41 @@ function DirectionStats({ label, summary }) {
       <span className="text-red-700">{summary.worseCount} worse</span>
       <span className="text-gray-400"> / </span>
       <span>{summary.flatCount} flat</span>
+      {summary.unavailableCount > 0 && (
+        <>
+          <span className="text-gray-400"> / </span>
+          <span>{summary.unavailableCount} n/a</span>
+        </>
+      )}
+    </div>
+  );
+}
+
+function StatusStats({ label, summary }) {
+  if (!summary) return null;
+
+  return (
+    <div className="text-xs text-gray-700">
+      <span className="font-semibold text-gray-900">{label} CLS</span>{" "}
+      <span className={getStatusColorClass("good")}>
+        {summary.currentCounts.good} good
+      </span>
+      <span className="text-gray-400"> / </span>
+      <span className={getStatusColorClass("needsImprovement")}>
+        {summary.currentCounts.needsImprovement} needs improvement
+      </span>
+      <span className="text-gray-400"> / </span>
+      <span className={getStatusColorClass("poor")}>
+        {summary.currentCounts.poor} poor
+      </span>
+      {summary.currentCounts.na > 0 && (
+        <>
+          <span className="text-gray-400"> / </span>
+          <span className={getStatusColorClass("na")}>
+            {summary.currentCounts.na} n/a
+          </span>
+        </>
+      )}
     </div>
   );
 }
@@ -150,6 +202,13 @@ export default function ExecutiveSummary({ summary }) {
             <div className="mt-2 flex flex-col gap-1 md:flex-row md:gap-3">
               <DirectionStats label="Mobile" summary={summary.devices.mobile} />
               <DirectionStats
+                label="Desktop"
+                summary={summary.devices.desktop}
+              />
+            </div>
+            <div className="mt-1 flex flex-col gap-1 md:flex-row md:gap-3">
+              <StatusStats label="Mobile" summary={summary.devices.mobile} />
+              <StatusStats
                 label="Desktop"
                 summary={summary.devices.desktop}
               />

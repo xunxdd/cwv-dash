@@ -4,6 +4,10 @@ import {
   filterCWVHistoryData,
   getDateString,
 } from "@components/cwv-data-utils/stats";
+import {
+  getStatusColorClass,
+  getValueStatus,
+} from "@components/crux/latest-period-summary";
 import { useState, useMemo } from "react";
 import Papa from "papaparse";
 
@@ -104,9 +108,18 @@ function Body({ dataSorted, cruxType, formFactor }) {
               {index + 1}
             </td>
             {columns.map(({ key }) => {
+              const column = columns.find((column) => column.key === key);
+              const status =
+                key === metrics.CLS.cruxKey && column?.threshold
+                  ? getValueStatus(item[key], column.threshold)
+                  : null;
+              const valueClass = status
+                ? `font-semibold ${getStatusColorClass(status)}`
+                : "text-gray-500";
+
               return (
                 <td
-                  className="px-6 py-2 whitespace-nowrap text-sm text-gray-500 max-w-lg truncate"
+                  className={`px-6 py-2 whitespace-nowrap text-sm max-w-lg truncate ${valueClass}`}
                   key={`${item.URL}-${key}`}>
                   {key === "URL" ? (
                     <a

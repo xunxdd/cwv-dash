@@ -47,7 +47,7 @@ export default function Summary({
           </select>
         </div>
         <a
-          href="/crux-issue-timing"
+          href={`/crux-issue-timing?formFactor=${selectedFormFactor}`}
           className="text-sm font-medium text-blue-600 hover:text-blue-800">
           Timing report
         </a>
