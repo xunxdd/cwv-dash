@@ -1,6 +1,5 @@
 ---
 import Container from "@components/container.astro";
-import Link from "@components/ui/link.astro";
 import Dropdown from "./dropdown.astro";
 import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
 
@@ -77,15 +76,25 @@ const menuitems = [
           }
         </ul>
         <div class="lg:hidden flex items-center mt-3 gap-4">
-          <Link href="login" style="muted" block size="md">Log in</Link>
-          <Link href="#" size="md" block>Sign up</Link>
+          <a
+            href="https://github.com/xunxdd/cwv-dash"
+            target="_blank"
+            rel="noreferrer"
+            class="flex py-2 items-center text-gray-600 hover:text-gray-900">
+            GitHub repo
+          </a>
         </div>
       </MenuItems>
     </Astronav>
     <div>
       <div class="hidden lg:flex items-center gap-4">
-        <a href="login">Log in</a>
-        <Link href="#" size="md">Sign up</Link>
+        <a
+          href="https://github.com/xunxdd/cwv-dash"
+          target="_blank"
+          rel="noreferrer"
+          class="rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900">
+          GitHub repo
+        </a>
       </div>
     </div>
   </header>
