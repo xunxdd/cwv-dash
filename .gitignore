@@ -25,3 +25,4 @@ pnpm-debug.log*
 .npmrc
 src/assets/data copy/*.json
 src/assets/data/*.json
+!src/assets/data/url-tags.json

@@ -1,0 +1,128 @@
+{
+  "exact": {
+    "https://www.elle.com/": [
+      "HDS rollout"
+    ],
+    "https://www.esquire.com/": [
+      "HDS rollout"
+    ],
+    "https://www.harpersbazaar.com/": [
+      "HDS rollout"
+    ],
+    "https://www.townandcountrymag.com/": [
+      "HDS rollout"
+    ],
+    "https://www.cosmopolitan.com/": [
+      "HDS rollout"
+    ],
+    "https://www.delish.com/": [
+      "HDS rollout"
+    ],
+    "https://www.goodhousekeeping.com/": [
+      "HDS rollout"
+    ],
+    "https://www.menshealth.com/videos/": [
+      "HDS rollout"
+    ],
+    "https://www.womenshealthmag.com/": [
+      "HDS rollout"
+    ],
+    "https://www.caranddriver.com/videos/": [
+      "HDS rollout"
+    ],
+    "https://www.seventeen.com/fashion/trends/g31932109/best-teen-stores/": [],
+    "https://www.seventeen.com/fashion/trends/g2960/fashion-trends-2016/": [],
+    "https://www.delish.com/holiday-recipes/g71220633/best-mothers-day-dinner-recipes/": [],
+    "https://www.delish.com/holiday-recipes/valentines-day/g70075370/easy-dinner-recipes-for-two/": [],
+    "https://www.delish.com/holiday-recipes/": [],
+    "https://www.delish.com/holiday-recipes/cinco-de-mayo/g3313/mexican-appetizers-recipes/": [],
+    "https://www.delish.com/holiday-recipes/g1053/mothers-day-desserts/": [],
+    "https://www.delish.com/cooking/a21087265/best-ramen-noodle-salad-recipe/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g37200073/quick-work-lunch-ideas/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g32264284/easy-dinner-recipes/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g65783188/best-chicken-breast-recipes/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/a70609658/cozy-breakfast-ideas/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g32084340/family-meal-ideas/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g38403459/finger-food-ideas/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g31981626/30-minute-meal-ideas/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g70467028/best-casserole-recipes/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g71003711/best-breakfast-casseroles/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g38078623/side-dishes-for-pork-chops/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g38873931/side-dishes-for-steak/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g35180879/healthy-dinner-ideas/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/a70927473/easy-fast-sandwich-recipes/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g71295332/ree-drummond-favorite-ground-beef-recipes/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g71232490/mothers-day-cake-recipes/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g63444553/recipes-to-use-up-milk/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g71219187/mothers-day-dinner-recipes/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g43045811/graduation-party-food-ideas/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/a71150075/mothers-day-desserts-from-cake-mix/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g71319085/best-memorial-day-desserts/": [],
+    "https://www.thepioneerwoman.com/food-cooking/meals-menus/g40026230/leftover-pulled-pork-recipes/": [],
+    "https://www.goodhousekeeping.com/life/relationships/a38657299/birthday-wishes-for-best-friend/": [],
+    "https://www.goodhousekeeping.com/life/relationships/a40474450/birthday-wishes-for-sister/": [],
+    "https://www.goodhousekeeping.com/life/pets/g4531/cutest-dog-breeds/": [],
+    "https://www.goodhousekeeping.com/life/relationships/a40119695/anniversary-quotes/": [],
+    "https://www.goodhousekeeping.com/life/relationships/a40920880/good-morning-texts/": [],
+    "https://www.goodhousekeeping.com/health-products/g27112869/best-workout-apps/": [],
+    "https://www.goodhousekeeping.com/uk/food/recipes/a71429419/dot-cake-recipe/": []
+  },
+  "rules": [
+    {
+      "type": "domain",
+      "domain": "elle.com",
+      "tags": [
+        "HDS rollout"
+      ]
+    },
+    {
+      "type": "domain",
+      "domain": "esquire.com",
+      "tags": [
+        "HDS rollout"
+      ]
+    },
+    {
+      "type": "domain",
+      "domain": "harpersbazaar.com",
+      "tags": [
+        "HDS rollout"
+      ]
+    },
+    {
+      "type": "domain",
+      "domain": "townandcountrymag.com",
+      "tags": [
+        "HDS rollout"
+      ]
+    },
+    {
+      "type": "domain",
+      "domain": "cosmopolitan.com",
+      "tags": [
+        "HDS rollout"
+      ]
+    },
+    {
+      "type": "domain",
+      "domain": "delish.com",
+      "tags": [
+        "HDS rollout"
+      ]
+    },
+    {
+      "type": "domain",
+      "domain": "goodhousekeeping.com",
+      "tags": [
+        "HDS rollout"
+      ]
+    },
+    {
+      "type": "domain",
+      "domain": "womenshealthmag.com",
+      "tags": [
+        "HDS rollout"
+      ]
+    }
+  ]
+}
