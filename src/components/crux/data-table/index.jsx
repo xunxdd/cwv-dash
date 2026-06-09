@@ -1,4 +1,5 @@
 import CruxHistory from "./crux-history";
+import ExecutiveSummary from "./executive-summary";
 import { useState } from "react";
 import {
   cruxTabOptions,
@@ -11,6 +12,7 @@ export default function Summary({
   siteData,
   otherSiteData,
   dataByFormFactor,
+  executiveSummary,
 }) {
   const [selectedTab, setSelectedTab] = useState("origin");
   const [selectedFormFactor, setSelectedFormFactor] = useState("PHONE");
@@ -23,27 +25,33 @@ export default function Summary({
   //  console.log(siteData);
   return (
     <>
-      <div className="mb-4 flex flex-wrap items-center gap-2">
-        <label htmlFor="crux-summary-form-factor" className="text-sm">
-          Device
-        </label>
-        <select
-          id="crux-summary-form-factor"
-          value={selectedFormFactor}
-          onChange={(event) => setSelectedFormFactor(event.target.value)}
-          className="border rounded p-1 text-sm">
-          {formFactorOptions.map(({ value, label }) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </div>
+      <ExecutiveSummary summary={executiveSummary} />
       <Tabs
         options={cruxTabOptions}
         selectedTab={selectedTab}
-        setSelectedTab={setSelectedTab}
-      />
+        setSelectedTab={setSelectedTab}>
+        <div className="flex items-center gap-2">
+          <label htmlFor="crux-summary-form-factor" className="text-sm">
+            Device
+          </label>
+          <select
+            id="crux-summary-form-factor"
+            value={selectedFormFactor}
+            onChange={(event) => setSelectedFormFactor(event.target.value)}
+            className="border rounded p-1 text-sm">
+            {formFactorOptions.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <a
+          href="/crux-issue-timing"
+          className="text-sm font-medium text-blue-600 hover:text-blue-800">
+          Timing report
+        </a>
+      </Tabs>
       <div>
         {selectedTab == "url" && (
           <CruxHistory

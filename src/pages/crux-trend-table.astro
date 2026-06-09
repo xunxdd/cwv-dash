@@ -10,6 +10,7 @@ import pageData from '@assets/data/all-page-urls.json'
 import pageDesktopData from '@assets/data/all-page-urls-desktop.json'
 import cruxHistorySitesData from '@assets/data/sites.json'
 import cruxHistorySitesDesktopData from '@assets/data/sites-desktop.json'
+import { getExecutiveSummary } from "@components/crux/data-table/executive-summary-utils";
 
 const otherSiteData= getValidCruxData({data: cruxHistoryOtherSitesData, cruxType: 'origin'});
 const siteData= getValidCruxData({data: cruxHistorySitesData,  cruxType: 'origin'});
@@ -17,6 +18,8 @@ const pageHistoryData = getValidCruxData({data: pageData, cruxType: 'url'});
 const otherSiteDesktopData= getValidCruxData({data: cruxHistoryOtherSitesDesktopData, cruxType: 'origin'});
 const siteDesktopData= getValidCruxData({data: cruxHistorySitesDesktopData,  cruxType: 'origin'});
 const pageHistoryDesktopData = getValidCruxData({data: pageDesktopData, cruxType: 'url'});
+const siteHistoryData = getValidCruxData({data: cruxHistorySitesData, cruxType: 'origin', summaryOnly: false});
+const siteDesktopHistoryData = getValidCruxData({data: cruxHistorySitesDesktopData, cruxType: 'origin', summaryOnly: false});
 
 const dataByFormFactor = {
   PHONE: {
@@ -30,6 +33,14 @@ const dataByFormFactor = {
     otherSiteData: otherSiteDesktopData,
   },
 };
+const executiveSummary = getExecutiveSummary({
+  PHONE: {
+    siteData: siteHistoryData,
+  },
+  DESKTOP: {
+    siteData: siteDesktopHistoryData,
+  },
+});
 
 ---
 
@@ -39,13 +50,8 @@ const dataByFormFactor = {
       <Fragment slot="title">Crux Data</Fragment>
       <Fragment slot="desc">Core Web Vitasl as in <a class='text-blue-600' href="https://developer.chrome.com/docs/crux/history-api/">Crux History Api</a></Fragment>
     </Sectionhead>
-    <div class="px-4">
-      <a class="text-blue-600 hover:text-blue-800" href="/crux-issue-timing">
-        View issue timing report
-      </a>
-    </div>
     <div class="flex flex-col p-4">
-       <CruxSummaryData dataByFormFactor={dataByFormFactor} client:load />
+       <CruxSummaryData dataByFormFactor={dataByFormFactor} executiveSummary={executiveSummary} client:load />
     </div>  
   </Container>  
 </Layout>

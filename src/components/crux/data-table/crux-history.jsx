@@ -19,7 +19,27 @@ import("file-saver")
 
 const metricOptions = columns.filter(({ threshold }) => threshold);
 
-function downloadCSV(data) {
+function formatCollectionPeriodForFilename(date) {
+  if (!date) return "unknown-period";
+
+  const { year, month, day } = date;
+  return [month, day, year]
+    .map((value) => String(value).padStart(2, "0"))
+    .join("-");
+}
+
+function getFormFactorForFilename(formFactor) {
+  return formFactor === "DESKTOP" ? "desktop" : "mobile";
+}
+
+function getCSVFilename({ collectionPeriod, formFactor }) {
+  const period = formatCollectionPeriodForFilename(collectionPeriod?.lastDate);
+  const device = getFormFactorForFilename(formFactor);
+
+  return `cwv-${period}-${device}.csv`;
+}
+
+function downloadCSV(data, filename) {
   try {
     const csvData = data.map((item) => {
       const row = {};
@@ -31,7 +51,7 @@ function downloadCSV(data) {
     const csv = Papa.unparse(csvData);
 
     const blob = new Blob([csv], { type: "text/csv" });
-    saveAs(blob, "data.csv");
+    saveAs(blob, filename);
   } catch (e) {
     console.error(e, "downloadCSV error");
   }
@@ -169,12 +189,17 @@ export default function AllDataTable({
 
   let firstDateString = "";
   let lastDateString = "";
+  let csvFilename = getCSVFilename({ formFactor });
 
   if (sanitizedData.length > 0) {
     const lastCollectionPeriod = sanitizedData?.[0]?.lastCollectionPeriod;
     const { firstDate, lastDate } = lastCollectionPeriod ?? {};
     firstDateString = getDateString(firstDate);
     lastDateString = getDateString(lastDate);
+    csvFilename = getCSVFilename({
+      collectionPeriod: lastCollectionPeriod,
+      formFactor,
+    });
   }
 
   const handleSort = (column) => {
@@ -249,7 +274,7 @@ export default function AllDataTable({
           </div>
           <button
             className="text-blue-500 hover:text-blue-700   py-2 px-4 rounded"
-            onClick={() => downloadCSV(dataSorted)}>
+            onClick={() => downloadCSV(dataSorted, csvFilename)}>
             Download CSV
           </button>
         </div>

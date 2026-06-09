@@ -1,14 +1,5 @@
 ---
-export const prerender = true;
-import Container from "@components/container.astro";
-import Cta from "@components/cta.astro";
-import Hero from "@components/hero.astro";
-import Layout from "@layouts/Layout.astro";
----
+export const prerender = false;
 
-<Layout title="">
-  <Container>
-    <Hero />
-    <Cta />
-  </Container>
-</Layout>
+return Astro.redirect("/crux-trend-table");
+---

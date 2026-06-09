@@ -45,9 +45,9 @@ export const cruxMetricNames = [
 ];
 
 export const cruxTabOptions = [
-  { key: "url", label: "All Page Urls" },
-  { key: "origin", label: "Origin Data" },
-  { key: "sample-origins", label: "Sample Site Data" },
+  { key: "url", label: "Pages" },
+  { key: "origin", label: "Origins" },
+  { key: "sample-origins", label: "Samples" },
 ];
 
 export const formFactorOptions = [
