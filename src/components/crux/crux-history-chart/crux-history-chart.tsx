@@ -57,6 +57,21 @@ const normalizedBandPlugin = {
   },
 };
 
+const trendSeriesColors = [
+  "#2f7eea",
+  "#8b5cf6",
+  "#06b6d4",
+  "#ec4899",
+  "#6366f1",
+  "#14b8a6",
+  "#a855f7",
+  "#38bdf8",
+  "#f472b6",
+  "#60a5fa",
+  "#c084fc",
+  "#22d3ee",
+];
+
 function getMetricThreshold(metricName: string) {
   return columns.find(({ key }) => key === metricName)?.threshold;
 }
@@ -99,11 +114,19 @@ function getDisplayLabel(url: string) {
 function compactDataSetLabels(dataSet) {
   return {
     ...dataSet,
-    datasets: dataSet.datasets.map((dataset) => ({
-      ...dataset,
-      fullLabel: dataset.label,
-      label: getDisplayLabel(dataset.label),
-    })),
+    datasets: dataSet.datasets.map((dataset, index) => {
+      const color = trendSeriesColors[index % trendSeriesColors.length];
+
+      return {
+        ...dataset,
+        fullLabel: dataset.label,
+        label: getDisplayLabel(dataset.label),
+        backgroundColor: color,
+        borderColor: color,
+        pointBackgroundColor: color,
+        pointBorderColor: color,
+      };
+    }),
   };
 }
 
@@ -190,9 +213,9 @@ function getNormalizedOptions(title: string, metricName: string): any {
   };
 }
 
-function CwvTrendLineChart({ metric, cwvData }) {
+function CwvTrendLineChart({ metric, cwvData, formFactorLabel }) {
   const { label, cruxKey } = metric;
-  const title = `${label} - p75`;
+  const title = `${label} - ${formFactorLabel} p75`;
   const dataSet = useMemo(
     () => getNormalizedChartDataSet({ metricName: cruxKey, cwvData }),
     [cruxKey, cwvData]
@@ -222,7 +245,7 @@ function CwvTrendLineChart({ metric, cwvData }) {
   );
 }
 
-export default function Charts({ cwvData }) {
+export default function Charts({ cwvData, formFactorLabel = "Mobile" }) {
   return (
     <div className="mt-4 space-y-4">
       <p className="max-w-3xl text-sm text-slate-600">
@@ -230,9 +253,21 @@ export default function Charts({ cwvData }) {
         the lower green band, needs improvement is the middle band, and poor is
         the upper red band. Tooltips show the original p75 value.
       </p>
-      <CwvTrendLineChart metric={metrics.INP} cwvData={cwvData} />
-      <CwvTrendLineChart metric={metrics.CLS} cwvData={cwvData} />
-      <CwvTrendLineChart metric={metrics.LCP} cwvData={cwvData} />
+      <CwvTrendLineChart
+        metric={metrics.CLS}
+        cwvData={cwvData}
+        formFactorLabel={formFactorLabel}
+      />
+      <CwvTrendLineChart
+        metric={metrics.INP}
+        cwvData={cwvData}
+        formFactorLabel={formFactorLabel}
+      />
+      <CwvTrendLineChart
+        metric={metrics.LCP}
+        cwvData={cwvData}
+        formFactorLabel={formFactorLabel}
+      />
     </div>
   );
 }

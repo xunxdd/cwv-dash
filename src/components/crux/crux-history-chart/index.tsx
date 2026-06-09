@@ -18,6 +18,9 @@ export default function CruxChart({
   const [selectedDomain, setSelectedDomain] = useState("all");
   const [typeSelected, setTypeSelected] = useState("all");
   const [selectedFormFactor, setSelectedFormFactor] = useState("PHONE");
+  const selectedFormFactorLabel =
+    formFactorOptions.find(({ value }) => value === selectedFormFactor)?.label ??
+    selectedFormFactor;
   const currentData = dataByFormFactor?.[selectedFormFactor] ?? {
     pageData: data,
     siteData,
@@ -81,13 +84,25 @@ export default function CruxChart({
         />
       )}
       {selectedTab == "url" && (
-        <ChartContainer data={filteredCwvUrlData} cruxType="url" />
+        <ChartContainer
+          data={filteredCwvUrlData}
+          cruxType="url"
+          formFactorLabel={selectedFormFactorLabel}
+        />
       )}
       {selectedTab == "origin" && (
-        <ChartContainer data={currentData.siteData} cruxType="origin" />
+        <ChartContainer
+          data={currentData.siteData}
+          cruxType="origin"
+          formFactorLabel={selectedFormFactorLabel}
+        />
       )}
       {selectedTab == "sample-origins" && (
-        <ChartContainer data={currentData.otherSiteData} cruxType="origin" />
+        <ChartContainer
+          data={currentData.otherSiteData}
+          cruxType="origin"
+          formFactorLabel={selectedFormFactorLabel}
+        />
       )}
     </>
   );

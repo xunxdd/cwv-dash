@@ -78,7 +78,7 @@ function getCruxData({ pageUrls, data, dateType }) {
   return cruxData;
 }
 
-export const ChartContainer = ({ data, cruxType = "url" }) => {
+export const ChartContainer = ({ data, cruxType = "url", formFactorLabel }) => {
   const allUrls = getAvailableUrls({ data, cruxType });
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -99,7 +99,7 @@ export const ChartContainer = ({ data, cruxType = "url" }) => {
   return (
     <>
       <ChartControls state={state} dispatch={dispatch} urls={allUrls} />
-      {<HistoryCharts cwvData={cwvData} />}
+      {<HistoryCharts cwvData={cwvData} formFactorLabel={formFactorLabel} />}
     </>
   );
 };
